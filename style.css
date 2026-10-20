@@ -7,7 +7,6 @@
     --font-head: 'Bricolage Grotesque', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-doodle: 'Kalam', cursive;
-    --font-editorial: 'Newsreader', serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -125,7 +124,7 @@ a { color: inherit; text-decoration: none; cursor: none; }
    ========================================= */
 .wire-ticker {
     background: var(--electric-blue); color: var(--cream);
-    padding: 1rem 0; overflow: hidden;
+    padding: 1rem 0; overflow: hidden; border-bottom: 1px solid var(--border-color);
     white-space: nowrap; display: flex; align-items: center;
 }
 .ticker-content {
@@ -136,44 +135,109 @@ a { color: inherit; text-decoration: none; cursor: none; }
 @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 /* =========================================
-   ABOUT (Fixed Image Gap & Sticky Layout)
+   ABOUT 
    ========================================= */
 .wire-about { padding: 8rem 4rem; }
 .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; max-width: 1400px; margin: 0 auto; align-items: start; }
 .about-label { font-family: var(--font-body); font-weight: 600; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--electric-blue); margin-bottom: 2rem;}
-.about-copy { display: flex; flex-direction: column; gap: 2rem; }
-.about-copy p { font-family: var(--font-editorial); font-size: clamp(1.5rem, 2.5vw, 2.2rem); font-style: italic; line-height: 1.4; margin: 0; color: var(--charcoal); opacity: 0.9;}
-.about-copy .text-blue { color: var(--electric-blue); font-weight: 500; }
-.internship-tag { font-family: var(--font-body) !important; font-size: 1rem !important; font-style: normal; font-weight: 500; margin-top: 2rem !important; padding: 1rem 1.5rem; border: 1px solid var(--border-color); border-radius: 8px; display: inline-block; width: max-content; background: var(--cream);}
+
+.about-copy { display: flex; flex-direction: column; gap: 1.5rem; }
+.about-copy p { 
+    font-family: var(--font-body); 
+    font-size: clamp(1.2rem, 2vw, 1.4rem); 
+    font-weight: 400; 
+    line-height: 1.6; 
+    margin: 0; 
+    color: var(--charcoal); 
+    opacity: 0.9;
+}
+.about-copy .text-blue { color: var(--electric-blue); font-weight: 600; }
+.internship-tag { 
+    font-family: var(--font-body) !important; 
+    font-size: 1rem !important; 
+    font-weight: 600; 
+    margin-top: 1.5rem !important; 
+    padding: 1rem 1.5rem; 
+    border: 1px solid var(--border-color); 
+    border-radius: 8px; 
+    display: inline-block; 
+    width: max-content; 
+    background: var(--cream);
+}
 
 .about-visual { width: 100%; position: sticky; top: 120px; display: flex; justify-content: center; align-items: flex-start;}
 .blueprint-img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; mix-blend-mode: multiply; }
 
 /* =========================================
-   COMPANIES LOGO STRIP (Actual Images)
+   COMPANIES LOGO STRIP (Spaced & Balanced)
    ========================================= */
 .wire-companies {
-    display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 3rem;
-    padding: 3rem 4rem; 
+    padding: 4rem; /* Keeps the top/bottom padding and full-width border */
 }
+
+.companies-inner {
+    display: flex; 
+    justify-content: space-between; /* Spreads logos perfectly edge-to-edge */
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 3rem; 
+    max-width: 1400px; /* Perfectly aligns with the text grids above and below */
+    margin: 0 auto; 
+}
+
 .company-logo {
-    display: flex; justify-content: center; align-items: center;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
 }
+
 .company-logo img {
-    height: 35px; /* Unified height for all logos */
-    width: auto; 
-    filter: grayscale(100%) opacity(0.5) contrast(1.2); /* Makes them look like a uniform agency strip */
+    object-fit: contain; 
+    filter: grayscale(100%) opacity(0.5) contrast(1.2); 
     transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
+
 .company-logo:hover img { 
     filter: grayscale(0%) opacity(1) contrast(1); 
     transform: scale(1.05);
 }
 
+/* 
+  OPTICAL BALANCING: 
+*/
+.company-logo img[alt="IBM"] {
+    height: 42px; 
+}
+.company-logo img[alt="Harvard T.H. Chan"] {
+    height: 32px; /* Perfect height for the ultra-wide 1448x259 logo */
+}
+.company-logo img[alt="LearningMate"] {
+    height: 36px; 
+}
+.company-logo img[alt="ideaForge"] {
+    height: 85px; /* Needs to be taller because the text sits under the icon */
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1024px) {
+    .wire-companies { padding: 4rem 2rem; }
+}
+
+@media (max-width: 768px) {
+    .companies-inner {
+        justify-content: center; /* Drops back to a centered cluster on mobile */
+        gap: 3.5rem;
+    }
+    .company-logo img[alt="IBM"] { height: 30px; }
+    .company-logo img[alt="Harvard T.H. Chan"] { height: 22px; }
+    .company-logo img[alt="LearningMate"] { height: 24px; }
+    .company-logo img[alt="ideaForge"] { height: 65px; }
+}
+
 /* =========================================
    PROJECTS
    ========================================= */
-.wire-work { display: grid; grid-template-columns: 1fr; }
+.wire-work { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--border-color); }
 .work-header { padding: 4rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-end; }
 .work-header h2 { font-family: var(--font-head); font-size: 4rem; margin: 0; font-weight: 800; letter-spacing: -0.04em; }
 .work-header p { margin: 0; font-size: 1.2rem; font-weight: 500; color: var(--electric-blue); }
@@ -202,7 +266,7 @@ a { color: inherit; text-decoration: none; cursor: none; }
 }
 .preview-box img { 
     width: 100%; height: 100%; 
-    object-fit: contain; /* FIXED: Now retains full image ratio without harsh cropping */
+    object-fit: contain; 
     padding: 1rem; border-radius: 16px; 
     background: rgba(0,0,0,0.03);
     opacity: 0; transition: opacity 0.4s ease; 
@@ -230,10 +294,10 @@ a { color: inherit; text-decoration: none; cursor: none; }
 .exp-visual img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
 /* =========================================
-   WORKSPACE PARALLAX (Massive Window Effect)
+   WORKSPACE PARALLAX
    ========================================= */
 .wire-showcase { 
-    height: 70vh; /* Takes up 70% of the screen height */
+    height: 70vh; 
     width: 100%;
     position: relative; 
     overflow: hidden; 
@@ -244,10 +308,10 @@ a { color: inherit; text-decoration: none; cursor: none; }
 }
 .parallax-img {
     width: 100%; 
-    height: 130%; /* Taller than container to allow scrolling */
+    height: 130%; 
     object-fit: cover; 
     position: absolute; 
-    top: -15%; /* Starts slightly higher */
+    top: -15%; 
     left: 0;
 }
 
@@ -256,7 +320,15 @@ a { color: inherit; text-decoration: none; cursor: none; }
    ========================================= */
 .wire-footer { background: var(--charcoal); color: var(--cream); }
 .footer-top { padding: 8rem 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: flex-start; }
-.footer-title { font-family: var(--font-editorial); font-style: italic; font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 400; letter-spacing: -0.01em; margin: 0 0 1rem 0; max-width: 25ch; line-height: 1.1; }
+.footer-title { 
+    font-family: var(--font-head); 
+    font-size: clamp(3rem, 5vw, 4.5rem); 
+    font-weight: 800; 
+    letter-spacing: -0.03em; 
+    margin: 0 0 1.5rem 0; 
+    max-width: 25ch; 
+    line-height: 1.1; 
+}
 .footer-subtitle { font-family: var(--font-body); font-size: 1.2rem; color: var(--electric-blue); margin-bottom: 3rem; font-weight: 500; }
 .footer-bottom { display: flex; justify-content: space-between; padding: 2rem 4rem; font-size: 1rem; opacity: 0.7; }
 .socials { display: flex; gap: 2rem; font-weight: 500;}
@@ -286,11 +358,8 @@ a { color: inherit; text-decoration: none; cursor: none; }
     .row-num, .row-arrow { display: none; }
     .exp-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem; }
     .exp-role { font-size: 1.5rem; }
-    
-    /* Disable parallax on mobile phones as it can be laggy */
     .wire-showcase { height: 40vh; }
     .parallax-img { height: 100%; top: 0; }
-    
     .footer-top { padding: 4rem 2rem; }
     .footer-bottom { flex-direction: column; gap: 2rem; padding: 2rem; }
 }
