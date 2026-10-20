@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-                initTanishaHero();
+                initRazorHero(); 
             }, 400);
         }
         loaderBar.style.width = `${progress}%`;
@@ -69,60 +69,86 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
 
     // ==========================================
-    // 3. TANISHA STYLE ROTATING TYPOGRAPHY HERO
+    // 3. RAZORPAY STYLE FADE-IN HERO
     // ==========================================
-    function initTanishaHero() {
-        const heroSection = document.querySelector(".t-hero");
+    function initRazorHero() {
+        const heroSection = document.querySelector(".razor-hero");
         if (!heroSection) return;
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: ".t-hero",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1
-            }
+        const tl = gsap.timeline();
+
+        tl.fromTo(".fade-up", 
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
+        );
+
+        tl.fromTo(".fade-up-text",
+            { y: "110%", opacity: 0 },
+            { y: "0%", opacity: 1, duration: 1, stagger: 0.15, ease: "power4.out" },
+            "-=0.5"
+        );
+    }
+
+// ==========================================
+    // 4. MOUSE HOVER PARALLAX & 3D TEXT
+    // ==========================================
+    if (window.innerWidth >= 768) {
+        const interactiveContainers = document.querySelectorAll('.interactive-container');
+        interactiveContainers.forEach(container => {
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // 1. Move the image layers
+                const layers = container.querySelectorAll('.p-layer-wrapper');
+                layers.forEach(layer => {
+                    const img = layer.querySelector('img');
+                    if(!img) return;
+                    
+                    const depth = parseFloat(img.getAttribute('data-mouse-depth')) || 0.05;
+                    const moveX = (e.clientX - centerX) * depth;
+                    const moveY = (e.clientY - centerY) * depth;
+                    
+                    gsap.to(layer, { x: moveX, y: moveY, duration: 0.6, ease: "power2.out" });
+                });
+
+                // 2. Add 3D Tilt & Float to the Text
+                const interactiveText = container.querySelector('.interactive-text');
+                if (interactiveText) {
+                    const moveX = (e.clientX - centerX) * 0.015; // Subtle float X
+                    const moveY = (e.clientY - centerY) * 0.015; // Subtle float Y
+                    
+                    // Calculate subtle 3D rotation (max 2 degrees)
+                    const rotateX = ((e.clientY - centerY) / centerY) * -2; 
+                    const rotateY = ((e.clientX - centerX) / centerX) * 2;
+
+                    gsap.to(interactiveText, { 
+                        x: moveX, 
+                        y: moveY, 
+                        rotationX: rotateX, 
+                        rotationY: rotateY, 
+                        transformPerspective: 1000, // Gives the tilt real 3D depth
+                        duration: 0.6, 
+                        ease: "power2.out" 
+                    });
+                }
+            });
+
+            container.addEventListener('mouseleave', () => {
+                const layers = container.querySelectorAll('.p-layer-wrapper');
+                gsap.to(layers, { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
+                
+                const interactiveText = container.querySelector('.interactive-text');
+                if (interactiveText) {
+                    gsap.to(interactiveText, { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.8, ease: "power2.out" });
+                }
+            });
         });
-
-        const letters = document.querySelectorAll('.t-letter:not(.space)');
-        const spaces = document.querySelectorAll('.t-letter.space');
-        const centerImg = document.querySelector('.t-center-img');
-
-        if (spaces.length > 0) {
-            tl.to(spaces, { opacity: 0, duration: 0.1 }, 0);
-        }
-
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-        const radius = window.innerWidth < 768 ? 130 : 250;
-
-        letters.forEach((letter, i) => {
-            const rect = letter.getBoundingClientRect();
-            const letterX = rect.left + rect.width / 2;
-            const letterY = rect.top + rect.height / 2;
-
-            const angleDeg = (i / letters.length) * 360 - 90;
-            const angleRad = angleDeg * (Math.PI / 180);
-
-            const targetX = centerX + Math.cos(angleRad) * radius;
-            const targetY = centerY + Math.sin(angleRad) * radius;
-
-            tl.to(letter, {
-                x: targetX - letterX,
-                y: targetY - letterY,
-                rotation: angleDeg + 90, 
-                ease: "power2.inOut"
-            }, 0);
-        });
-
-        tl.to(centerImg, {
-            scale: 1,
-            ease: "power2.inOut"
-        }, 0);
     }
 
     // ==========================================
-    // 4. IMAGE FADE IN & TEXT REVEAL
+    // 5. IMAGE FADE IN & TEXT REVEAL
     // ==========================================
     const revealTexts = document.querySelectorAll(".reveal-text");
     revealTexts.forEach((text) => {
@@ -135,19 +161,8 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 
-    const revealImgs = document.querySelectorAll(".reveal-img");
-    revealImgs.forEach((img) => {
-        gsap.fromTo(img, 
-            { y: 50, opacity: 0 },
-            {
-                y: 0, opacity: 1, duration: 1.2, ease: "power3.out",
-                scrollTrigger: { trigger: img, start: "top 85%", toggleActions: "play none none reverse" }
-            }
-        );
-    });
-
     // ==========================================
-    // 5. PROJECT LIST HOVER IMAGE REVEAL
+    // 6. PROJECT LIST HOVER IMAGE REVEAL
     // ==========================================
     const workRows = document.querySelectorAll(".work-row");
     const previewImg = document.getElementById("preview-img");
@@ -179,22 +194,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
-    // ==========================================
-    // 6. CINEMATIC PARALLAX EFFECT
-    // ==========================================
-    if (window.innerWidth >= 768) {
-        gsap.to(".parallax-img", {
-            yPercent: 30, // Moves the image down slightly as you scroll past
-            ease: "none",
-            scrollTrigger: {
-                trigger: ".wire-showcase",
-                start: "top bottom", // Starts when top of section hits bottom of viewport
-                end: "bottom top",   // Ends when bottom of section hits top of viewport
-                scrub: true
-            }
-        });
-    }
 
     // ==========================================
     // 7. SMOOTH ANCHOR SCROLLING

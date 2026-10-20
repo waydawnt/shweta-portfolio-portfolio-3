@@ -1,12 +1,12 @@
 :root {
-    --cream: #FDFBF7;
-    --charcoal: #111111;
+    --cream: #FDFBF7; 
+    --charcoal: #111111; 
     --electric-blue: #0044FF; 
-    --border-color: rgba(17, 17, 17, 0.15);
+    --border-color: rgba(17, 17, 17, 0.15); 
     
-    --font-head: 'Bricolage Grotesque', sans-serif;
+    /* Removed Bricolage. Using Inter for a razor-sharp, premium look */
+    --font-head: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-doodle: 'Kalam', cursive;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -18,10 +18,11 @@ body {
     font-family: var(--font-body);
     color: var(--charcoal);
     background-color: var(--cream);
-    background-image: radial-gradient(rgba(17, 17, 17, 0.1) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
     background-size: 24px 24px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -53,83 +54,158 @@ a { color: inherit; text-decoration: none; cursor: none; }
 .scroll-progress { position: fixed; top: 0; left: 0; height: 4px; width: 0%; background: var(--electric-blue); z-index: 9998; }
 
 /* =========================================
-   UI UTILITIES
+   UI BUTTONS & UTILITIES
    ========================================= */
 .border-bottom { border-bottom: 1px solid var(--border-color); }
-.border-right { border-right: 1px solid var(--border-color); }
 .text-blue { color: var(--electric-blue); }
 
 .btn-blue {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.8rem 1.8rem; font-size: 1rem; font-weight: 500;
+    padding: 0.8rem 1.8rem; font-size: 1rem; font-weight: 600;
     background: var(--electric-blue); color: var(--cream);
     border-radius: 50px; transition: background 0.3s ease;
 }
 .btn-blue.large { padding: 1.2rem 2.5rem; font-size: 1.2rem; }
+
+/* The "See my work" Figma Button */
+.btn-outline {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.8rem 1.8rem; font-size: 1rem; font-weight: 600;
+    background: var(--cream); color: var(--charcoal);
+    border: 1px solid var(--charcoal); border-radius: 50px; 
+    transition: all 0.3s ease;
+}
+.btn-outline:hover { background: var(--charcoal); color: var(--cream); }
 
 /* =========================================
    NAVIGATION
    ========================================= */
 .wire-nav {
     position: fixed; top: 0; width: 100%;
-    display: grid; grid-template-columns: 1fr 2fr 1fr;
-    align-items: center; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center; 
+    z-index: 100;
     background: rgba(253, 251, 247, 0.95);
     backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color);
 }
-.nav-brand { padding: 1.2rem 2rem; font-family: var(--font-head); font-size: 1.2rem; font-weight: 800; border-right: 1px solid var(--border-color); letter-spacing: 0.05em;}
-.nav-links { display: flex; gap: 2.5rem; justify-content: center; padding: 1.2rem; }
-.nav-links a { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; transition: color 0.3s; }
+.nav-brand { padding: 1.2rem 2.5rem; font-family: var(--font-head); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.05em;}
+.nav-links { display: flex; gap: 3rem; }
+.nav-links a { font-size: 0.95rem; font-weight: 600; color: var(--charcoal); transition: color 0.3s; }
 .nav-links a:hover { color: var(--electric-blue); }
-.nav-cta { padding: 0.8rem 2rem; text-align: right; border-left: 1px solid var(--border-color); }
+.nav-cta { padding: 0.8rem 2.5rem; }
 
 /* =========================================
-   HERO
+   HERO (Immersive Layout)
    ========================================= */
-.t-hero { height: 300vh; position: relative; border-bottom: 1px solid var(--border-color); }
-.t-sticky {
-    position: sticky; top: 0; height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    overflow: hidden; padding-top: 60px;
+.razor-hero { 
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Fills screen */
+    min-height: 750px;
+    display: flex; 
+    align-items: center; 
+    overflow: hidden; 
+    border-bottom: 1px solid var(--border-color);
 }
-.t-words { display: flex; flex-direction: column; align-items: center; gap: 1rem; z-index: 2; }
-.t-row { display: flex; align-items: center; }
 
-.t-letter {
-    font-family: var(--font-doodle);
-    font-size: clamp(3.5rem, 10vw, 12rem); font-weight: 700; line-height: 1;
-    display: inline-block; transform-origin: center center; will-change: transform;
+/* =========================================
+   2.5D LAYER SIZES & POSITIONS (TWEAK THESE)
+   ========================================= */
+.hero-parallax {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1; /* Sits behind text overall */
+    pointer-events: none; 
 }
-.t-letter.solid { color: var(--electric-blue); }
-.t-letter.outline { color: transparent; -webkit-text-stroke: 2.5px var(--electric-blue); }
+.p-layer-wrapper { position: absolute; will-change: transform; }
+.p-layer { width: 100%; height: 100%; object-fit: contain; }
 
-.t-center-img {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    width: clamp(160px, 25vw, 300px); height: clamp(160px, 25vw, 300px);
-    border-radius: 50%; overflow: hidden; z-index: 1;
-    border: 3px solid var(--electric-blue); background: var(--cream);
+/* LAYER 1: Moodboard Grid */
+.layer-bg-wrap {
+    top: 5%; 
+    right: -2%; 
+    width: 65%; /* Restricts it to the right side */
+    height: 85%;
+    z-index: 1;
 }
-.t-center-img img { width: 100%; height: 100%; object-fit: cover; }
 
-.scroll-cue {
-    position: absolute; bottom: 2rem; font-size: 0.8rem; text-transform: uppercase;
-    letter-spacing: 0.1em; color: var(--electric-blue); font-weight: 600;
-    animation: bounce 2s infinite;
+/* LAYER 2: Woman */
+.layer-woman-wrap {
+    bottom: -15%; 
+    right: 8%; 
+    height: 80%; /* Keeps her realistic height */
+    width: 50%;
+    z-index: 3; /* Places her strictly behind the desk but above grid */
 }
-@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+
+/* LAYER 3: Desk & Plant */
+.layer-desk-wrap {
+    bottom: -15%; /* Anchored cleanly to the bottom edge */
+    left: 10%; 
+    width: 100%; /* Spans the whole bottom */
+    height: 60vh; /* PERFECT FIX: Limits height so the plant won't cover text! */
+    z-index: 4;
+}
+.layer-desk-wrap .p-layer { object-position: bottom center; }
+
+/* =========================================
+   HERO TEXT CONTENT (Left Column)
+   ========================================= */
+.hero-inner {
+    position: relative;
+    z-index: 10; /* Permanent foreground, NEVER blocked */
+    width: 100%; 
+    max-width: 1600px; 
+    margin: 0 auto; 
+    padding: 0 4rem; 
+    pointer-events: none; 
+}
+
+/* ADDED: transform-style to support the new 3D mouse tilt */
+.hero-content {
+    width: 50%; 
+    max-width: 600px; /* Reduced from 750px to prevent hitting the plant */
+    pointer-events: auto; 
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem;
+    transform-style: preserve-3d; 
+    will-change: transform;
+}
+
+.hero-eyebrow {
+    font-family: var(--font-body); 
+    font-size: 1.1rem; 
+    font-weight: 500; 
+    color: var(--charcoal); 
+    margin: 0;
+}
+
+.razor-title {
+    font-family: var(--font-head); 
+    font-size: clamp(2.5rem, 5vw, 5.5rem); /* Scaled down perfectly */
+    font-weight: 800; 
+    line-height: 1.05; /* Slightly tighter line height */
+    letter-spacing: -0.03em; 
+    margin: 0; 
+    display: flex; flex-direction: column;
+}
+
+.title-line { 
+    display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em;
+}
+.fade-up-text { display: block; will-change: transform, opacity; }
+.hero-buttons { margin-top: 1rem; }
 
 /* =========================================
    TICKER
    ========================================= */
 .wire-ticker {
     background: var(--electric-blue); color: var(--cream);
-    padding: 1rem 0; overflow: hidden; border-bottom: 1px solid var(--border-color);
+    padding: 1.2rem 0; overflow: hidden; border-bottom: 1px solid var(--border-color);
     white-space: nowrap; display: flex; align-items: center;
 }
 .ticker-content {
-    display: flex; gap: 2rem; align-items: center; font-family: var(--font-body); font-weight: 500;
-    font-size: 1.1rem; animation: marquee 25s linear infinite;
+    display: flex; gap: 2.5rem; align-items: center; font-family: var(--font-body); font-weight: 500;
+    font-size: 1.2rem; animation: marquee 25s linear infinite;
 }
 .dot { width: 6px; height: 6px; background: var(--cream); border-radius: 50%; display: inline-block; }
 @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -138,101 +214,33 @@ a { color: inherit; text-decoration: none; cursor: none; }
    ABOUT 
    ========================================= */
 .wire-about { padding: 8rem 4rem; }
-.about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; max-width: 1400px; margin: 0 auto; align-items: start; }
-.about-label { font-family: var(--font-body); font-weight: 600; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--electric-blue); margin-bottom: 2rem;}
+.about-grid { display: grid; grid-template-columns: 1fr; max-width: 1000px; margin: 0 auto; align-items: start; }
+.about-label { font-family: var(--font-body); font-weight: 600; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--electric-blue); margin-bottom: 2rem; text-align: center;}
 
-.about-copy { display: flex; flex-direction: column; gap: 1.5rem; }
+.about-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: center; text-align: center;}
 .about-copy p { 
-    font-family: var(--font-body); 
-    font-size: clamp(1.2rem, 2vw, 1.4rem); 
-    font-weight: 400; 
-    line-height: 1.6; 
-    margin: 0; 
-    color: var(--charcoal); 
-    opacity: 0.9;
+    font-family: var(--font-body); font-size: clamp(1.2rem, 2vw, 1.8rem); 
+    font-weight: 400; line-height: 1.6; margin: 0; color: var(--charcoal); opacity: 0.9;
 }
 .about-copy .text-blue { color: var(--electric-blue); font-weight: 600; }
 .internship-tag { 
-    font-family: var(--font-body) !important; 
-    font-size: 1rem !important; 
-    font-weight: 600; 
-    margin-top: 1.5rem !important; 
-    padding: 1rem 1.5rem; 
-    border: 1px solid var(--border-color); 
-    border-radius: 8px; 
-    display: inline-block; 
-    width: max-content; 
-    background: var(--cream);
+    font-size: 1rem !important; font-weight: 600 !important; margin-top: 1.5rem !important; padding: 1rem 1.5rem; 
+    border: 1px solid var(--border-color); border-radius: 8px; display: inline-block; width: max-content; background: var(--cream);
 }
-
-.about-visual { width: 100%; position: sticky; top: 120px; display: flex; justify-content: center; align-items: flex-start;}
-.blueprint-img { width: 100%; height: auto; max-height: 70vh; object-fit: contain; mix-blend-mode: multiply; }
 
 /* =========================================
-   COMPANIES LOGO STRIP (Spaced & Balanced)
+   COMPANIES LOGO STRIP
    ========================================= */
-.wire-companies {
-    padding: 4rem; /* Keeps the top/bottom padding and full-width border */
-}
+.wire-companies { padding: 4rem; }
+.companies-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 3rem; max-width: 1400px; margin: 0 auto; }
+.company-logo { display: flex; justify-content: center; align-items: center; }
+.company-logo img { object-fit: contain; filter: grayscale(100%) opacity(0.5) contrast(1.2); transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease; }
+.company-logo:hover img { filter: grayscale(0%) opacity(1) contrast(1); transform: scale(1.05); }
 
-.companies-inner {
-    display: flex; 
-    justify-content: space-between; /* Spreads logos perfectly edge-to-edge */
-    align-items: center; 
-    flex-wrap: wrap; 
-    gap: 3rem; 
-    max-width: 1400px; /* Perfectly aligns with the text grids above and below */
-    margin: 0 auto; 
-}
-
-.company-logo {
-    display: flex; 
-    justify-content: center; 
-    align-items: center;
-}
-
-.company-logo img {
-    object-fit: contain; 
-    filter: grayscale(100%) opacity(0.5) contrast(1.2); 
-    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
-}
-
-.company-logo:hover img { 
-    filter: grayscale(0%) opacity(1) contrast(1); 
-    transform: scale(1.05);
-}
-
-/* 
-  OPTICAL BALANCING: 
-*/
-.company-logo img[alt="IBM"] {
-    height: 42px; 
-}
-.company-logo img[alt="Harvard T.H. Chan"] {
-    height: 32px; /* Perfect height for the ultra-wide 1448x259 logo */
-}
-.company-logo img[alt="LearningMate"] {
-    height: 36px; 
-}
-.company-logo img[alt="ideaForge"] {
-    height: 85px; /* Needs to be taller because the text sits under the icon */
-}
-
-/* Mobile Adjustments */
-@media (max-width: 1024px) {
-    .wire-companies { padding: 4rem 2rem; }
-}
-
-@media (max-width: 768px) {
-    .companies-inner {
-        justify-content: center; /* Drops back to a centered cluster on mobile */
-        gap: 3.5rem;
-    }
-    .company-logo img[alt="IBM"] { height: 30px; }
-    .company-logo img[alt="Harvard T.H. Chan"] { height: 22px; }
-    .company-logo img[alt="LearningMate"] { height: 24px; }
-    .company-logo img[alt="ideaForge"] { height: 65px; }
-}
+.company-logo img[alt="IBM"] { height: 42px; }
+.company-logo img[alt="Harvard T.H. Chan"] { height: 32px; }
+.company-logo img[alt="LearningMate"] { height: 36px; }
+.company-logo img[alt="ideaForge"] { height: 85px; }
 
 /* =========================================
    PROJECTS
@@ -246,8 +254,7 @@ a { color: inherit; text-decoration: none; cursor: none; }
 .work-list { display: flex; flex-direction: column; border-right: 1px solid var(--border-color); }
 .work-row {
     display: grid; grid-template-columns: 60px 2fr 1fr 40px; align-items: center;
-    padding: 2.5rem 4rem; border-bottom: 1px solid var(--border-color);
-    transition: background 0.3s ease; color: var(--charcoal);
+    padding: 2.5rem 4rem; border-bottom: 1px solid var(--border-color); transition: background 0.3s ease; color: var(--charcoal);
 }
 .work-row:last-child { border-bottom: none; }
 .row-num { font-weight: 600; opacity: 0.5; }
@@ -255,22 +262,13 @@ a { color: inherit; text-decoration: none; cursor: none; }
 .row-category { font-size: 1rem; font-weight: 500; opacity: 0.6; }
 .row-arrow { font-size: 1.5rem; opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; color: var(--electric-blue); }
 
-.work-row:hover { background: rgba(0, 68, 255, 0.03); }
+.work-row:hover { background: rgba(0, 85, 255, 0.04); }
 .work-row:hover .row-arrow { opacity: 1; transform: translateX(0); }
 .work-row:hover .row-num, .work-row:hover .row-category { opacity: 1; color: var(--electric-blue); }
 
 .work-preview { position: relative; background: var(--cream); }
-.preview-box { 
-    position: sticky; top: 120px; padding: 2rem; width: 100%; height: 600px; 
-    display: flex; align-items: center; justify-content: center; 
-}
-.preview-box img { 
-    width: 100%; height: 100%; 
-    object-fit: contain; 
-    padding: 1rem; border-radius: 16px; 
-    background: rgba(0,0,0,0.03);
-    opacity: 0; transition: opacity 0.4s ease; 
-}
+.preview-box { position: sticky; top: 120px; padding: 2rem; width: 100%; height: 600px; display: flex; align-items: center; justify-content: center; }
+.preview-box img { width: 100%; height: 100%; object-fit: contain; padding: 1rem; border-radius: 16px; background: rgba(0,0,0,0.03); opacity: 0; transition: opacity 0.4s ease; }
 
 /* =========================================
    EXPERIENCE
@@ -278,57 +276,23 @@ a { color: inherit; text-decoration: none; cursor: none; }
 .exp-header { padding: 4rem; }
 .exp-header h2 { font-family: var(--font-head); font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -0.04em; }
 
-.exp-grid { display: grid; grid-template-columns: 1.2fr 1fr; }
-.exp-timeline { border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center;}
-
+.exp-grid { display: grid; grid-template-columns: 1fr; }
+.exp-timeline { display: flex; flex-direction: column; justify-content: center;}
 .exp-row {
     display: grid; grid-template-columns: 1fr 2fr; align-items: center; gap: 2rem;
     padding: 3.5rem 4rem; border-bottom: 1px solid var(--border-color); transition: background 0.3s;
 }
-.exp-row:hover { background: rgba(0, 68, 255, 0.03); }
+.exp-row:hover { background: rgba(0, 85, 255, 0.04); }
 .exp-date { font-weight: 600; color: var(--electric-blue); }
 .exp-role { font-family: var(--font-head); font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 0.5rem;}
 .exp-company { font-size: 1.1rem; opacity: 0.7; font-weight: 500; }
-
-.exp-visual { padding: 4rem; display: flex; align-items: center; justify-content: center; }
-.exp-visual img { width: 100%; height: auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-
-/* =========================================
-   WORKSPACE PARALLAX
-   ========================================= */
-.wire-showcase { 
-    height: 70vh; 
-    width: 100%;
-    position: relative; 
-    overflow: hidden; 
-}
-.parallax-container {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-}
-.parallax-img {
-    width: 100%; 
-    height: 130%; 
-    object-fit: cover; 
-    position: absolute; 
-    top: -15%; 
-    left: 0;
-}
 
 /* =========================================
    FOOTER
    ========================================= */
 .wire-footer { background: var(--charcoal); color: var(--cream); }
 .footer-top { padding: 8rem 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: flex-start; }
-.footer-title { 
-    font-family: var(--font-head); 
-    font-size: clamp(3rem, 5vw, 4.5rem); 
-    font-weight: 800; 
-    letter-spacing: -0.03em; 
-    margin: 0 0 1.5rem 0; 
-    max-width: 25ch; 
-    line-height: 1.1; 
-}
+.footer-title { font-family: var(--font-head); font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 1.5rem 0; max-width: 25ch; line-height: 1.1; }
 .footer-subtitle { font-family: var(--font-body); font-size: 1.2rem; color: var(--electric-blue); margin-bottom: 3rem; font-weight: 500; }
 .footer-bottom { display: flex; justify-content: space-between; padding: 2rem 4rem; font-size: 1rem; opacity: 0.7; }
 .socials { display: flex; gap: 2rem; font-weight: 500;}
@@ -338,28 +302,38 @@ a { color: inherit; text-decoration: none; cursor: none; }
    RESPONSIVE
    ========================================= */
 @media (max-width: 1024px) {
+    .hero-inner { padding: 0 2rem; }
+    .hero-content { width: 100%; max-width: 100%; z-index: 10;}
+    .layer-woman-wrap { right: 5%; }
+    .layer-bg-wrap { opacity: 0.3; width: 100%; top: 15%; right: 0; } /* Fade BG on tablets to read text */
+    
+    .wire-companies { padding: 4rem 2rem; }
     .about-grid { grid-template-columns: 1fr; gap: 4rem; }
     .wire-about { padding: 5rem 2rem; }
-    .about-visual { position: static; }
     .work-container { grid-template-columns: 1fr; }
     .work-list { border-right: none; border-bottom: 1px solid var(--border-color); }
     .work-preview { display: none; }
-    .exp-grid { grid-template-columns: 1fr; }
-    .exp-timeline { border-right: none; border-bottom: 1px solid var(--border-color); }
 }
 
 @media (max-width: 768px) {
     html { cursor: auto; }
     .custom-cursor { display: none; }
-    .t-letter.outline { -webkit-text-stroke: 1.5px var(--electric-blue); }
-    .wire-nav { grid-template-columns: 1fr 1fr; padding: 1rem; }
+    .wire-nav { padding: 1rem; }
     .nav-links { display: none; }
+    
+    .layer-desk-wrap { height: 35vh; }
+    .layer-woman-wrap { height: 50vh; bottom: 10vh; right: 0; }
+    
+    .companies-inner { justify-content: center; gap: 3.5rem; }
+    .company-logo img[alt="IBM"] { height: 30px; }
+    .company-logo img[alt="Harvard T.H. Chan"] { height: 22px; }
+    .company-logo img[alt="LearningMate"] { height: 24px; }
+    .company-logo img[alt="ideaForge"] { height: 65px; }
+
     .work-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem; }
     .row-num, .row-arrow { display: none; }
     .exp-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem; }
     .exp-role { font-size: 1.5rem; }
-    .wire-showcase { height: 40vh; }
-    .parallax-img { height: 100%; top: 0; }
     .footer-top { padding: 4rem 2rem; }
     .footer-bottom { flex-direction: column; gap: 2rem; padding: 2rem; }
 }
