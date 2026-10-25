@@ -1,10 +1,13 @@
 :root {
-    --cream: #FDFBF7; 
-    --charcoal: #111111; 
+    --cream: #F3F2EE; 
+    --pure-cream: #FDFBF7;
+    --charcoal: #0D1216; 
+    --preloader-bg: #181818; 
     --electric-blue: #0044FF; 
-    --border-color: rgba(17, 17, 17, 0.15); 
+    --soft-blue: #EBF0FF;
+    --grey-pill: #E5E4DF;
+    --border-color: rgba(13, 18, 22, 0.14); 
     
-    /* Removed Bricolage. Using Inter for a razor-sharp, premium look */
     --font-head: 'Inter', sans-serif;
     --font-body: 'Inter', sans-serif;
 }
@@ -17,283 +20,688 @@ body {
     margin: 0; padding: 0;
     font-family: var(--font-body);
     color: var(--charcoal);
-    background-color: var(--cream);
-    background-image: radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
+    background-color: var(--pure-cream);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
 }
 
+body.is-loading { overflow: hidden; }
+
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; text-decoration: none; cursor: none; }
 
 /* =========================================
-   CUSTOM CURSOR
-   ========================================= */
-.custom-cursor {
-    position: fixed; top: 0; left: 0;
-    width: 12px; height: 12px;
-    background: var(--electric-blue); border-radius: 50%;
-    pointer-events: none; z-index: 10000;
-    transform: translate(-50%, -50%);
-    transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
-}
-.custom-cursor.hovered { width: 40px; height: 40px; background: rgba(0, 68, 255, 0.2); border: 1px solid var(--electric-blue); }
-
-/* =========================================
-   PRELOADER
+   1. MARTIN TAYLOR (KLEAR) PRELOADER
    ========================================= */
 #preloader {
-    position: fixed; inset: 0; background: var(--cream); z-index: 9999;
-    display: flex; justify-content: center; align-items: center;
-    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+    position: fixed; inset: 0;
+    background-color: var(--preloader-bg);
+    z-index: 9999; display: flex; justify-content: center; align-items: center;
+    will-change: transform;
 }
-.loader-content p { font-family: var(--font-body); font-weight: 600; font-size: 1.2rem; margin-top: 1rem; color: var(--electric-blue); }
-.loader-line { width: 0%; height: 3px; background: var(--electric-blue); transition: width 0.2s ease-out; }
+.preloader-name {
+    font-family: var(--font-head); font-size: 1.35rem; font-weight: 400;
+    color: #E2E2E2; letter-spacing: -0.01em; will-change: opacity, transform;
+}
+
+/* =========================================
+   2. CONSTANT SPACING COLUMNS & GRID LINES (HERO ONLY)
+   ========================================= */
+.klear-bg-columns {
+    position: absolute; inset: 0; max-width: 1720px; margin: 0 auto;
+    padding: 0 3rem; display: grid; grid-template-columns: repeat(8, 1fr);
+    pointer-events: none; z-index: 0;
+}
+.k-col { border-left: 1px solid rgba(13, 18, 22, 0.045); height: 100%; }
+.k-col:last-child { border-right: 1px solid rgba(13, 18, 22, 0.045); }
+
+.klear-grid-lines { position: absolute; inset: 0; pointer-events: none; z-index: 5; }
+.k-line { position: absolute; background: rgba(13, 18, 22, 0.16); }
+.k-line-top { top: 68px; left: 0; width: 0%; height: 1px; }
+.k-line-left { top: 0; left: 4rem; width: 1px; height: 0%; }
+.k-line-right { top: 0; right: 4rem; width: 1px; height: 0%; }
+
+main, header, footer { position: relative; z-index: 2; }
+
+/* =========================================
+   3. ANIMATED LEFT-TO-RIGHT LINES
+   ========================================= */
+.klear-draw-line {
+    width: 100%; height: 1.5px; background-color: var(--charcoal);
+    transform: scaleX(0); transform-origin: left center; will-change: transform;
+}
+.scroll-draw-line { background-color: rgba(13, 18, 22, 0.18); height: 1px; }
+
+/* =========================================
+   CUSTOM CURSOR & TOP PROGRESS BAR
+   ========================================= */
+.custom-cursor {
+    position: fixed; top: 0; left: 0; width: 12px; height: 12px;
+    background: var(--electric-blue); border-radius: 50%; pointer-events: none; z-index: 10000;
+    transform: translate(-50%, -50%); transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+}
+.custom-cursor.hovered { width: 44px; height: 44px; background: rgba(0, 68, 255, 0.15); border: 1.5px solid var(--electric-blue); }
+
 .scroll-progress { position: fixed; top: 0; left: 0; height: 4px; width: 0%; background: var(--electric-blue); z-index: 9998; }
+
+/* =========================================
+   4. KLEAR HEADER
+   ========================================= */
+.klear-header {
+    position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+    background: rgba(253, 251, 247, 0.94); backdrop-filter: blur(12px); padding: 0 4rem;
+}
+.klear-nav-inner {
+    max-width: 1600px; margin: 0 auto; height: 68px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.nav-brand { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+.nav-links { display: flex; gap: 2.5rem; }
+.nav-links a { font-size: 0.95rem; font-weight: 500; color: var(--charcoal); transition: color 0.3s; }
+.nav-links a:hover { color: var(--electric-blue); }
+.nav-right { display: flex; align-items: center; gap: 1.8rem; }
+.nav-location { font-size: 0.92rem; font-weight: 500; opacity: 0.85; }
+
+/* =========================================
+   5. UNIFIED LANDING PAGE (2.5D + Klear + Cohesion)
+   ========================================= */
+.razor-hero { 
+    position: relative; width: 100%; height: 100vh; min-height: 760px;
+    display: flex; align-items: center; overflow: hidden; 
+    background-color: var(--pure-cream);
+    background-image: radial-gradient(rgba(13, 18, 22, 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+}
+.razor-hero .hero-bottom-line { position: absolute; bottom: 0; left: 0; z-index: 15; }
+
+/* 2.5D LAYER SIZES & POSITIONS (LOCKED FROM YOUR STYLE_3.CSS) */
+.hero-parallax { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+.p-layer-wrapper { position: absolute; will-change: transform, opacity; opacity: 0; }
+.p-layer { width: 100%; height: 100%; object-fit: contain; will-change: transform; }
+
+.layer-bg-wrap { top: 5%; right: -2%; width: 65%; height: 85%; z-index: 1; }
+.layer-woman-wrap { bottom: -15%; right: 8%; height: 80%; width: 50%; z-index: 3; }
+.layer-desk-wrap { bottom: -15%; left: 10%; width: 100%; height: 60vh; z-index: 4; }
+.layer-desk-wrap .p-layer { object-position: bottom center; }
+
+/* Hero Left Content */
+.hero-inner {
+    position: relative; z-index: 10; width: 100%; max-width: 1600px; 
+    margin: 0 auto; padding: 0 4rem; pointer-events: none; 
+}
+.hero-content {
+    width: 50%; max-width: 620px; pointer-events: auto; 
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem;
+    transform-style: preserve-3d; will-change: transform;
+}
+.eyebrow-mask { overflow: hidden; }
+.hero-eyebrow {
+    font-family: var(--font-body); font-size: 1rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric-blue); margin: 0;
+}
+.scroll-track-right, .cohesion-block { will-change: transform; }
+
+.razor-title {
+    font-family: var(--font-head); 
+    font-size: clamp(3.2rem, 5.8vw, 6.2rem); 
+    font-weight: 800; line-height: 1.04; letter-spacing: -0.04em; margin: 0; 
+    display: flex; flex-direction: column;
+}
+.klear-asterisk { font-weight: 300; color: var(--electric-blue); margin-right: 0.08em; }
+.title-line { display: block; overflow: hidden; padding-bottom: 0.22em; margin-bottom: -0.22em; }
+.hero-title-slide { display: block; will-change: transform, opacity; }
+
+/* COHESION CYCLING TEXT */
+.cohesion-block {
+    display: flex; flex-direction: column; gap: 0.45rem;
+    margin-top: 0.25rem; width: 100%;
+}
+.cohesion-sublabel {
+    font-size: 0.92rem; font-weight: 500; color: rgba(13, 18, 22, 0.65);
+}
+.cohesion-rotator-mask {
+    position: relative;
+    width: 100%;
+    font-size: clamp(1.45rem, 2.4vw, 2.25rem);
+    height: 1.55em;
+    overflow: hidden;
+}
+.cohesion-item {
+    position: absolute;
+    top: 0; left: 0;
+    font-family: var(--font-head);
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+    color: var(--charcoal);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(115%);
+    will-change: transform, opacity;
+}
+
+.hero-buttons { margin-top: 0.5rem; }
+
+.hero-scroll-widget {
+    position: absolute; bottom: 38px; left: 4rem; z-index: 10;
+    display: flex; align-items: center; gap: 15px; pointer-events: none;
+}
+.mouse-icon { width: 24px; height: 38px; border: 2px solid var(--charcoal); border-radius: 20px; display: flex; justify-content: center; padding-top: 6px; }
+.mouse-wheel { width: 4px; height: 8px; background: var(--charcoal); border-radius: 2px; animation: scrollWheel 2s infinite ease-in-out; }
+.scroll-text { font-family: var(--font-body); font-size: 0.85rem; font-weight: 500; line-height: 1.3; }
+@keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(12px); opacity: 0; } }
 
 /* =========================================
    UI BUTTONS & UTILITIES
    ========================================= */
-.border-bottom { border-bottom: 1px solid var(--border-color); }
+.border-right { border-right: 1px solid var(--border-color); }
 .text-blue { color: var(--electric-blue); }
+
+.section-dot-label {
+    display: inline-block; font-size: 0.85rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--electric-blue); margin-bottom: 0.5rem;
+}
 
 .btn-blue {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.8rem 1.8rem; font-size: 1rem; font-weight: 600;
-    background: var(--electric-blue); color: var(--cream);
-    border-radius: 50px; transition: background 0.3s ease;
+    padding: 0.65rem 1.4rem; font-size: 0.9rem; font-weight: 600;
+    background: var(--electric-blue); color: var(--pure-cream); border-radius: 50px; transition: background 0.3s ease;
 }
 .btn-blue.large { padding: 1.2rem 2.5rem; font-size: 1.2rem; }
 
-/* The "See my work" Figma Button */
 .btn-outline {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.8rem 1.8rem; font-size: 1rem; font-weight: 600;
-    background: var(--cream); color: var(--charcoal);
-    border: 1px solid var(--charcoal); border-radius: 50px; 
-    transition: all 0.3s ease;
+    padding: 0.8rem 1.8rem; font-size: 0.95rem; font-weight: 600;
+    background: var(--pure-cream); color: var(--charcoal);
+    border: 1.5px solid var(--charcoal); border-radius: 50px; transition: all 0.3s ease;
 }
-.btn-outline:hover { background: var(--charcoal); color: var(--cream); }
+.btn-outline:hover { background: var(--electric-blue); border-color: var(--electric-blue); color: var(--pure-cream); }
 
 /* =========================================
-   NAVIGATION
+   6. ARCHITECTURAL ABOUT SECTION
    ========================================= */
-.wire-nav {
-    position: fixed; top: 0; width: 100%;
-    display: flex; justify-content: space-between; align-items: center; 
-    z-index: 100;
-    background: rgba(253, 251, 247, 0.95);
-    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color);
-}
-.nav-brand { padding: 1.2rem 2.5rem; font-family: var(--font-head); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.05em;}
-.nav-links { display: flex; gap: 3rem; }
-.nav-links a { font-size: 0.95rem; font-weight: 600; color: var(--charcoal); transition: color 0.3s; }
-.nav-links a:hover { color: var(--electric-blue); }
-.nav-cta { padding: 0.8rem 2.5rem; }
-
-/* =========================================
-   HERO (Immersive Layout)
-   ========================================= */
-.razor-hero { 
+.wire-about {
+    padding: 8rem 4rem;
+    background: #EEF2F9;
     position: relative;
+}
+.wire-about .klear-draw-line { position: absolute; bottom: 0; left: 0; }
+
+.about-editorial-grid {
+    max-width: 1520px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 5rem; align-items: start;
+}
+.section-index {
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--electric-blue); display: block; margin-bottom: 1rem;
+}
+.about-side-title {
+    font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 800;
+    letter-spacing: -0.035em; line-height: 1.1; margin: 0 0 2.5rem 0;
+}
+.pillars-mini-stack {
+    display: flex; flex-direction: column; gap: 0.85rem;
+    border-top: 1px solid var(--border-color); padding-top: 1.8rem;
+}
+.mini-pillar {
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 1.05rem; font-weight: 600; color: var(--charcoal);
+}
+.mp-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot-blue { background: var(--electric-blue); }
+.dot-black { background: var(--charcoal); }
+.dot-grey { background: #8C939E; }
+
+.about-right-col { display: flex; flex-direction: column; gap: 1.8rem; }
+.about-paragraph {
+    font-size: clamp(1.25rem, 1.85vw, 1.65rem); font-weight: 500;
+    line-height: 1.65; letter-spacing: -0.015em; margin: 0; color: var(--charcoal);
+}
+.about-paragraph.highlight-p {
+    font-weight: 700; font-size: clamp(1.4rem, 2.1vw, 1.9rem);
+}
+
+.color-chip {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    padding: 0.12rem 0.8rem; border-radius: 50px;
+    font-size: 0.82em; font-weight: 600; vertical-align: baseline; transition: transform 0.25s ease;
+}
+.color-chip:hover { transform: translateY(-2px); }
+.chip-icon { font-size: 0.85em; }
+.chip-blue { background: var(--electric-blue); color: var(--pure-cream); }
+.chip-black { background: var(--charcoal); color: var(--pure-cream); }
+.chip-grey { background: var(--grey-pill); color: var(--charcoal); border: 1px solid var(--border-color); }
+.chip-cream { background: var(--pure-cream); color: var(--charcoal); border: 1px solid var(--charcoal); }
+
+.color-orb {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.55em; height: 1.55em; border-radius: 50%;
+    font-size: 0.8em; vertical-align: middle; transform: translateY(-2px);
+}
+.orb-cream { background: var(--pure-cream); border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.orb-blue { background: var(--soft-blue); border: 1px solid rgba(0,68,255,0.25); }
+
+.internship-card {
+    margin-top: 0.8rem; padding: 1rem 1.6rem;
+    background: var(--pure-cream); border: 1px solid var(--border-color);
+    border-radius: 16px; display: inline-flex; align-items: center;
+    justify-content: space-between; gap: 2rem; max-width: max-content;
+    box-shadow: 0 12px 30px rgba(0, 68, 255, 0.05);
+}
+.intern-left { display: flex; align-items: center; gap: 0.85rem; font-size: 1rem; font-weight: 500; }
+.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: #00D85A; box-shadow: 0 0 0 4px rgba(0, 216, 90, 0.2); }
+.intern-logo { height: 42px; width: auto; object-fit: contain; padding-left: 1.2rem; border-left: 1px solid var(--border-color); }
+
+/* =========================================
+   7. MOVING COMPANIES LOGO STRIP (ALL 8 IMAGE LOGOS)
+   ========================================= */
+.wire-companies { padding: 3rem 0 0 0; overflow: hidden; background: var(--pure-cream); }
+.companies-marquee { width: 100%; overflow: hidden; display: flex; padding-bottom: 3rem; }
+.companies-track { display: flex; align-items: center; gap: 4.5rem; width: max-content; animation: companyScroll 32s linear infinite; }
+.companies-track:hover { animation-play-state: paused; }
+@keyframes companyScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.logo-divider { color: var(--electric-blue); opacity: 0.35; font-size: 1.2rem; }
+.company-logo { display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+.company-logo img {
+    height: 38px; width: auto; object-fit: contain;
+    filter: grayscale(100%) opacity(0.75); transition: all 0.3s ease;
+}
+.company-logo:hover img { filter: grayscale(0%) opacity(1); transform: scale(1.06); }
+
+.company-logo img[alt="IBM"] { height: 40px; }
+.company-logo img[alt="Harvard T.H. Chan"] { height: 34px; }
+.company-logo img[alt="LearningMate"] { height: 36px; }
+.company-logo img[alt="ideaForge"] { height: 74px; }
+.company-logo img[alt="Microsoft"] { height: 34px; }
+.company-logo img[alt="AMN Healthcare"] { height: 38px; }
+.company-logo img[alt="Caption Health"] { height: 34px; }
+.company-logo img[alt="Fragomen"] { height: 32px; }
+
+/* =========================================
+   8. EXACT RAZORPAY SPRINT '26 OS WINDOW SHOWCASE
+   ========================================= */
+.razor-projects-section {
+    background: var(--pure-cream);
+    position: relative;
+}
+
+/* Sticky Top Bar with Automatic ScrollSpy Blue Fill */
+.sprint-top-bar {
+    position: sticky;
+    top: 68px;
+    z-index: 45;
+    display: grid;
+    grid-template-columns: 1.2fr repeat(6, 1fr);
+    background: #0D1216;
+    color: var(--pure-cream);
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+}
+.sprint-brand-cell, .sprint-tab {
+    padding: 1.05rem 1.1rem;
+    border-right: 1px solid rgba(255,255,255,0.14);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.sprint-tab:hover, .sprint-tab.active {
+    background-color: var(--electric-blue);
+    color: #FFFFFF;
+}
+
+.sprint-projects-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Full-Bleed Razorpay Project Stage:
+   Inactive state is sleek dark charcoal; Active / Scrolled-in state fills with Razorpay Electric Blue! */
+.sprint-project-stage {
     width: 100%;
-    height: 100vh; /* Fills screen */
-    min-height: 750px;
-    display: flex; 
-    align-items: center; 
-    overflow: hidden; 
-    border-bottom: 1px solid var(--border-color);
+    min-height: 86vh;
+    padding: 5.5rem 4rem;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 4.5rem;
+    align-items: start;
+    background-color: #0D1216;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 36px 36px;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    transition: background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* =========================================
-   2.5D LAYER SIZES & POSITIONS (TWEAK THESE)
-   ========================================= */
-.hero-parallax {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 1; /* Sits behind text overall */
-    pointer-events: none; 
-}
-.p-layer-wrapper { position: absolute; will-change: transform; }
-.p-layer { width: 100%; height: 100%; object-fit: contain; }
-
-/* LAYER 1: Moodboard Grid */
-.layer-bg-wrap {
-    top: 5%; 
-    right: -2%; 
-    width: 65%; /* Restricts it to the right side */
-    height: 85%;
-    z-index: 1;
+/* AUTOMATIC BLUE FILL when scrolled into view (or hovered) */
+.sprint-project-stage.active-stage,
+.sprint-project-stage:hover {
+    background-color: var(--electric-blue);
 }
 
-/* LAYER 2: Woman */
-.layer-woman-wrap {
-    bottom: -15%; 
-    right: 8%; 
-    height: 80%; /* Keeps her realistic height */
-    width: 50%;
-    z-index: 3; /* Places her strictly behind the desk but above grid */
+/* Left Column (Matches Razorpay "01/8 Agentic Platform") */
+.sprint-left-meta {
+    position: sticky;
+    top: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding-top: 0.5rem;
 }
-
-/* LAYER 3: Desk & Plant */
-.layer-desk-wrap {
-    bottom: -15%; /* Anchored cleanly to the bottom edge */
-    left: 10%; 
-    width: 100%; /* Spans the whole bottom */
-    height: 60vh; /* PERFECT FIX: Limits height so the plant won't cover text! */
-    z-index: 4;
+.sprint-num {
+    font-family: monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    opacity: 0.85;
 }
-.layer-desk-wrap .p-layer { object-position: bottom center; }
-
-/* =========================================
-   HERO TEXT CONTENT (Left Column)
-   ========================================= */
-.hero-inner {
-    position: relative;
-    z-index: 10; /* Permanent foreground, NEVER blocked */
-    width: 100%; 
-    max-width: 1600px; 
-    margin: 0 auto; 
-    padding: 0 4rem; 
-    pointer-events: none; 
-}
-
-/* ADDED: transform-style to support the new 3D mouse tilt */
-.hero-content {
-    width: 50%; 
-    max-width: 600px; /* Reduced from 750px to prevent hitting the plant */
-    pointer-events: auto; 
-    display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem;
-    transform-style: preserve-3d; 
-    will-change: transform;
-}
-
-.hero-eyebrow {
-    font-family: var(--font-body); 
-    font-size: 1.1rem; 
-    font-weight: 500; 
-    color: var(--charcoal); 
+.sprint-side-heading {
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     margin: 0;
 }
-
-.razor-title {
-    font-family: var(--font-head); 
-    font-size: clamp(2.5rem, 5vw, 5.5rem); /* Scaled down perfectly */
-    font-weight: 800; 
-    line-height: 1.05; /* Slightly tighter line height */
-    letter-spacing: -0.03em; 
-    margin: 0; 
-    display: flex; flex-direction: column;
+.sprint-side-desc {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    opacity: 0.82;
+    margin: 0;
+}
+.sprint-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.6rem;
+}
+.s-pill {
+    padding: 0.4rem 0.95rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+.sprint-project-stage.active-stage .s-pill:first-child,
+.sprint-project-stage:hover .s-pill:first-child {
+    background: #FFFFFF;
+    color: var(--electric-blue);
+    border-color: #FFFFFF;
 }
 
-.title-line { 
-    display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em;
+/* Right Column: Razorpay Wireframe OS Window + Bottom Caption */
+.sprint-right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    max-width: 1120px;
+    width: 100%;
 }
-.fade-up-text { display: block; will-change: transform, opacity; }
-.hero-buttons { margin-top: 1rem; }
+
+.sprint-mac-window {
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.22);
+}
+
+/* Top OS Bar with 3 Solid White Dots */
+.mac-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.4rem;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.55);
+}
+.mac-dots {
+    display: flex;
+    gap: 7px;
+}
+.mac-dots span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #FFFFFF;
+}
+
+.mac-body {
+    padding: 2.2rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+}
+
+/* 2-Column Header Inside Window (Left Big Title | Right ✳ Note) */
+.mac-header-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: end;
+}
+.mac-main-title {
+    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin: 0;
+}
+.mac-sub-note {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+.mac-asterisk {
+    font-size: 1.2rem;
+    font-weight: 700;
+    opacity: 0.9;
+}
+.mac-sub-note p {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.4;
+    opacity: 0.95;
+}
+
+/* Dark Inner Canvas (#05070B) + Floating Interactive Cards (Like Razorpay PAN Card / Pill) */
+.mac-stage {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    background: #05070B;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+.mac-move-img {
+    max-width: 88%;
+    max-height: 92%;
+    object-fit: contain;
+    border-radius: 8px;
+    will-change: transform;
+    transition: transform 0.25s ease-out;
+}
+
+/* Floating Card & Pill Overlays (Matching Razorpay Screenshot) */
+.mac-floating-card {
+    position: absolute;
+    bottom: 26px;
+    left: 28px;
+    background: #FFFFFF;
+    color: #0D1216;
+    padding: 0.85rem 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 16px 32px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    transform: rotate(-4deg);
+    pointer-events: none;
+    transition: transform 0.35s ease;
+}
+.fc-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--electric-blue);
+}
+.mac-floating-card strong {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.mac-floating-pill {
+    position: absolute;
+    bottom: 18px;
+    left: 200px;
+    background: #0D1216;
+    color: #FFFFFF;
+    border: 1.5px solid rgba(255,255,255,0.25);
+    padding: 0.55rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transform: rotate(-3deg);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+    pointer-events: none;
+    transition: transform 0.35s ease;
+}
+
+.mac-count-orb {
+    position: absolute;
+    bottom: 22px;
+    right: 28px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #E5E7EB;
+    color: #0D1216;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    pointer-events: none;
+}
+
+.sprint-mac-window:hover .mac-floating-card {
+    transform: rotate(-1deg) translateY(-6px) scale(1.03);
+}
+.sprint-mac-window:hover .mac-floating-pill {
+    transform: rotate(0deg) translate(6px, -4px);
+}
+
+/* Bottom-Right Action Prompt Bar (Matches "Ask RAY anything. [ -> ]") */
+.mac-bottom-row {
+    display: flex;
+    justify-content: flex-end;
+}
+.mac-action-bar {
+    width: 55%;
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.6rem 0.55rem 1.25rem;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+.mac-action-bar:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: #FFFFFF;
+}
+.mac-arrow-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 7px;
+    background: #05070B;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+.mac-action-bar:hover .mac-arrow-box {
+    background: #FFFFFF;
+    color: var(--electric-blue);
+    transform: translateX(3px);
+}
+
+.sprint-window-caption {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    padding-left: 0.25rem;
+}
 
 /* =========================================
-   TICKER
+   9. SKILLS, EXPERIENCE, EXPOSURE, EDUCATION
    ========================================= */
-.wire-ticker {
-    background: var(--electric-blue); color: var(--cream);
-    padding: 1.2rem 0; overflow: hidden; border-bottom: 1px solid var(--border-color);
-    white-space: nowrap; display: flex; align-items: center;
+.section-split-grid { display: grid; grid-template-columns: 1fr 2fr; }
+.split-left { padding: 4rem; display: flex; flex-direction: column; justify-content: flex-start; }
+.split-left h2 { font-family: var(--font-head); font-size: 3.2rem; margin: 0; font-weight: 800; letter-spacing: -0.04em; }
+.split-right { padding: 4rem; }
+
+.skills-pill-container { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+.skill-tag {
+    padding: 0.85rem 1.6rem; border-radius: 50px; border: 1px solid var(--border-color); background: var(--pure-cream);
+    font-size: 1.05rem; font-weight: 600; transition: all 0.3s ease;
 }
-.ticker-content {
-    display: flex; gap: 2.5rem; align-items: center; font-family: var(--font-body); font-weight: 500;
-    font-size: 1.2rem; animation: marquee 25s linear infinite;
+.skill-tag:hover { background: var(--electric-blue); color: var(--pure-cream); border-color: var(--electric-blue); transform: translateY(-3px); }
+
+.exposure-list { padding: 0; display: flex; flex-direction: column; }
+.exposure-row {
+    display: grid; grid-template-columns: 60px 1fr; align-items: baseline;
+    padding: 2.5rem 4rem; border-bottom: 1px solid var(--border-color); transition: background 0.3s ease;
 }
-.dot { width: 6px; height: 6px; background: var(--cream); border-radius: 50%; display: inline-block; }
-@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.exposure-row:hover { background: var(--soft-blue); }
+.exp-num { font-weight: 700; color: var(--electric-blue); font-size: 0.95rem; }
+.exposure-row p { margin: 0; font-size: 1.25rem; line-height: 1.5; color: var(--charcoal); }
+.exposure-row strong { color: var(--electric-blue); font-weight: 700; }
 
-/* =========================================
-   ABOUT 
-   ========================================= */
-.wire-about { padding: 8rem 4rem; }
-.about-grid { display: grid; grid-template-columns: 1fr; max-width: 1000px; margin: 0 auto; align-items: start; }
-.about-label { font-family: var(--font-body); font-weight: 600; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--electric-blue); margin-bottom: 2rem; text-align: center;}
-
-.about-copy { display: flex; flex-direction: column; gap: 1.5rem; align-items: center; text-align: center;}
-.about-copy p { 
-    font-family: var(--font-body); font-size: clamp(1.2rem, 2vw, 1.8rem); 
-    font-weight: 400; line-height: 1.6; margin: 0; color: var(--charcoal); opacity: 0.9;
-}
-.about-copy .text-blue { color: var(--electric-blue); font-weight: 600; }
-.internship-tag { 
-    font-size: 1rem !important; font-weight: 600 !important; margin-top: 1.5rem !important; padding: 1rem 1.5rem; 
-    border: 1px solid var(--border-color); border-radius: 8px; display: inline-block; width: max-content; background: var(--cream);
-}
-
-/* =========================================
-   COMPANIES LOGO STRIP
-   ========================================= */
-.wire-companies { padding: 4rem; }
-.companies-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 3rem; max-width: 1400px; margin: 0 auto; }
-.company-logo { display: flex; justify-content: center; align-items: center; }
-.company-logo img { object-fit: contain; filter: grayscale(100%) opacity(0.5) contrast(1.2); transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease; }
-.company-logo:hover img { filter: grayscale(0%) opacity(1) contrast(1); transform: scale(1.05); }
-
-.company-logo img[alt="IBM"] { height: 42px; }
-.company-logo img[alt="Harvard T.H. Chan"] { height: 32px; }
-.company-logo img[alt="LearningMate"] { height: 36px; }
-.company-logo img[alt="ideaForge"] { height: 85px; }
-
-/* =========================================
-   PROJECTS
-   ========================================= */
-.wire-work { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--border-color); }
-.work-header { padding: 4rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-end; }
-.work-header h2 { font-family: var(--font-head); font-size: 4rem; margin: 0; font-weight: 800; letter-spacing: -0.04em; }
-.work-header p { margin: 0; font-size: 1.2rem; font-weight: 500; color: var(--electric-blue); }
-
-.work-container { display: grid; grid-template-columns: 2fr 1fr; }
-.work-list { display: flex; flex-direction: column; border-right: 1px solid var(--border-color); }
-.work-row {
-    display: grid; grid-template-columns: 60px 2fr 1fr 40px; align-items: center;
-    padding: 2.5rem 4rem; border-bottom: 1px solid var(--border-color); transition: background 0.3s ease; color: var(--charcoal);
-}
-.work-row:last-child { border-bottom: none; }
-.row-num { font-weight: 600; opacity: 0.5; }
-.row-title { font-family: var(--font-head); font-size: 2.5rem; font-weight: 600; letter-spacing: -0.03em; }
-.row-category { font-size: 1rem; font-weight: 500; opacity: 0.6; }
-.row-arrow { font-size: 1.5rem; opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; color: var(--electric-blue); }
-
-.work-row:hover { background: rgba(0, 85, 255, 0.04); }
-.work-row:hover .row-arrow { opacity: 1; transform: translateX(0); }
-.work-row:hover .row-num, .work-row:hover .row-category { opacity: 1; color: var(--electric-blue); }
-
-.work-preview { position: relative; background: var(--cream); }
-.preview-box { position: sticky; top: 120px; padding: 2rem; width: 100%; height: 600px; display: flex; align-items: center; justify-content: center; }
-.preview-box img { width: 100%; height: 100%; object-fit: contain; padding: 1rem; border-radius: 16px; background: rgba(0,0,0,0.03); opacity: 0; transition: opacity 0.4s ease; }
-
-/* =========================================
-   EXPERIENCE
-   ========================================= */
 .exp-header { padding: 4rem; }
 .exp-header h2 { font-family: var(--font-head); font-size: 3.5rem; margin: 0; font-weight: 800; letter-spacing: -0.04em; }
-
-.exp-grid { display: grid; grid-template-columns: 1fr; }
-.exp-timeline { display: flex; flex-direction: column; justify-content: center;}
+.exp-timeline { display: flex; flex-direction: column; }
 .exp-row {
-    display: grid; grid-template-columns: 1fr 2fr; align-items: center; gap: 2rem;
-    padding: 3.5rem 4rem; border-bottom: 1px solid var(--border-color); transition: background 0.3s;
+    display: grid; grid-template-columns: 1.2fr 1.5fr 0.6fr; align-items: center; gap: 2rem;
+    padding: 2.6rem 4rem; border-bottom: 1px solid var(--border-color); transition: background 0.3s;
 }
-.exp-row:hover { background: rgba(0, 85, 255, 0.04); }
-.exp-date { font-weight: 600; color: var(--electric-blue); }
-.exp-role { font-family: var(--font-head); font-size: 1.8rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 0.5rem;}
-.exp-company { font-size: 1.1rem; opacity: 0.7; font-weight: 500; }
+.exp-row:hover { background: var(--soft-blue); }
+.exp-role { font-family: var(--font-head); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+.exp-company { font-size: 1.1rem; opacity: 0.8; font-weight: 500; }
+.exp-date { font-weight: 700; color: var(--electric-blue); font-size: 1rem; text-align: right; }
 
 /* =========================================
-   FOOTER
+   10. PHILOSOPHY QUOTE & FOOTER
    ========================================= */
-.wire-footer { background: var(--charcoal); color: var(--cream); }
+.philosophy-quote { padding: 6rem 4rem; text-align: center; background: #EEF2F9; }
+.philosophy-quote blockquote {
+    max-width: 900px; margin: 0 auto; font-size: clamp(1.3rem, 2.2vw, 1.85rem); font-weight: 600;
+    line-height: 1.55; letter-spacing: -0.02em; color: var(--charcoal);
+}
+
+.wire-footer { background: var(--charcoal); color: var(--pure-cream); }
 .footer-top { padding: 8rem 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: flex-start; }
-.footer-title { font-family: var(--font-head); font-size: clamp(3rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 1.5rem 0; max-width: 25ch; line-height: 1.1; }
-.footer-subtitle { font-family: var(--font-body); font-size: 1.2rem; color: var(--electric-blue); margin-bottom: 3rem; font-weight: 500; }
+.footer-title { font-family: var(--font-head); font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 1.5rem 0; max-width: 25ch; line-height: 1.1; }
+.footer-subtitle { font-family: var(--font-body); font-size: 1.2rem; color: #6699FF; margin-bottom: 3rem; font-weight: 500; }
 .footer-bottom { display: flex; justify-content: space-between; padding: 2rem 4rem; font-size: 1rem; opacity: 0.7; }
 .socials { display: flex; gap: 2rem; font-weight: 500;}
 .socials a:hover { color: var(--electric-blue); }
@@ -302,38 +710,27 @@ a { color: inherit; text-decoration: none; cursor: none; }
    RESPONSIVE
    ========================================= */
 @media (max-width: 1024px) {
+    .nav-links, .nav-location, .klear-bg-columns, .sprint-top-bar, .mac-floating-pill { display: none; }
     .hero-inner { padding: 0 2rem; }
     .hero-content { width: 100%; max-width: 100%; z-index: 10;}
     .layer-woman-wrap { right: 5%; }
-    .layer-bg-wrap { opacity: 0.3; width: 100%; top: 15%; right: 0; } /* Fade BG on tablets to read text */
-    
-    .wire-companies { padding: 4rem 2rem; }
-    .about-grid { grid-template-columns: 1fr; gap: 4rem; }
-    .wire-about { padding: 5rem 2rem; }
-    .work-container { grid-template-columns: 1fr; }
-    .work-list { border-right: none; border-bottom: 1px solid var(--border-color); }
-    .work-preview { display: none; }
+    .layer-bg-wrap { opacity: 0.3; width: 100%; top: 15%; right: 0; }
+    .about-editorial-grid, .sprint-project-stage, .section-split-grid, .mac-header-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .sprint-left-meta { position: static; }
+    .split-left { border-right: none; border-bottom: 1px solid var(--border-color); }
+    .mac-action-bar { width: 100%; }
 }
 
 @media (max-width: 768px) {
     html { cursor: auto; }
     .custom-cursor { display: none; }
-    .wire-nav { padding: 1rem; }
-    .nav-links { display: none; }
-    
+    .klear-header { padding: 0 1.5rem; }
     .layer-desk-wrap { height: 35vh; }
     .layer-woman-wrap { height: 50vh; bottom: 10vh; right: 0; }
-    
-    .companies-inner { justify-content: center; gap: 3.5rem; }
-    .company-logo img[alt="IBM"] { height: 30px; }
-    .company-logo img[alt="Harvard T.H. Chan"] { height: 22px; }
-    .company-logo img[alt="LearningMate"] { height: 24px; }
-    .company-logo img[alt="ideaForge"] { height: 65px; }
-
-    .work-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem; }
-    .row-num, .row-arrow { display: none; }
-    .exp-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem; }
-    .exp-role { font-size: 1.5rem; }
+    .sprint-project-stage { padding: 3rem 1.5rem; }
+    .mac-body { padding: 1.5rem; }
+    .exp-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 2rem; }
+    .exp-date { text-align: left; }
     .footer-top { padding: 4rem 2rem; }
     .footer-bottom { flex-direction: column; gap: 2rem; padding: 2rem; }
 }

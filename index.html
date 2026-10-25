@@ -3,236 +3,633 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#F8F9FA">
+<meta name="theme-color" content="#181818">
 <title>Shweta Mandwale | Strategic Designer</title>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="is-loading">
 
 <div class="custom-cursor"></div>
 
+<!-- ============ 1. KLEAR DARK-TO-LIGHT PRELOADER (Slides DOWN) ============ -->
 <div id="preloader">
-    <div class="loader-content">
-        <div class="loader-line" id="loader-bar"></div>
-        <p>Loading Experience <span id="loader-text">0%</span></p>
-    </div>
+    <div class="preloader-name" id="preloader-name">Shweta Mandwale</div>
 </div>
 
+<!-- TOP BLUE PROGRESS LINE -->
 <div class="scroll-progress" id="scroll-progress"></div>
 
-<!-- ============ NAVIGATION ============ -->
-<nav class="wire-nav">
-    <div class="nav-brand">SHWETA</div>
-    <div class="nav-links">
-        <a href="#work" class="magnetic">Work</a>
-        <a href="#about" class="magnetic">About</a>
-        <a href="#playground" class="magnetic">Playground</a>
+<!-- ============ 2. KLEAR HEADER (Line animates Left to Right) ============ -->
+<header class="klear-header">
+    <div class="klear-nav-inner">
+        <a href="#hero" class="nav-brand klear-nav-item">Shweta Mandwale</a>
+        
+        <nav class="nav-links klear-nav-item">
+            <a href="#about" class="magnetic">About</a>
+            <a href="#work" class="magnetic">Work</a>
+            <a href="#skills" class="magnetic">Skills</a>
+            <a href="#experience" class="magnetic">Experience</a>
+        </nav>
+        
+        <div class="nav-right klear-nav-item">
+            <span class="nav-location">Pune ✳ <span id="live-time">10:15</span></span>
+            <a href="assets/Shweta_Mandwale_Resume.pdf" target="_blank" rel="noopener" class="btn-blue magnetic">Let's connect ↗</a>
+        </div>
     </div>
-    <div class="nav-cta">
-        <a href="assets/Shweta_Mandwale_Resume.pdf" target="_blank" rel="noopener" class="btn-blue magnetic">Let's connect ↗</a>
-    </div>
-</nav>
+    <div class="klear-draw-line header-draw-line"></div>
+</header>
 
 <main>
 
-<!-- ============ HERO (100vh Immersive 2.5D Landing Page) ============ -->
+<!-- ============ 3. UNIFIED LANDING PAGE (Image Loads First -> Grid -> Hello I'm Shweta + Cohesion Rotator) ============ -->
 <section class="razor-hero interactive-container" id="hero">
     
-    <!-- 2.5D Visual Scene (Images stay strictly in the background) -->
+    <!-- Constant Spacing Vertical Columns (Hero Only - Klear Style) -->
+    <div class="klear-bg-columns" aria-hidden="true">
+        <div class="k-col"></div><div class="k-col"></div><div class="k-col"></div><div class="k-col"></div>
+        <div class="k-col"></div><div class="k-col"></div><div class="k-col"></div><div class="k-col"></div>
+    </div>
+
+    <!-- One-by-One Animated Grid Lines (Top -> Right -> Left) -->
+    <div class="klear-grid-lines" aria-hidden="true">
+        <div class="k-line k-line-top"></div>
+        <div class="k-line k-line-right"></div>
+        <div class="k-line k-line-left"></div>
+    </div>
+
+    <!-- 2.5D Visual Scene (Locked to your exact coordinates) -->
     <div class="hero-parallax">
         <!-- Layer 1: Background Moodboard -->
         <div class="p-layer-wrapper layer-bg-wrap">
-            <img src="assets/Blue-and-White Strategy Moodboard.webp" class="p-layer" data-mouse-depth="0.01" alt="Moodboard">
+            <img src="assets/Blue-and-White Strategy Moodboard.webp" class="p-layer" data-mouse-depth="0.02" alt="Moodboard">
         </div>
         
         <!-- Layer 2: Character -->
         <div class="p-layer-wrapper layer-woman-wrap">
-            <img src="assets/Blue Halftone Woman Writing.webp" class="p-layer" data-mouse-depth="0.04" alt="Designer">
+            <img src="assets/Blue Halftone Woman Writing.webp" class="p-layer" data-mouse-depth="0.055" alt="Designer">
         </div>
         
         <!-- Layer 3: Foreground Desk -->
         <div class="p-layer-wrapper layer-desk-wrap">
-            <img src="assets/Blue Halftone Office Desk Scene.webp" class="p-layer" data-mouse-depth="0.09" alt="Desk">
+            <img src="assets/Blue Halftone Office Desk Scene.webp" class="p-layer" data-mouse-depth="0.11" alt="Desk">
         </div>
     </div>
 
-    <!-- Hero Text Content (Strictly Z-Index 10 so it NEVER hides) -->
+    <!-- Left Column Hero Text -->
     <div class="hero-inner">
         <div class="hero-content interactive-text">
-            <p class="hero-eyebrow fade-up">Strategic designer · NID</p>
             
-            <h1 class="razor-title">
-                <span class="title-line"><span class="fade-up-text">I do the</span></span>
-                <span class="title-line"><span class="fade-up-text text-blue">hard thinking</span></span>
-                <span class="title-line"><span class="fade-up-text">so the experience</span></span>
-                <span class="title-line"><span class="fade-up-text">feels easy.</span></span>
-            </h1>
+            <div class="eyebrow-mask">
+                <p class="hero-eyebrow hero-text-fade">✦ Strategic Designer · NID</p>
+            </div>
+            
+            <!-- Line 1: Moves RIGHT on scroll -->
+            <div class="scroll-track-right" id="scroll-move-right">
+                <h1 class="razor-title">
+                    <span class="title-line">
+                        <span class="hero-title-slide"><span class="klear-asterisk">✳</span> Hello,</span>
+                    </span>
+                    <span class="title-line">
+                        <span class="hero-title-slide">I’m <span class="text-blue">Shweta.</span></span>
+                    </span>
+                </h1>
+            </div>
 
-            <div class="hero-buttons fade-up" style="animation-delay: 0.6s;">
+            <!-- Line 2: Cohesion Cycling Text (Slides up smoothly, moves LEFT on scroll) -->
+            <div class="cohesion-block hero-text-fade" id="scroll-move-left">
+                <span class="cohesion-sublabel">A little bit of everything that makes me, me:</span>
+                <div class="cohesion-rotator-mask">
+                    <div class="cohesion-item">Strategic Designer</div>
+                    <div class="cohesion-item">Service Designer</div>
+                    <div class="cohesion-item">Curious About People's Stories</div>
+                    <div class="cohesion-item">Chasing Sunsets 🌅</div>
+                    <div class="cohesion-item">Baking at 11 PM 🍰</div>
+                    <div class="cohesion-item">Dancing to Good Playlists 💃</div>
+                    <div class="cohesion-item">Following F1 Drama 🏎️</div>
+                </div>
+            </div>
+
+            <div class="hero-buttons hero-text-fade">
                 <a href="#work" class="btn-outline magnetic">See my work ↗</a>
             </div>
         </div>
     </div>
 
     <!-- Figma Style Scroll Widget -->
-    <div class="hero-scroll-widget fade-up">
+    <div class="hero-scroll-widget hero-text-fade">
         <div class="mouse-icon"><div class="mouse-wheel"></div></div>
-        <span class="scroll-text">Scroll<br>to explore</span>
+        <span class="scroll-text">Move mouse to interact<br>Scroll to explore</span>
     </div>
 
+    <div class="klear-draw-line hero-bottom-line"></div>
 </section>
 
-<!-- ============ PERSONALITY TICKER ============ -->
-<section class="wire-ticker border-bottom">
-    <div class="ticker-wrapper">
-        <div class="ticker-content">
-            <span>A little bit of everything that makes me, me:</span>
-            <span class="dot"></span>
-            <span>Strategic Designer</span>
-            <span class="dot"></span>
-            <span>Service Designer</span>
-            <span class="dot"></span>
-            <span>Curious About People's Stories</span>
-            <span class="dot"></span>
-            <span>Chasing Sunsets 🌅</span>
-            <span class="dot"></span>
-            <span>Baking at 11 PM 🍰</span>
-            <span class="dot"></span>
-            <span>Dancing to Good Playlists 💃</span>
-            <span class="dot"></span>
-            <span>Following F1 Drama 🏎️</span>
-            
-            <span class="dot"></span>
-            <span>A little bit of everything that makes me, me:</span>
-            <span class="dot"></span>
-            <span>Strategic Designer</span>
-            <span class="dot"></span>
-            <span>Service Designer</span>
-            <span class="dot"></span>
-            <span>Curious About People's Stories</span>
-            <span class="dot"></span>
-            <span>Chasing Sunsets 🌅</span>
-            <span class="dot"></span>
-            <span>Baking at 11 PM 🍰</span>
-            <span class="dot"></span>
-            <span>Dancing to Good Playlists 💃</span>
-            <span class="dot"></span>
-            <span>Following F1 Drama 🏎️</span>
+<!-- ============ 4. ABOUT SECTION (Editorial Grid + Blue/Cream/Grey/Black Badges + ideaForge Logo) ============ -->
+<section class="wire-about" id="about">
+    <div class="about-editorial-grid">
+        <div class="about-left-col">
+            <span class="section-index">01 / ABOUT</span>
+            <h2 class="about-side-title">Connecting stories to strategy.</h2>
+            <div class="pillars-mini-stack">
+                <div class="mini-pillar reveal-text"><span class="mp-dot dot-blue"></span>Strategic in Intent.</div>
+                <div class="mini-pillar reveal-text"><span class="mp-dot dot-black"></span>Human in Focus.</div>
+                <div class="mini-pillar reveal-text"><span class="mp-dot dot-grey"></span>Systemic in Vision.</div>
+            </div>
+        </div>
+
+        <div class="about-right-col">
+            <p class="about-paragraph reveal-text">
+                I'm a strategic designer with 
+                <span class="color-chip chip-blue"><span class="chip-icon">✦</span> 4 years</span> 
+                of experience and a background in user-centred design and Strategic Design Management at 
+                <span class="color-chip chip-black"><span class="chip-icon">❖</span> NID</span>. 
+                Curious about people 
+                <span class="color-orb orb-cream" title="Human-Centered">👀</span> 
+                and what drives their choices, I love asking questions, exploring different perspectives, and finding opportunities in the connections between them.
+            </p>
+
+            <p class="about-paragraph reveal-text">
+                I work across 
+                <span class="color-chip chip-grey"><span class="chip-icon">⬡</span> strategies</span>, 
+                services, systems, and experiences, connecting people's stories 
+                <span class="color-orb orb-blue" title="Insights">💡</span> 
+                to business decisions. I enjoy collaborating with teams, taking ideas from strategic direction 
+                <span class="color-chip chip-cream"><span class="chip-icon">↗</span> execution</span> 
+                through to the details that bring them to life.
+            </p>
+
+            <p class="about-paragraph highlight-p reveal-text">
+                I help businesses build things people 
+                <span class="color-chip chip-blue">choose, use, and stay with.</span>
+            </p>
+
+            <div class="internship-card reveal-text">
+                <div class="intern-left">
+                    <span class="pulse-dot"></span>
+                    <span>Currently interning in Product Strategy at <strong>ideaForge</strong></span>
+                </div>
+                <img src="assets/logo-ideaforge.webp" alt="ideaForge" class="intern-logo">
+            </div>
         </div>
     </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
 </section>
 
-<!-- ============ ABOUT ============ -->
-<section class="wire-about border-bottom" id="about">
-    <div class="about-grid">
-        <div class="about-copy">
-            <p class="about-label">✦ Description</p>
-            <p class="reveal-text">I'm a strategic designer with 4 years of experience and a background in user-centred design and Strategic Design Management at NID.</p>
-            <p class="reveal-text">Curious about people and what drives their choices, I love asking questions, exploring different perspectives, and finding opportunities in the connections between them.</p>
-            <p class="reveal-text">I work across strategies, services, systems, and experiences, connecting people's stories to business decisions. I enjoy collaborating with teams, taking ideas from strategic direction through to the details that bring them to life.</p>
-            <p class="reveal-text text-blue">I help businesses build things people choose, use, and stay with.</p>
-            <p class="reveal-text internship-tag">↳ Currently interning in Product Strategy at ideaForge.</p>
+<!-- ============ 5. MOVING COMPANIES STRIP (All 8 Logos from Old Portfolio + Current) ============ -->
+<section class="wire-companies">
+    <div class="companies-marquee">
+        <div class="companies-track">
+            <!-- Set 1 (All 8 Company Logo Images) -->
+            <div class="company-logo"><img src="assets/logo-ibm.webp" alt="IBM"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-harvard.webp" alt="Harvard T.H. Chan"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-learningmate.webp" alt="LearningMate"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-ideaforge.webp" alt="ideaForge"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-microsoft.webp" alt="Microsoft"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-amn.webp" alt="AMN Healthcare"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-caption.webp" alt="Caption Health"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-fragomen.webp" alt="Fragomen"></div>
+            <span class="logo-divider">✦</span>
+
+            <!-- Set 2 (Duplicated for seamless loop) -->
+            <div class="company-logo"><img src="assets/logo-ibm.webp" alt="IBM"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-harvard.webp" alt="Harvard T.H. Chan"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-learningmate.webp" alt="LearningMate"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-ideaforge.webp" alt="ideaForge"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-microsoft.webp" alt="Microsoft"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-amn.webp" alt="AMN Healthcare"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-caption.webp" alt="Caption Health"></div>
+            <span class="logo-divider">✦</span>
+            <div class="company-logo"><img src="assets/logo-fragomen.webp" alt="Fragomen"></div>
+            <span class="logo-divider">✦</span>
         </div>
     </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
 </section>
 
-<!-- ============ COMPANIES LOGO STRIP ============ -->
-<section class="wire-companies border-bottom">
-    <div class="companies-inner">
-        <div class="company-logo"><img src="assets/logo-ibm.webp" alt="IBM"></div>
-        <div class="company-logo"><img src="assets/logo-harvard.webp" alt="Harvard T.H. Chan"></div>
-        <div class="company-logo"><img src="assets/logo-learningmate.webp" alt="LearningMate"></div>
-        <div class="company-logo"><img src="assets/logo-ideaforge.webp" alt="ideaForge"></div>
-    </div>
-</section>
-
-<!-- ============ PROJECTS ============ -->
-<section class="wire-work border-bottom" id="work">
-    <div class="work-header">
-        <h2>Selected Work</h2>
-        <p>Strategies, Services, and Systems.</p>
-    </div>
+<!-- ============ 6. PROJECTS (Exact Razorpay Sprint '26 OS Window + Auto-Scroll Blue Highlight) ============ -->
+<section class="razor-projects-section" id="work">
     
-    <div class="work-container">
-        <div class="work-list">
-            <a href="https://www.behance.net/gallery/238381413/PLAY-AT-WHAT-COST" target="_blank" class="work-row" data-image="assets/go-kart.webp">
-                <div class="row-num">01</div>
-                <div class="row-title">Play at What Cost?</div>
-                <div class="row-category">Behavioral Design</div>
-                <div class="row-arrow">↗</div>
-            </a>
-            <a href="https://www.behance.net/gallery/238397497/ProxiMate" target="_blank" class="work-row" data-image="assets/proximate.webp">
-                <div class="row-num">02</div>
-                <div class="row-title">ProxiMate</div>
-                <div class="row-category">Civic Engagement</div>
-                <div class="row-arrow">↗</div>
-            </a>
-            <a href="https://www.behance.net/gallery/238378255/Finance-Tracker-Travel-Expense-Management-System" target="_blank" class="work-row" data-image="assets/finance.webp">
-                <div class="row-num">03</div>
-                <div class="row-title">Finance Tracker</div>
-                <div class="row-category">Enterprise SaaS</div>
-                <div class="row-arrow">↗</div>
-            </a>
-            <a href="https://www.behance.net/gallery/238635195/URIki" target="_blank" class="work-row" data-image="assets/uriki.webp">
-                <div class="row-num">04</div>
-                <div class="row-title">URiki</div>
-                <div class="row-category">Healthcare UX</div>
-                <div class="row-arrow">↗</div>
-            </a>
-            <a href="https://www.behance.net/gallery/91698633/Fortis" target="_blank" class="work-row" data-image="assets/fortis.webp">
-                <div class="row-num">05</div>
-                <div class="row-title">Fortis Medication</div>
-                <div class="row-category">App Design</div>
-                <div class="row-arrow">↗</div>
-            </a>
-            <a href="https://www.behance.net/gallery/92318703/Enhancing-Restaurant-Experience" target="_blank" class="work-row" data-image="assets/vr-restaurant.webp">
-                <div class="row-num">06</div>
-                <div class="row-title">Restaurant VR</div>
-                <div class="row-category">Immersive Exp.</div>
-                <div class="row-arrow">↗</div>
-            </a>
-        </div>
-        <div class="work-preview">
-            <div class="preview-box">
-                <img id="preview-img" src="assets/go-kart.webp" alt="Project Preview">
-            </div>
-        </div>
+    <!-- Sticky Top Bar: Automatically highlights with Blue Fill as you scroll manually! -->
+    <div class="sprint-top-bar">
+        <div class="sprint-brand-cell">✦ SELECTED WORK / 06</div>
+        <a href="#proj-1" class="sprint-tab active" data-target="proj-1">01. PLAY AT WHAT COST</a>
+        <a href="#proj-2" class="sprint-tab" data-target="proj-2">02. PROXIMATE</a>
+        <a href="#proj-3" class="sprint-tab" data-target="proj-3">03. FINANCE TRACKER</a>
+        <a href="#proj-4" class="sprint-tab" data-target="proj-4">04. URIKI</a>
+        <a href="#proj-5" class="sprint-tab" data-target="proj-5">05. FORTIS</a>
+        <a href="#proj-6" class="sprint-tab" data-target="proj-6">06. RESTAURANT VR</a>
     </div>
+
+    <div class="sprint-projects-wrapper">
+
+        <!-- PROJECT 01 -->
+        <article class="sprint-project-stage active-stage" id="proj-1" data-index="0">
+            <div class="sprint-left-meta">
+                <span class="sprint-num">01 / 06</span>
+                <h3 class="sprint-side-heading">Behavioral Design</h3>
+                <p class="sprint-side-desc">Redesigning Safety Compliance in India's Leisure Go-Karting Through Behavioural Design. Demonstrating how strategic nudges make safety instinctive rather than enforced.</p>
+                <div class="sprint-pills">
+                    <span class="s-pill">Behavioral Design</span>
+                    <span class="s-pill">Human-Centered Research</span>
+                    <span class="s-pill">Safety Intervention</span>
+                </div>
+            </div>
+
+            <div class="sprint-right-column">
+                <div class="sprint-mac-window">
+                    <div class="mac-titlebar">
+                        <div class="mac-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="mac-body">
+                        <div class="mac-header-grid">
+                            <h4 class="mac-main-title">Play at What<br>Cost?</h4>
+                            <div class="mac-sub-note">
+                                <span class="mac-asterisk">✳</span>
+                                <p>High-thrill recreational safety system & behavioural nudge architecture.</p>
+                            </div>
+                        </div>
+
+                        <div class="mac-stage">
+                            <img src="assets/go-kart.webp" alt="Play at What Cost" class="mac-move-img">
+                            <!-- Razorpay-style floating interactive badges -->
+                            <div class="mac-floating-card">
+                                <span class="fc-label">Safety Compliance</span>
+                                <strong>Instinctive Nudges</strong>
+                            </div>
+                            <div class="mac-floating-pill">behance.net/play-at-what-cost ↗</div>
+                            <div class="mac-count-orb">+3</div>
+                        </div>
+
+                        <div class="mac-bottom-row">
+                            <a href="https://www.behance.net/gallery/238381413/PLAY-AT-WHAT-COST" target="_blank" rel="noopener" class="mac-action-bar magnetic">
+                                <span>Explore full case study on Behance.</span>
+                                <span class="mac-arrow-box">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sprint-window-caption">
+                    <strong>Behavioral Safety Intervention</strong> — Field research, journey mapping & physical-digital nudge system.
+                </div>
+            </div>
+        </article>
+
+        <!-- PROJECT 02 -->
+        <article class="sprint-project-stage" id="proj-2" data-index="1">
+            <div class="sprint-left-meta">
+                <span class="sprint-num">02 / 06</span>
+                <h3 class="sprint-side-heading">Civic Service Design</h3>
+                <p class="sprint-side-desc">A neighbourhood-based service platform fostering everyday support, trust, and hyper-local civic connection across urban communities.</p>
+                <div class="sprint-pills">
+                    <span class="s-pill">Civic Engagement</span>
+                    <span class="s-pill">Service Design</span>
+                    <span class="s-pill">Community Systems</span>
+                </div>
+            </div>
+
+            <div class="sprint-right-column">
+                <div class="sprint-mac-window">
+                    <div class="mac-titlebar">
+                        <div class="mac-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="mac-body">
+                        <div class="mac-header-grid">
+                            <h4 class="mac-main-title">ProxiMate<br>Network</h4>
+                            <div class="mac-sub-note">
+                                <span class="mac-asterisk">✳</span>
+                                <p>Co-designing resilient neighbourhood support & civic trust systems.</p>
+                            </div>
+                        </div>
+
+                        <div class="mac-stage">
+                            <img src="assets/proximate.webp" alt="ProxiMate" class="mac-move-img">
+                            <div class="mac-floating-card">
+                                <span class="fc-label">Service Blueprint</span>
+                                <strong>Hyper-Local Trust</strong>
+                            </div>
+                            <div class="mac-floating-pill">behance.net/proximate ↗</div>
+                            <div class="mac-count-orb">+2</div>
+                        </div>
+
+                        <div class="mac-bottom-row">
+                            <a href="https://www.behance.net/gallery/238397497/ProxiMate" target="_blank" rel="noopener" class="mac-action-bar magnetic">
+                                <span>Explore full case study on Behance.</span>
+                                <span class="mac-arrow-box">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sprint-window-caption">
+                    <strong>Community Service System</strong> — Multi-touchpoint service design & stakeholder ecosystem.
+                </div>
+            </div>
+        </article>
+
+        <!-- PROJECT 03 -->
+        <article class="sprint-project-stage" id="proj-3" data-index="2">
+            <div class="sprint-left-meta">
+                <span class="sprint-num">03 / 06</span>
+                <h3 class="sprint-side-heading">Enterprise SaaS</h3>
+                <p class="sprint-side-desc">Systematic and transparent travel and expense management system designed for seamless employee reimbursement and workflow automation.</p>
+                <div class="sprint-pills">
+                    <span class="s-pill">Enterprise SaaS</span>
+                    <span class="s-pill">Finance & Travel</span>
+                    <span class="s-pill">Workflow Automation</span>
+                </div>
+            </div>
+
+            <div class="sprint-right-column">
+                <div class="sprint-mac-window">
+                    <div class="mac-titlebar">
+                        <div class="mac-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="mac-body">
+                        <div class="mac-header-grid">
+                            <h4 class="mac-main-title">Finance<br>Tracker</h4>
+                            <div class="mac-sub-note">
+                                <span class="mac-asterisk">✳</span>
+                                <p>Enterprise travel & expense reimbursement workflow architecture.</p>
+                            </div>
+                        </div>
+
+                        <div class="mac-stage">
+                            <img src="assets/finance.webp" alt="Finance Tracker" class="mac-move-img">
+                            <div class="mac-floating-card">
+                                <span class="fc-label">Enterprise SaaS</span>
+                                <strong>40% Faster Approvals</strong>
+                            </div>
+                            <div class="mac-floating-pill">behance.net/finance-tracker ↗</div>
+                            <div class="mac-count-orb">+4</div>
+                        </div>
+
+                        <div class="mac-bottom-row">
+                            <a href="https://www.behance.net/gallery/238378255/Finance-Tracker-Travel-Expense-Management-System" target="_blank" rel="noopener" class="mac-action-bar magnetic">
+                                <span>Explore full case study on Behance.</span>
+                                <span class="mac-arrow-box">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sprint-window-caption">
+                    <strong>Enterprise Workflow Automation</strong> — End-to-end SaaS architecture & role-based approvals.
+                </div>
+            </div>
+        </article>
+
+        <!-- PROJECT 04 -->
+        <article class="sprint-project-stage" id="proj-4" data-index="3">
+            <div class="sprint-left-meta">
+                <span class="sprint-num">04 / 06</span>
+                <h3 class="sprint-side-heading">Healthcare UX</h3>
+                <p class="sprint-side-desc">Connected healthcare experience and strategic intervention designed to empower patients and streamline diagnostic care delivery.</p>
+                <div class="sprint-pills">
+                    <span class="s-pill">Healthcare UX</span>
+                    <span class="s-pill">Design Strategy</span>
+                    <span class="s-pill">Patient Journey</span>
+                </div>
+            </div>
+
+            <div class="sprint-right-column">
+                <div class="sprint-mac-window">
+                    <div class="mac-titlebar">
+                        <div class="mac-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="mac-body">
+                        <div class="mac-header-grid">
+                            <h4 class="mac-main-title">URiki Care<br>System</h4>
+                            <div class="mac-sub-note">
+                                <span class="mac-asterisk">✳</span>
+                                <p>Human-centric diagnostic & connected patient care experience.</p>
+                            </div>
+                        </div>
+
+                        <div class="mac-stage">
+                            <img src="assets/uriki.webp" alt="URiki" class="mac-move-img">
+                            <div class="mac-floating-card">
+                                <span class="fc-label">Connected Health</span>
+                                <strong>Patient Empowerment</strong>
+                            </div>
+                            <div class="mac-floating-pill">behance.net/uriki ↗</div>
+                            <div class="mac-count-orb">+2</div>
+                        </div>
+
+                        <div class="mac-bottom-row">
+                            <a href="https://www.behance.net/gallery/238635195/URIki" target="_blank" rel="noopener" class="mac-action-bar magnetic">
+                                <span>Explore full case study on Behance.</span>
+                                <span class="mac-arrow-box">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sprint-window-caption">
+                    <strong>Healthcare UX Strategy</strong> — Bridging clinical accuracy with empathetic patient touchpoints.
+                </div>
+            </div>
+        </article>
+
+        <!-- PROJECT 05 -->
+        <article class="sprint-project-stage" id="proj-5" data-index="4">
+            <div class="sprint-left-meta">
+                <span class="sprint-num">05 / 06</span>
+                <h3 class="sprint-side-heading">Digital Health App</h3>
+                <p class="sprint-side-desc">Simplifying medication adherence and post-hospital care routines through intuitive reminders and family care loops.</p>
+                <div class="sprint-pills">
+                    <span class="s-pill">App Design</span>
+                    <span class="s-pill">Healthcare</span>
+                    <span class="s-pill">Interaction Design</span>
+                </div>
+            </div>
+
+            <div class="sprint-right-column">
+                <div class="sprint-mac-window">
+                    <div class="mac-titlebar">
+                        <div class="mac-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="mac-body">
+                        <div class="mac-header-grid">
+                            <h4 class="mac-main-title">Fortis<br>Medication</h4>
+                            <div class="mac-sub-note">
+                                <span class="mac-asterisk">✳</span>
+                                <p>Care continuity & patient medication adherence ecosystem.</p>
+                            </div>
+                        </div>
+
+                        <div class="mac-stage">
+                            <img src="assets/fortis.webp" alt="Fortis Medication" class="mac-move-img">
+                            <div class="mac-floating-card">
+                                <span class="fc-label">Care Continuity</span>
+                                <strong>Daily Adherence Loop</strong>
+                            </div>
+                            <div class="mac-floating-pill">behance.net/fortis ↗</div>
+                            <div class="mac-count-orb">+2</div>
+                        </div>
+
+                        <div class="mac-bottom-row">
+                            <a href="https://www.behance.net/gallery/91698633/Fortis" target="_blank" rel="noopener" class="mac-action-bar magnetic">
+                                <span>Explore full case study on Behance.</span>
+                                <span class="mac-arrow-box">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sprint-window-caption">
+                    <strong>Mobile Health Product</strong> — Designing stress-free recovery and medication tracking.
+                </div>
+            </div>
+        </article>
+
+        <!-- PROJECT 06 -->
+        <article class="sprint-project-stage" id="proj-6" data-index="5">
+            <div class="sprint-left-meta">
+                <span class="sprint-num">06 / 06</span>
+                <h3 class="sprint-side-heading">Immersive Experience</h3>
+                <p class="sprint-side-desc">Enhancing restaurant discovery and waiting experience through spatial VR previews and interactive ambiance exploration.</p>
+                <div class="sprint-pills">
+                    <span class="s-pill">Immersive Exp.</span>
+                    <span class="s-pill">UX Design</span>
+                    <span class="s-pill">Spatial UI</span>
+                </div>
+            </div>
+
+            <div class="sprint-right-column">
+                <div class="sprint-mac-window">
+                    <div class="mac-titlebar">
+                        <div class="mac-dots"><span></span><span></span><span></span></div>
+                    </div>
+                    <div class="mac-body">
+                        <div class="mac-header-grid">
+                            <h4 class="mac-main-title">Restaurant<br>VR</h4>
+                            <div class="mac-sub-note">
+                                <span class="mac-asterisk">✳</span>
+                                <p>Interactive spatial dining & waiting experience reimagined.</p>
+                            </div>
+                        </div>
+
+                        <div class="mac-stage">
+                            <img src="assets/vr-restaurant.webp" alt="Restaurant VR" class="mac-move-img">
+                            <div class="mac-floating-card">
+                                <span class="fc-label">Spatial UX</span>
+                                <strong>Immersive Waiting</strong>
+                            </div>
+                            <div class="mac-floating-pill">behance.net/restaurant-vr ↗</div>
+                            <div class="mac-count-orb">+2</div>
+                        </div>
+
+                        <div class="mac-bottom-row">
+                            <a href="https://www.behance.net/gallery/92318703/Enhancing-Restaurant-Experience" target="_blank" rel="noopener" class="mac-action-bar magnetic">
+                                <span>Explore full case study on Behance.</span>
+                                <span class="mac-arrow-box">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sprint-window-caption">
+                    <strong>Immersive Spatial Design</strong> — Turning restaurant waiting time into interactive engagement.
+                </div>
+            </div>
+        </article>
+
+    </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
 </section>
 
-<!-- ============ EXPERIENCE ============ -->
-<section class="wire-experience border-bottom" id="experience">
-    <div class="exp-header border-bottom">
-        <h2>Professional Journey</h2>
-    </div>
-    
-    <div class="exp-grid">
-        <div class="exp-timeline">
-            <div class="exp-row">
-                <div class="exp-date">2022 — 2024</div>
-                <div class="exp-role">Senior Consultant</div>
-                <div class="exp-company">Neudesic, an IBM Company</div>
-            </div>
-            <div class="exp-row">
-                <div class="exp-date">2021 — 2022</div>
-                <div class="exp-role">Solution Designer</div>
-                <div class="exp-company">LearningMate Solutions</div>
-            </div>
-            <div class="exp-row" style="border-bottom: none;">
-                <div class="exp-date">2020 — 2021</div>
-                <div class="exp-role">Student Researcher</div>
-                <div class="exp-company">Harvard T.H. Chan</div>
-            </div>
+<!-- ============ 7. SKILLS (Exact Matter from Old Video) ============ -->
+<section class="wire-skills" id="skills">
+    <div class="section-split-grid">
+        <div class="split-left border-right">
+            <span class="section-dot-label">✦ Capabilities</span>
+            <h2>Skills</h2>
+        </div>
+        <div class="split-right skills-pill-container">
+            <span class="skill-tag reveal-text">Design Strategy</span>
+            <span class="skill-tag reveal-text">Product Design</span>
+            <span class="skill-tag reveal-text">Service Design</span>
+            <span class="skill-tag reveal-text">User Research</span>
+            <span class="skill-tag reveal-text">Behavioral Design</span>
+            <span class="skill-tag reveal-text">Value Creation</span>
+            <span class="skill-tag reveal-text">User Journey Mapping</span>
+            <span class="skill-tag reveal-text">Information Architecture</span>
+            <span class="skill-tag reveal-text">Design Thinking</span>
         </div>
     </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
 </section>
 
-<!-- ============ FOOTER ============ -->
+<!-- ============ 8. EXPERIENCE (Exact Matter from Old Video + ideaForge) ============ -->
+<section class="wire-experience" id="experience">
+    <div class="exp-header">
+        <span class="section-dot-label">✦ Career Path</span>
+        <h2>Experience</h2>
+    </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
+    <div class="exp-timeline">
+        <div class="exp-row reveal-text"><div class="exp-role">Product Strategy Intern</div><div class="exp-company">ideaForge</div><div class="exp-date">2025 — Present</div></div>
+        <div class="exp-row reveal-text"><div class="exp-role">Senior Consultant - UX Designer</div><div class="exp-company">Neudesic, an IBM Company</div><div class="exp-date">2022 — 2024</div></div>
+        <div class="exp-row reveal-text"><div class="exp-role">Solution Designer</div><div class="exp-company">LearningMate Solutions</div><div class="exp-date">2020 — 2022</div></div>
+        <div class="exp-row reveal-text"><div class="exp-role">Student Researcher</div><div class="exp-company">Remember Now • Harvard T.H. Chan School of Public Health</div><div class="exp-date">2020 — 2021</div></div>
+        <div class="exp-row reveal-text" style="border-bottom: none;"><div class="exp-role">Design Intern</div><div class="exp-company">TATA TRUSTS</div><div class="exp-date">2019 — 2019</div></div>
+    </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
+</section>
+
+<!-- ============ 9. INDUSTRY EXPOSURE (Exact Matter from Old Video) ============ -->
+<section class="wire-exposure">
+    <div class="section-split-grid">
+        <div class="split-left border-right">
+            <span class="section-dot-label">✦ Impact</span>
+            <h2>Industry Exposure</h2>
+        </div>
+        <div class="split-right exposure-list">
+            <div class="exposure-row reveal-text"><span class="exp-num">01</span><p>Led end-to-end design of Enterprise SaaS products securing <strong>IBM and Microsoft endorsements</strong> for enterprise deployment.</p></div>
+            <div class="exposure-row reveal-text"><span class="exp-num">02</span><p>Led <strong>RFP initiatives</strong> that secured new enterprise client engagements and drove business growth.</p></div>
+            <div class="exposure-row reveal-text"><span class="exp-num">03</span><p><strong>40% improvement</strong> in task completion through strategic workflow redesign.</p></div>
+            <div class="exposure-row reveal-text"><span class="exp-num">04</span><p>Translated organizational challenges into design interventions via research, and <strong>cross-functional workshops (IT/HR/Exec)</strong> ensuring adoption and change management success.</p></div>
+            <div class="exposure-row reveal-text" style="border-bottom: none;"><span class="exp-num">05</span><p>Built <strong>Design Systems</strong> for enterprise consistency and accelerated development velocity.</p></div>
+        </div>
+    </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
+</section>
+
+<!-- ============ 10. EDUCATION (Exact Matter from Old Video) ============ -->
+<section class="wire-education">
+    <div class="exp-header">
+        <span class="section-dot-label">✦ Academic Background</span>
+        <h2>Education</h2>
+    </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
+    <div class="exp-timeline">
+        <div class="exp-row reveal-text"><div class="exp-role">Master of Design in Strategic Design Management</div><div class="exp-company">National Institute of Design, Gandhinagar</div><div class="exp-date">2024 — Present</div></div>
+        <div class="exp-row reveal-text" style="border-bottom: none;"><div class="exp-role">Bachelor of Design in Humanising Technology</div><div class="exp-company">NMIMS School of Design, Mumbai</div><div class="exp-date">2017 — 2021</div></div>
+    </div>
+    <div class="klear-draw-line scroll-draw-line"></div>
+</section>
+
+<!-- ============ 11. PHILOSOPHY QUOTE (From Old Video Screenshot 8) ============ -->
+<section class="philosophy-quote">
+    <blockquote class="reveal-text">
+        "I craft solutions by deeply understanding the people, systems, and contexts involved. Their journeys — spanning products, services, and experiences — uncover insights that shape unified and impactful outcomes."
+    </blockquote>
+</section>
+
+<!-- ============ 12. FOOTER ============ -->
 <footer class="wire-footer">
     <div class="footer-top">
         <h2 class="footer-title">I do the hard thinking so the experience feels easy.</h2>
@@ -243,6 +640,7 @@
         <div class="socials">
             <a href="https://www.linkedin.com/in/shwetamandwale" target="_blank" class="magnetic">LinkedIn</a>
             <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="magnetic">Behance</a>
+            <a href="assets/Shweta_Mandwale_Resume.pdf" target="_blank" rel="noopener" class="magnetic">Resume</a>
         </div>
         <div class="credits">
             <p>© 2026 Shweta Mandwale. M.Des NID.</p>

@@ -2,19 +2,28 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // ==========================================
-    // 1. KLEAR-STYLE CUSTOM CURSOR
+    // 0. LIVE TIME IN HEADER
+    // ==========================================
+    const timeEl = document.getElementById('live-time');
+    function updateClock() {
+        if (!timeEl) return;
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const mins = String(now.getMinutes()).padStart(2, '0');
+        timeEl.textContent = `${hours}:${mins}`;
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+
+    // ==========================================
+    // 1. KLEAR-STYLE CUSTOM CURSOR & MAGNETIC BUTTONS
     // ==========================================
     const cursor = document.querySelector('.custom-cursor');
-    const hoverElements = document.querySelectorAll('a, .magnetic, .work-row');
+    const hoverElements = document.querySelectorAll('a, .magnetic, .sprint-mac-window');
 
     if (window.innerWidth >= 768) {
         window.addEventListener('mousemove', (e) => {
-            gsap.to(cursor, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.1,
-                ease: "power2.out"
-            });
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: "power2.out" });
         });
 
         hoverElements.forEach(el => {
@@ -22,16 +31,12 @@ document.addEventListener("DOMContentLoaded", () => {
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         });
 
-        const magnetics = document.querySelectorAll('.magnetic');
-        magnetics.forEach(btn => {
+        document.querySelectorAll('.magnetic').forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
                 const rect = btn.getBoundingClientRect();
-                const h = rect.width / 2;
-                const v = rect.height / 2;
-                const x = e.clientX - rect.left - h;
-                const y = e.clientY - rect.top - v;
-                
-                gsap.to(btn, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: "power2.out" });
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, { x: x * 0.25, y: y * 0.25, duration: 0.3, ease: "power2.out" });
             });
             btn.addEventListener('mouseleave', () => {
                 gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.3)" });
@@ -40,28 +45,79 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 2. PRELOADER
+    // 2. MASTER OPENING SEQUENCE:
+    //    Step 1: Dark to light opening (Preloader slides DOWN)
+    //    Step 2: 2.5D Image loads/forms itself FIRST
+    //    Step 3: Grid lines draw one by one (Top -> Right -> Left)
+    //    Step 4: "Hello, I'm Shweta" + First Cohesion trait slide up smoothly
     // ==========================================
     const preloader = document.getElementById('preloader');
-    const loaderBar = document.getElementById('loader-bar');
-    const loaderText = document.getElementById('loader-text');
+    const preloaderName = document.getElementById('preloader-name');
+    const cohesionItems = document.querySelectorAll('.cohesion-item');
 
-    let progress = 0;
-    const loadInterval = setInterval(() => {
-        progress += Math.random() * 18;
-        if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadInterval);
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-                initRazorHero(); 
-            }, 400);
+    gsap.set(".k-line-top", { width: "0%" });
+    gsap.set(".k-line-right", { height: "0%" });
+    gsap.set(".k-line-left", { height: "0%" });
+    gsap.set(".klear-nav-item", { y: -15, opacity: 0 });
+    gsap.set(".hero-title-slide", { y: "115%", opacity: 0 });
+    gsap.set(".hero-text-fade", { y: 20, opacity: 0 });
+    gsap.set(cohesionItems, { y: "115%", opacity: 0 });
+
+    const masterTl = gsap.timeline();
+
+    // STEP 1: Fade name & slide dark curtain DOWN
+    masterTl.to(preloaderName, {
+        opacity: 0, y: -10, duration: 0.4, delay: 0.5, ease: "power2.in"
+    })
+    .to(preloader, {
+        yPercent: 100, duration: 0.9, ease: "power4.inOut",
+        onComplete: () => {
+            document.body.classList.remove('is-loading');
+            preloader.style.display = 'none';
         }
-        loaderBar.style.width = `${progress}%`;
-        loaderText.textContent = `${Math.floor(progress)}%`;
-    }, 130);
+    })
 
+    // STEP 2: Let the 2.5D Image form itself FIRST
+    .fromTo(".layer-bg-wrap", 
+        { opacity: 0, scale: 0.92, y: 35 }, 
+        { opacity: 1, scale: 1, y: 0, duration: 0.65, ease: "power3.out" },
+        "-=0.2"
+    )
+    .fromTo(".layer-woman-wrap", 
+        { opacity: 0, y: 80, scale: 0.95 }, 
+        { opacity: 1, y: 0, scale: 1, duration: 0.65, ease: "back.out(1.3)" }, 
+        "-=0.3"
+    )
+    .fromTo(".layer-desk-wrap", 
+        { opacity: 0, y: 95 }, 
+        { opacity: 1, y: 0, duration: 0.7, ease: "power4.out" }, 
+        "-=0.35"
+    )
+
+    // STEP 3: Grid lines draw one by one (Top -> Right -> Left)
+    .to(".header-draw-line, .hero-bottom-line", {
+        scaleX: 1, duration: 0.7, ease: "power3.inOut"
+    }, "-=0.4")
+    .to(".k-line-top", { width: "100%", duration: 0.5, ease: "power2.out" }, "-=0.5")
+    .to(".k-line-right", { height: "100%", duration: 0.5, ease: "power2.out" }, "-=0.35")
+    .to(".k-line-left", { height: "100%", duration: 0.5, ease: "power2.out" }, "-=0.35")
+    .to(".klear-nav-item", {
+        y: 0, opacity: 1, duration: 0.5, stagger: 0.06, ease: "power2.out"
+    }, "-=0.5")
+
+    // STEP 4: "Hello, I'm Shweta" & First Cohesion Trait slide up smoothly
+    .to(".hero-title-slide", {
+        y: "0%", opacity: 1, duration: 0.8, stagger: 0.12, ease: "power4.out"
+    }, "-=0.3")
+    .to(".hero-text-fade", {
+        y: 0, opacity: 1, duration: 0.65, stagger: 0.1, ease: "power3.out"
+    }, "-=0.5")
+    .to(cohesionItems[0], {
+        y: "0%", opacity: 1, duration: 0.7, ease: "power4.out",
+        onComplete: startCohesionCycle
+    }, "-=0.45");
+
+    // Top Blue Progress Line
     const progressBar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
         const h = document.documentElement.scrollHeight - window.innerHeight;
@@ -69,29 +125,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }, { passive: true });
 
     // ==========================================
-    // 3. RAZORPAY STYLE FADE-IN HERO
+    // 3. COHESION CYCLING TEXT
     // ==========================================
-    function initRazorHero() {
-        const heroSection = document.querySelector(".razor-hero");
-        if (!heroSection) return;
+    function startCohesionCycle() {
+        if (!cohesionItems.length) return;
+        let currentIndex = 0;
 
-        const tl = gsap.timeline();
+        setInterval(() => {
+            const currentItem = cohesionItems[currentIndex];
+            const nextIndex = (currentIndex + 1) % cohesionItems.length;
+            const nextItem = cohesionItems[nextIndex];
 
-        tl.fromTo(".fade-up", 
-            { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out" }
-        );
+            gsap.to(currentItem, {
+                y: "-115%",
+                opacity: 0,
+                duration: 0.55,
+                ease: "power3.inOut"
+            });
 
-        tl.fromTo(".fade-up-text",
-            { y: "110%", opacity: 0 },
-            { y: "0%", opacity: 1, duration: 1, stagger: 0.15, ease: "power4.out" },
-            "-=0.5"
-        );
+            gsap.fromTo(nextItem,
+                { y: "115%", opacity: 0 },
+                { y: "0%", opacity: 1, duration: 0.55, ease: "power3.inOut" }
+            );
+
+            currentIndex = nextIndex;
+        }, 2300);
     }
 
-// ==========================================
-    // 4. MOUSE HOVER PARALLAX & 3D TEXT
     // ==========================================
+    // 4. KLEAR SCROLL PARALLAX ON HERO TEXT + 2.5D HOVER
+    // ==========================================
+    gsap.to("#scroll-move-right", {
+        x: 90,
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".razor-hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.2
+        }
+    });
+
+    gsap.to("#scroll-move-left", {
+        x: -90,
+        ease: "none",
+        scrollTrigger: {
+            trigger: ".razor-hero",
+            start: "top top",
+            end: "bottom top",
+            scrub: 1.2
+        }
+    });
+
     if (window.innerWidth >= 768) {
         const interactiveContainers = document.querySelectorAll('.interactive-container');
         interactiveContainers.forEach(container => {
@@ -100,103 +185,102 @@ document.addEventListener("DOMContentLoaded", () => {
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
                 
-                // 1. Move the image layers
-                const layers = container.querySelectorAll('.p-layer-wrapper');
-                layers.forEach(layer => {
-                    const img = layer.querySelector('img');
-                    if(!img) return;
-                    
+                container.querySelectorAll('.p-layer').forEach(img => {
                     const depth = parseFloat(img.getAttribute('data-mouse-depth')) || 0.05;
-                    const moveX = (e.clientX - centerX) * depth;
-                    const moveY = (e.clientY - centerY) * depth;
-                    
-                    gsap.to(layer, { x: moveX, y: moveY, duration: 0.6, ease: "power2.out" });
+                    gsap.to(img, { 
+                        x: (e.clientX - centerX) * depth, 
+                        y: (e.clientY - centerY) * depth, 
+                        duration: 0.45, 
+                        ease: "power2.out" 
+                    });
                 });
 
-                // 2. Add 3D Tilt & Float to the Text
                 const interactiveText = container.querySelector('.interactive-text');
                 if (interactiveText) {
-                    const moveX = (e.clientX - centerX) * 0.015; // Subtle float X
-                    const moveY = (e.clientY - centerY) * 0.015; // Subtle float Y
-                    
-                    // Calculate subtle 3D rotation (max 2 degrees)
-                    const rotateX = ((e.clientY - centerY) / centerY) * -2; 
-                    const rotateY = ((e.clientX - centerX) / centerX) * 2;
-
                     gsap.to(interactiveText, { 
-                        x: moveX, 
-                        y: moveY, 
-                        rotationX: rotateX, 
-                        rotationY: rotateY, 
-                        transformPerspective: 1000, // Gives the tilt real 3D depth
-                        duration: 0.6, 
+                        x: (e.clientX - centerX) * 0.012, 
+                        y: (e.clientY - centerY) * 0.012, 
+                        rotationX: ((e.clientY - centerY) / centerY) * -1.5, 
+                        rotationY: ((e.clientX - centerX) / centerX) * 1.5, 
+                        transformPerspective: 1000, 
+                        duration: 0.45, 
                         ease: "power2.out" 
                     });
                 }
             });
 
             container.addEventListener('mouseleave', () => {
-                const layers = container.querySelectorAll('.p-layer-wrapper');
-                gsap.to(layers, { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
-                
+                gsap.to(container.querySelectorAll('.p-layer'), { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
                 const interactiveText = container.querySelector('.interactive-text');
-                if (interactiveText) {
-                    gsap.to(interactiveText, { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.8, ease: "power2.out" });
-                }
+                if (interactiveText) gsap.to(interactiveText, { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.8, ease: "power2.out" });
+            });
+        });
+
+        // Interactive 2.5D Motion inside Razorpay OS Window
+        document.querySelectorAll('.sprint-mac-window').forEach(win => {
+            const img = win.querySelector('.mac-move-img');
+            const card = win.querySelector('.mac-floating-card');
+            const pill = win.querySelector('.mac-floating-pill');
+            win.addEventListener('mousemove', (e) => {
+                const rect = win.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2);
+                const y = (e.clientY - rect.top - rect.height / 2);
+                if (img) gsap.to(img, { x: x * 0.03, y: y * 0.03, scale: 1.03, duration: 0.35, ease: "power2.out" });
+                if (card) gsap.to(card, { x: x * -0.04, y: y * -0.04, duration: 0.35, ease: "power2.out" });
+                if (pill) gsap.to(pill, { x: x * 0.05, y: y * -0.03, duration: 0.35, ease: "power2.out" });
+            });
+            win.addEventListener('mouseleave', () => {
+                if (img) gsap.to(img, { x: 0, y: 0, scale: 1, duration: 0.5, ease: "power2.out" });
+                if (card) gsap.to(card, { x: 0, y: 0, duration: 0.5, ease: "power2.out" });
+                if (pill) gsap.to(pill, { x: 0, y: 0, duration: 0.5, ease: "power2.out" });
             });
         });
     }
 
     // ==========================================
-    // 5. IMAGE FADE IN & TEXT REVEAL
+    // 5. AUTOMATIC SCROLLSPY FOR PROJECTS TOP BAR & BLUE STAGE FILL
     // ==========================================
-    const revealTexts = document.querySelectorAll(".reveal-text");
-    revealTexts.forEach((text) => {
-        gsap.fromTo(text, 
-            { y: 30, opacity: 0 },
-            {
-                y: 0, opacity: 1, duration: 1, ease: "power3.out",
-                scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
-            }
-        );
-    });
+    const projectStages = document.querySelectorAll('.sprint-project-stage');
+    const sprintTabs = document.querySelectorAll('.sprint-tab');
 
-    // ==========================================
-    // 6. PROJECT LIST HOVER IMAGE REVEAL
-    // ==========================================
-    const workRows = document.querySelectorAll(".work-row");
-    const previewImg = document.getElementById("preview-img");
-    let currentImage = "";
+    function activateProject(index) {
+        sprintTabs.forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
+        });
+        projectStages.forEach((stage, i) => {
+            stage.classList.toggle('active-stage', i === index);
+        });
+    }
 
-    ScrollTrigger.create({
-        trigger: ".wire-work",
-        start: "top 60%",
-        onEnter: () => {
-            if (previewImg && previewImg.style.opacity !== "1") {
-                gsap.to(previewImg, { opacity: 1, duration: 0.5 });
-            }
-        }
-    });
-
-    workRows.forEach(row => {
-        row.addEventListener("mouseenter", () => {
-            const newImage = row.getAttribute("data-image");
-            if (newImage !== currentImage && previewImg) {
-                currentImage = newImage;
-                gsap.to(previewImg, {
-                    opacity: 0, 
-                    duration: 0.2, 
-                    onComplete: () => {
-                        previewImg.src = newImage;
-                        gsap.to(previewImg, { opacity: 1, duration: 0.3 });
-                    }
-                });
-            }
+    projectStages.forEach((stage, index) => {
+        ScrollTrigger.create({
+            trigger: stage,
+            start: "top 55%",
+            end: "bottom 45%",
+            onEnter: () => activateProject(index),
+            onEnterBack: () => activateProject(index)
         });
     });
 
     // ==========================================
-    // 7. SMOOTH ANCHOR SCROLLING
+    // 6. SCROLL REVEALS & LEFT-TO-RIGHT LINE DIFFERENTIATORS
+    // ==========================================
+    gsap.utils.toArray(".scroll-draw-line").forEach(line => {
+        gsap.to(line, {
+            scaleX: 1, duration: 0.9, ease: "power3.inOut",
+            scrollTrigger: { trigger: line, start: "top 90%", toggleActions: "play none none reverse" }
+        });
+    });
+
+    document.querySelectorAll(".reveal-text").forEach((text) => {
+        gsap.fromTo(text, { y: 35, opacity: 0 }, {
+            y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+            scrollTrigger: { trigger: text, start: "top 86%", toggleActions: "play none none reverse" }
+        });
+    });
+
+    // ==========================================
+    // 7. SMOOTH ANCHOR SCROLLING (Accounts for Sticky Header + Sticky Project Bar)
     // ==========================================
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
@@ -206,9 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!target) return;
             e.preventDefault();
             
-            const navHeight = document.querySelector('.wire-nav').offsetHeight;
-            const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight;
+            const headerHeight = document.querySelector('.klear-header')?.offsetHeight || 68;
+            const sprintBar = document.querySelector('.sprint-top-bar');
+            const isProjectLink = id.startsWith('#proj-');
+            const extraOffset = (isProjectLink && sprintBar) ? sprintBar.offsetHeight : 0;
             
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - extraOffset;
             window.scrollTo({ top: targetPosition, behavior: 'smooth' });
         });
     });
