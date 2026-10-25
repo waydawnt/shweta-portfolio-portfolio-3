@@ -104,7 +104,7 @@ main, header, footer { position: relative; z-index: 2; }
 .nav-location { font-size: 0.92rem; font-weight: 500; opacity: 0.85; }
 
 /* =========================================
-   5. UNIFIED LANDING PAGE (2.5D + Klear + Cohesion)
+   5. UNIFIED LANDING PAGE (DESKTOP)
    ========================================= */
 .razor-hero { 
     position: relative; width: 100%; height: 100vh; min-height: 760px;
@@ -115,7 +115,7 @@ main, header, footer { position: relative; z-index: 2; }
 }
 .razor-hero .hero-bottom-line { position: absolute; bottom: 0; left: 0; z-index: 15; }
 
-/* 2.5D LAYER SIZES & POSITIONS (LOCKED FROM YOUR STYLE_3.CSS) */
+/* 2.5D LAYER SIZES & POSITIONS (DESKTOP LOCKED) */
 .hero-parallax { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 .p-layer-wrapper { position: absolute; will-change: transform, opacity; opacity: 0; }
 .p-layer { width: 100%; height: 100%; object-fit: contain; will-change: transform; }
@@ -163,7 +163,7 @@ main, header, footer { position: relative; z-index: 2; }
 .cohesion-rotator-mask {
     position: relative;
     width: 100%;
-    font-size: clamp(1.45rem, 2.4vw, 2.25rem);
+    font-size: clamp(1.35rem, 2.4vw, 2.25rem);
     height: 1.55em;
     overflow: hidden;
 }
@@ -256,11 +256,11 @@ main, header, footer { position: relative; z-index: 2; }
 
 .about-right-col { display: flex; flex-direction: column; gap: 1.8rem; }
 .about-paragraph {
-    font-size: clamp(1.25rem, 1.85vw, 1.65rem); font-weight: 500;
+    font-size: clamp(1.2rem, 1.85vw, 1.65rem); font-weight: 500;
     line-height: 1.65; letter-spacing: -0.015em; margin: 0; color: var(--charcoal);
 }
 .about-paragraph.highlight-p {
-    font-weight: 700; font-size: clamp(1.4rem, 2.1vw, 1.9rem);
+    font-weight: 700; font-size: clamp(1.35rem, 2.1vw, 1.9rem);
 }
 
 .color-chip {
@@ -291,11 +291,11 @@ main, header, footer { position: relative; z-index: 2; }
     box-shadow: 0 12px 30px rgba(0, 68, 255, 0.05);
 }
 .intern-left { display: flex; align-items: center; gap: 0.85rem; font-size: 1rem; font-weight: 500; }
-.pulse-dot { width: 10px; height: 10px; border-radius: 50%; background: #00D85A; box-shadow: 0 0 0 4px rgba(0, 216, 90, 0.2); }
+.pulse-dot { width: 10px; height: 10px; flex-shrink: 0; border-radius: 50%; background: #00D85A; box-shadow: 0 0 0 4px rgba(0, 216, 90, 0.2); }
 .intern-logo { height: 42px; width: auto; object-fit: contain; padding-left: 1.2rem; border-left: 1px solid var(--border-color); }
 
 /* =========================================
-   7. MOVING COMPANIES LOGO STRIP (ALL 8 IMAGE LOGOS)
+   7. MOVING COMPANIES LOGO STRIP
    ========================================= */
 .wire-companies { padding: 3rem 0 0 0; overflow: hidden; background: var(--pure-cream); }
 .companies-marquee { width: 100%; overflow: hidden; display: flex; padding-bottom: 3rem; }
@@ -327,7 +327,6 @@ main, header, footer { position: relative; z-index: 2; }
     position: relative;
 }
 
-/* Sticky Top Bar with Automatic ScrollSpy Blue Fill */
 .sprint-top-bar {
     position: sticky;
     top: 68px;
@@ -360,8 +359,6 @@ main, header, footer { position: relative; z-index: 2; }
     flex-direction: column;
 }
 
-/* Full-Bleed Razorpay Project Stage:
-   Inactive state is sleek dark charcoal; Active / Scrolled-in state fills with Razorpay Electric Blue! */
 .sprint-project-stage {
     width: 100%;
     min-height: 86vh;
@@ -380,13 +377,11 @@ main, header, footer { position: relative; z-index: 2; }
     transition: background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* AUTOMATIC BLUE FILL when scrolled into view (or hovered) */
 .sprint-project-stage.active-stage,
 .sprint-project-stage:hover {
     background-color: var(--electric-blue);
 }
 
-/* Left Column (Matches Razorpay "01/8 Agentic Platform") */
 .sprint-left-meta {
     position: sticky;
     top: 150px;
@@ -437,7 +432,6 @@ main, header, footer { position: relative; z-index: 2; }
     border-color: #FFFFFF;
 }
 
-/* Right Column: Razorpay Wireframe OS Window + Bottom Caption */
 .sprint-right-column {
     display: flex;
     flex-direction: column;
@@ -454,23 +448,14 @@ main, header, footer { position: relative; z-index: 2; }
     box-shadow: 0 28px 60px rgba(0, 0, 0, 0.22);
 }
 
-/* Top OS Bar with 3 Solid White Dots */
 .mac-titlebar {
     display: flex;
     align-items: center;
     padding: 0.85rem 1.4rem;
     border-bottom: 1.5px solid rgba(255, 255, 255, 0.55);
 }
-.mac-dots {
-    display: flex;
-    gap: 7px;
-}
-.mac-dots span {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #FFFFFF;
-}
+.mac-dots { display: flex; gap: 7px; }
+.mac-dots span { width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; }
 
 .mac-body {
     padding: 2.2rem 2.4rem;
@@ -479,7 +464,6 @@ main, header, footer { position: relative; z-index: 2; }
     gap: 1.8rem;
 }
 
-/* 2-Column Header Inside Window (Left Big Title | Right ✳ Note) */
 .mac-header-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -487,31 +471,16 @@ main, header, footer { position: relative; z-index: 2; }
     align-items: end;
 }
 .mac-main-title {
-    font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+    font-size: clamp(2rem, 3.6vw, 3.4rem);
     font-weight: 700;
     line-height: 1.02;
     letter-spacing: -0.035em;
     margin: 0;
 }
-.mac-sub-note {
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-}
-.mac-asterisk {
-    font-size: 1.2rem;
-    font-weight: 700;
-    opacity: 0.9;
-}
-.mac-sub-note p {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 500;
-    line-height: 1.4;
-    opacity: 0.95;
-}
+.mac-sub-note { display: flex; flex-direction: column; gap: 0.45rem; }
+.mac-asterisk { font-size: 1.2rem; font-weight: 700; opacity: 0.9; }
+.mac-sub-note p { margin: 0; font-size: 1.05rem; font-weight: 500; line-height: 1.4; opacity: 0.95; }
 
-/* Dark Inner Canvas (#05070B) + Floating Interactive Cards (Like Razorpay PAN Card / Pill) */
 .mac-stage {
     position: relative;
     width: 100%;
@@ -533,46 +502,28 @@ main, header, footer { position: relative; z-index: 2; }
     transition: transform 0.25s ease-out;
 }
 
-/* Floating Card & Pill Overlays (Matching Razorpay Screenshot) */
 .mac-floating-card {
     position: absolute;
-    bottom: 26px;
-    left: 28px;
-    background: #FFFFFF;
-    color: #0D1216;
+    bottom: 26px; left: 28px;
+    background: #FFFFFF; color: #0D1216;
     padding: 0.85rem 1.25rem;
     border-radius: 12px;
     box-shadow: 0 16px 32px rgba(0,0,0,0.35);
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    display: flex; flex-direction: column; gap: 0.2rem;
     transform: rotate(-4deg);
     pointer-events: none;
     transition: transform 0.35s ease;
 }
-.fc-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--electric-blue);
-}
-.mac-floating-card strong {
-    font-size: 1rem;
-    font-weight: 800;
-}
+.fc-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--electric-blue); }
+.mac-floating-card strong { font-size: 1rem; font-weight: 800; }
 
 .mac-floating-pill {
     position: absolute;
-    bottom: 18px;
-    left: 200px;
-    background: #0D1216;
-    color: #FFFFFF;
+    bottom: 18px; left: 200px;
+    background: #0D1216; color: #FFFFFF;
     border: 1.5px solid rgba(255,255,255,0.25);
-    padding: 0.55rem 1.2rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: 0.55rem 1.2rem; border-radius: 50px;
+    font-size: 0.85rem; font-weight: 600;
     transform: rotate(-3deg);
     box-shadow: 0 12px 24px rgba(0,0,0,0.4);
     pointer-events: none;
@@ -581,76 +532,42 @@ main, header, footer { position: relative; z-index: 2; }
 
 .mac-count-orb {
     position: absolute;
-    bottom: 22px;
-    right: 28px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #E5E7EB;
-    color: #0D1216;
-    font-weight: 800;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    bottom: 22px; right: 28px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #E5E7EB; color: #0D1216;
+    font-weight: 800; font-size: 0.9rem;
+    display: flex; align-items: center; justify-content: center;
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     pointer-events: none;
 }
 
-.sprint-mac-window:hover .mac-floating-card {
-    transform: rotate(-1deg) translateY(-6px) scale(1.03);
-}
-.sprint-mac-window:hover .mac-floating-pill {
-    transform: rotate(0deg) translate(6px, -4px);
-}
+.sprint-mac-window:hover .mac-floating-card { transform: rotate(-1deg) translateY(-6px) scale(1.03); }
+.sprint-mac-window:hover .mac-floating-pill { transform: rotate(0deg) translate(6px, -4px); }
 
-/* Bottom-Right Action Prompt Bar (Matches "Ask RAY anything. [ -> ]") */
-.mac-bottom-row {
-    display: flex;
-    justify-content: flex-end;
-}
+.mac-bottom-row { display: flex; justify-content: flex-end; }
 .mac-action-bar {
     width: 55%;
     min-width: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
     padding: 0.55rem 0.6rem 0.55rem 1.25rem;
     border-radius: 10px;
     border: 1.5px solid rgba(255, 255, 255, 0.5);
     background: rgba(255, 255, 255, 0.06);
     color: #FFFFFF;
-    font-weight: 500;
-    font-size: 0.95rem;
+    font-weight: 500; font-size: 0.95rem;
     transition: background 0.3s ease, border-color 0.3s ease;
 }
-.mac-action-bar:hover {
-    background: rgba(255, 255, 255, 0.16);
-    border-color: #FFFFFF;
-}
+.mac-action-bar:hover { background: rgba(255, 255, 255, 0.16); border-color: #FFFFFF; }
 .mac-arrow-box {
-    width: 36px;
-    height: 36px;
-    border-radius: 7px;
-    background: #05070B;
-    color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 36px; height: 36px; border-radius: 7px; flex-shrink: 0;
+    background: #05070B; color: #FFFFFF;
+    display: flex; align-items: center; justify-content: center;
     font-size: 1.05rem;
     transition: transform 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
-.mac-action-bar:hover .mac-arrow-box {
-    background: #FFFFFF;
-    color: var(--electric-blue);
-    transform: translateX(3px);
-}
+.mac-action-bar:hover .mac-arrow-box { background: #FFFFFF; color: var(--electric-blue); transform: translateX(3px); }
 
-.sprint-window-caption {
-    font-size: 0.95rem;
-    opacity: 0.9;
-    padding-left: 0.25rem;
-}
+.sprint-window-caption { font-size: 0.95rem; opacity: 0.9; padding-left: 0.25rem; }
 
 /* =========================================
    9. SKILLS, EXPERIENCE, EXPOSURE, EDUCATION
@@ -700,37 +617,239 @@ main, header, footer { position: relative; z-index: 2; }
 
 .wire-footer { background: var(--charcoal); color: var(--pure-cream); }
 .footer-top { padding: 8rem 4rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: flex-start; }
-.footer-title { font-family: var(--font-head); font-size: clamp(2.8rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 1.5rem 0; max-width: 25ch; line-height: 1.1; }
+.footer-title { font-family: var(--font-head); font-size: clamp(2.4rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; margin: 0 0 1.5rem 0; max-width: 25ch; line-height: 1.1; }
 .footer-subtitle { font-family: var(--font-body); font-size: 1.2rem; color: #6699FF; margin-bottom: 3rem; font-weight: 500; }
 .footer-bottom { display: flex; justify-content: space-between; padding: 2rem 4rem; font-size: 1rem; opacity: 0.7; }
 .socials { display: flex; gap: 2rem; font-weight: 500;}
 .socials a:hover { color: var(--electric-blue); }
 
 /* =========================================
-   RESPONSIVE
+   11. TABLET & MOBILE RESPONSIVE ARCHITECTURE
    ========================================= */
 @media (max-width: 1024px) {
-    .nav-links, .nav-location, .klear-bg-columns, .sprint-top-bar, .mac-floating-pill { display: none; }
-    .hero-inner { padding: 0 2rem; }
-    .hero-content { width: 100%; max-width: 100%; z-index: 10;}
-    .layer-woman-wrap { right: 5%; }
-    .layer-bg-wrap { opacity: 0.3; width: 100%; top: 15%; right: 0; }
-    .about-editorial-grid, .sprint-project-stage, .section-split-grid, .mac-header-grid { grid-template-columns: 1fr; gap: 2rem; }
+    html { cursor: auto; }
+    a { cursor: pointer; }
+    .custom-cursor, .nav-links, .nav-location, .klear-bg-columns, .klear-grid-lines, .hero-scroll-widget, .mac-floating-pill {
+        display: none !important;
+    }
+
+    .klear-header { padding: 0 2rem; }
+
+    /* HERO STACKS CLEANLY: Top Text Block + Bottom Dedicated 2.5D Illustration Stage */
+    .razor-hero {
+        height: auto;
+        min-height: 100svh;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        padding-top: 88px;
+    }
+
+    .hero-inner {
+        padding: 1.5rem 2rem 0.5rem 2rem;
+        margin: 0;
+    }
+
+    .hero-content {
+        width: 100%;
+        max-width: 100%;
+        gap: 0.9rem;
+    }
+
+    .razor-title {
+        font-size: clamp(2.8rem, 9vw, 4.5rem);
+    }
+
+    .cohesion-rotator-mask {
+        font-size: clamp(1.3rem, 4.5vw, 1.85rem);
+        height: 1.5em;
+    }
+
+    /* Dedicated 2.5D Stage at Bottom of Hero:
+       Uses the exact same relative proportions as desktop so Woman NEVER floats above Desk! */
+    .hero-parallax {
+        position: relative;
+        width: 100%;
+        height: 48svh;
+        min-height: 360px;
+        max-height: 480px;
+        margin-top: 0.5rem;
+        overflow: hidden;
+    }
+
+    .layer-bg-wrap {
+        top: 2%;
+        right: -4%;
+        width: 92%;
+        height: 86%;
+        z-index: 1;
+        opacity: 1;
+    }
+
+    .layer-woman-wrap {
+        bottom: -14%;
+        right: 6%;
+        width: 66%;
+        height: 82%;
+        z-index: 3;
+    }
+
+    .layer-desk-wrap {
+        bottom: -14%;
+        left: 0%;
+        width: 104%;
+        height: 62%;
+        z-index: 4;
+    }
+
+    /* Swipeable Sticky Project Top Bar on Tablet & Mobile */
+    .sprint-top-bar {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .sprint-top-bar::-webkit-scrollbar { display: none; }
+    .sprint-brand-cell { display: none; }
+    .sprint-tab { flex: 0 0 auto; padding: 0.9rem 1.15rem; font-size: 0.74rem; }
+
+    /* Sections Padding & Grid Adjustments */
+    .wire-about { padding: 5rem 2rem; }
+    .about-editorial-grid, .sprint-project-stage, .section-split-grid, .mac-header-grid {
+        grid-template-columns: 1fr;
+        gap: 2.2rem;
+    }
+    .sprint-project-stage { min-height: auto; padding: 4rem 2rem; }
     .sprint-left-meta { position: static; }
+    .split-left, .split-right, .exp-header { padding: 3rem 2rem; }
     .split-left { border-right: none; border-bottom: 1px solid var(--border-color); }
-    .mac-action-bar { width: 100%; }
+    .exposure-row, .exp-row { padding: 2rem; }
+    .mac-action-bar { width: 100%; min-width: 0; }
 }
 
 @media (max-width: 768px) {
-    html { cursor: auto; }
-    .custom-cursor { display: none; }
-    .klear-header { padding: 0 1.5rem; }
-    .layer-desk-wrap { height: 35vh; }
-    .layer-woman-wrap { height: 50vh; bottom: 10vh; right: 0; }
-    .sprint-project-stage { padding: 3rem 1.5rem; }
-    .mac-body { padding: 1.5rem; }
-    .exp-row { grid-template-columns: 1fr; gap: 0.75rem; padding: 2rem; }
-    .exp-date { text-align: left; }
-    .footer-top { padding: 4rem 2rem; }
-    .footer-bottom { flex-direction: column; gap: 2rem; padding: 2rem; }
+    .klear-header { padding: 0 1.25rem; }
+    .klear-nav-inner { height: 60px; }
+    .nav-brand { font-size: 0.95rem; }
+    .btn-blue { padding: 0.55rem 1.1rem; font-size: 0.82rem; }
+
+    .razor-hero { padding-top: 74px; }
+    .hero-inner { padding: 1.25rem 1.25rem 0 1.25rem; }
+    .hero-eyebrow { font-size: 0.82rem; }
+    .razor-title { font-size: clamp(2.5rem, 11vw, 3.4rem); }
+    .cohesion-sublabel { font-size: 0.82rem; }
+    .cohesion-rotator-mask { font-size: clamp(1.18rem, 5.2vw, 1.5rem); }
+    .btn-outline { padding: 0.65rem 1.4rem; font-size: 0.88rem; }
+
+    /* Proportional Mobile 2.5D Stage */
+    .hero-parallax {
+        height: 44svh;
+        min-height: 300px;
+        max-height: 390px;
+    }
+    .layer-bg-wrap {
+        top: 0%;
+        right: -6%;
+        width: 98%;
+        height: 86%;
+    }
+    .layer-woman-wrap {
+        bottom: -14%;
+        right: 2%;
+        width: 72%;
+        height: 82%;
+    }
+    .layer-desk-wrap {
+        bottom: -14%;
+        left: -4%;
+        width: 108%;
+        height: 62%;
+    }
+
+    /* About Section Mobile */
+    .wire-about { padding: 4rem 1.25rem; }
+    .about-side-title { font-size: 1.85rem; margin-bottom: 1.5rem; }
+    .about-paragraph { font-size: 1.12rem; line-height: 1.65; }
+    .about-paragraph.highlight-p { font-size: 1.28rem; }
+    .internship-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.9rem;
+        width: 100%;
+        padding: 1.1rem 1.25rem;
+    }
+    .intern-logo {
+        padding-left: 0;
+        padding-top: 0.75rem;
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+        height: 36px;
+    }
+
+    /* Companies Strip Mobile */
+    .companies-track { gap: 2.75rem; }
+    .company-logo img[alt="IBM"] { height: 28px; }
+    .company-logo img[alt="Harvard T.H. Chan"] { height: 26px; }
+    .company-logo img[alt="LearningMate"] { height: 26px; }
+    .company-logo img[alt="ideaForge"] { height: 52px; }
+    .company-logo img[alt="Microsoft"] { height: 26px; }
+    .company-logo img[alt="AMN Healthcare"] { height: 28px; }
+    .company-logo img[alt="Caption Health"] { height: 26px; }
+    .company-logo img[alt="Fragomen"] { height: 24px; }
+
+    /* Projects Section Mobile */
+    .sprint-top-bar { top: 60px; }
+    .sprint-project-stage { padding: 3rem 1.25rem; gap: 1.75rem; }
+    .sprint-side-heading { font-size: 1.35rem; }
+    .sprint-side-desc { font-size: 0.95rem; }
+    .mac-body { padding: 1.25rem; gap: 1.25rem; }
+    .mac-header-grid { gap: 0.85rem; }
+    .mac-main-title { font-size: 1.75rem; }
+    .mac-main-title br { display: none; }
+    .mac-sub-note p { font-size: 0.92rem; }
+    .mac-stage { height: 220px; padding: 1rem; }
+    .mac-floating-card {
+        bottom: 12px; left: 12px;
+        padding: 0.5rem 0.8rem;
+        border-radius: 9px;
+    }
+    .fc-label { font-size: 0.62rem; }
+    .mac-floating-card strong { font-size: 0.82rem; }
+    .mac-count-orb {
+        bottom: 12px; right: 12px;
+        width: 34px; height: 34px; font-size: 0.78rem;
+    }
+    .mac-action-bar {
+        padding: 0.5rem 0.5rem 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+    .mac-arrow-box { width: 32px; height: 32px; }
+    .sprint-window-caption { font-size: 0.85rem; }
+
+    /* Skills, Experience, Exposure, Education Mobile */
+    .split-left, .split-right, .exp-header { padding: 2.5rem 1.25rem; }
+    .split-left h2, .exp-header h2 { font-size: 2.25rem; }
+    .skill-tag { padding: 0.65rem 1.2rem; font-size: 0.92rem; }
+    .exposure-row {
+        grid-template-columns: 38px 1fr;
+        padding: 1.75rem 1.25rem;
+    }
+    .exposure-row p { font-size: 1.05rem; }
+    .exp-row {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+        padding: 1.75rem 1.25rem;
+    }
+    .exp-role { font-size: 1.25rem; }
+    .exp-company { font-size: 0.98rem; }
+    .exp-date { text-align: left; font-size: 0.9rem; margin-top: 0.2rem; }
+
+    /* Quote & Footer Mobile */
+    .philosophy-quote { padding: 4rem 1.25rem; }
+    .philosophy-quote blockquote { font-size: 1.15rem; }
+    .footer-top { padding: 4rem 1.25rem; }
+    .footer-title { font-size: 2.1rem; }
+    .footer-subtitle { font-size: 1.05rem; margin-bottom: 2rem; }
+    .btn-blue.large { padding: 1rem 2rem; font-size: 1.05rem; }
+    .footer-bottom { flex-direction: column; gap: 1.5rem; padding: 1.75rem 1.25rem; font-size: 0.9rem; }
 }

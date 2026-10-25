@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(updateClock, 30000);
 
     // ==========================================
-    // 1. KLEAR-STYLE CUSTOM CURSOR & MAGNETIC BUTTONS
+    // 1. KLEAR-STYLE CUSTOM CURSOR & MAGNETIC BUTTONS (Desktop)
     // ==========================================
     const cursor = document.querySelector('.custom-cursor');
     const hoverElements = document.querySelectorAll('a, .magnetic, .sprint-mac-window');
 
-    if (window.innerWidth >= 768) {
+    if (window.innerWidth > 1024) {
         window.addEventListener('mousemove', (e) => {
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: "power2.out" });
         });
@@ -45,11 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 2. MASTER OPENING SEQUENCE:
-    //    Step 1: Dark to light opening (Preloader slides DOWN)
-    //    Step 2: 2.5D Image loads/forms itself FIRST
-    //    Step 3: Grid lines draw one by one (Top -> Right -> Left)
-    //    Step 4: "Hello, I'm Shweta" + First Cohesion trait slide up smoothly
+    // 2. MASTER OPENING SEQUENCE
     // ==========================================
     const preloader = document.getElementById('preloader');
     const preloaderName = document.getElementById('preloader-name');
@@ -94,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.35"
     )
 
-    // STEP 3: Grid lines draw one by one (Top -> Right -> Left)
+    // STEP 3: Grid lines draw one by one
     .to(".header-draw-line, .hero-bottom-line", {
         scaleX: 1, duration: 0.7, ease: "power3.inOut"
     }, "-=0.4")
@@ -153,70 +149,96 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 4. KLEAR SCROLL PARALLAX ON HERO TEXT + 2.5D HOVER
+    // 4. RESPONSIVE SCROLL PARALLAX & 2.5D INTERACTION (Desktop Mouse + Mobile Touch/Float)
     // ==========================================
-    gsap.to("#scroll-move-right", {
-        x: 90,
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".razor-hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.2
-        }
+    const mm = gsap.matchMedia();
+
+    // Desktop Horizontal Scroll Drift
+    mm.add("(min-width: 1025px)", () => {
+        gsap.to("#scroll-move-right", {
+            x: 90,
+            ease: "none",
+            scrollTrigger: { trigger: ".razor-hero", start: "top top", end: "bottom top", scrub: 1.2 }
+        });
+        gsap.to("#scroll-move-left", {
+            x: -90,
+            ease: "none",
+            scrollTrigger: { trigger: ".razor-hero", start: "top top", end: "bottom top", scrub: 1.2 }
+        });
     });
 
-    gsap.to("#scroll-move-left", {
-        x: -90,
-        ease: "none",
-        scrollTrigger: {
-            trigger: ".razor-hero",
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.2
-        }
-    });
-
-    if (window.innerWidth >= 768) {
-        const interactiveContainers = document.querySelectorAll('.interactive-container');
-        interactiveContainers.forEach(container => {
-            container.addEventListener('mousemove', (e) => {
-                const rect = container.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                
-                container.querySelectorAll('.p-layer').forEach(img => {
-                    const depth = parseFloat(img.getAttribute('data-mouse-depth')) || 0.05;
-                    gsap.to(img, { 
-                        x: (e.clientX - centerX) * depth, 
-                        y: (e.clientY - centerY) * depth, 
-                        duration: 0.45, 
-                        ease: "power2.out" 
-                    });
-                });
-
-                const interactiveText = container.querySelector('.interactive-text');
-                if (interactiveText) {
-                    gsap.to(interactiveText, { 
-                        x: (e.clientX - centerX) * 0.012, 
-                        y: (e.clientY - centerY) * 0.012, 
-                        rotationX: ((e.clientY - centerY) / centerY) * -1.5, 
-                        rotationY: ((e.clientX - centerX) / centerX) * 1.5, 
-                        transformPerspective: 1000, 
-                        duration: 0.45, 
-                        ease: "power2.out" 
-                    });
-                }
-            });
-
-            container.addEventListener('mouseleave', () => {
-                gsap.to(container.querySelectorAll('.p-layer'), { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
-                const interactiveText = container.querySelector('.interactive-text');
-                if (interactiveText) gsap.to(interactiveText, { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.8, ease: "power2.out" });
-            });
+    // Tablet/Mobile Subtle Scroll Drift (Never pushes text off-screen)
+    mm.add("(max-width: 1024px)", () => {
+        gsap.to("#scroll-move-right", {
+            x: 20,
+            ease: "none",
+            scrollTrigger: { trigger: ".razor-hero", start: "top top", end: "bottom top", scrub: 1 }
+        });
+        gsap.to("#scroll-move-left", {
+            x: -15,
+            ease: "none",
+            scrollTrigger: { trigger: ".razor-hero", start: "top top", end: "bottom top", scrub: 1 }
         });
 
-        // Interactive 2.5D Motion inside Razorpay OS Window
+        // Subtle continuous 2.5D breathing animation on mobile/tablet so it's never static
+        gsap.to(".layer-woman-wrap .p-layer", {
+            y: -6, x: 4, duration: 3.2, repeat: -1, yoyo: true, ease: "sine.inOut"
+        });
+        gsap.to(".layer-desk-wrap .p-layer", {
+            y: 5, x: -5, duration: 2.8, repeat: -1, yoyo: true, ease: "sine.inOut"
+        });
+    });
+
+    // Mouse & Touch 2.5D Layer Tracking
+    const interactiveContainers = document.querySelectorAll('.interactive-container');
+    interactiveContainers.forEach(container => {
+        function moveLayers(clientX, clientY) {
+            const rect = container.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            container.querySelectorAll('.p-layer').forEach(img => {
+                const depth = parseFloat(img.getAttribute('data-mouse-depth')) || 0.05;
+                gsap.to(img, {
+                    x: (clientX - centerX) * depth,
+                    y: (clientY - centerY) * depth,
+                    duration: 0.45,
+                    ease: "power2.out"
+                });
+            });
+
+            if (window.innerWidth > 1024) {
+                const interactiveText = container.querySelector('.interactive-text');
+                if (interactiveText) {
+                    gsap.to(interactiveText, {
+                        x: (clientX - centerX) * 0.012,
+                        y: (clientY - centerY) * 0.012,
+                        rotationX: ((clientY - centerY) / centerY) * -1.5,
+                        rotationY: ((clientX - centerX) / centerX) * 1.5,
+                        transformPerspective: 1000,
+                        duration: 0.45,
+                        ease: "power2.out"
+                    });
+                }
+            }
+        }
+
+        container.addEventListener('mousemove', (e) => moveLayers(e.clientX, e.clientY));
+        container.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches[0]) {
+                moveLayers(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        container.addEventListener('mouseleave', () => {
+            gsap.to(container.querySelectorAll('.p-layer'), { x: 0, y: 0, duration: 0.8, ease: "power2.out" });
+            const interactiveText = container.querySelector('.interactive-text');
+            if (interactiveText) gsap.to(interactiveText, { x: 0, y: 0, rotationX: 0, rotationY: 0, duration: 0.8, ease: "power2.out" });
+        });
+    });
+
+    // Interactive 2.5D Motion inside Razorpay OS Window (Desktop)
+    if (window.innerWidth > 1024) {
         document.querySelectorAll('.sprint-mac-window').forEach(win => {
             const img = win.querySelector('.mac-move-img');
             const card = win.querySelector('.mac-floating-card');
@@ -242,10 +264,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const projectStages = document.querySelectorAll('.sprint-project-stage');
     const sprintTabs = document.querySelectorAll('.sprint-tab');
+    const topBar = document.getElementById('sprint-top-bar');
 
     function activateProject(index) {
         sprintTabs.forEach((tab, i) => {
-            tab.classList.toggle('active', i === index);
+            const isActive = i === index;
+            tab.classList.toggle('active', isActive);
+            // Auto-scroll the horizontal top bar on mobile/tablet so the active blue tab stays centered
+            if (isActive && topBar && window.innerWidth <= 1024) {
+                const scrollTarget = tab.offsetLeft - (topBar.clientWidth / 2) + (tab.clientWidth / 2);
+                topBar.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+            }
         });
         projectStages.forEach((stage, i) => {
             stage.classList.toggle('active-stage', i === index);
@@ -275,12 +304,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".reveal-text").forEach((text) => {
         gsap.fromTo(text, { y: 35, opacity: 0 }, {
             y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
-            scrollTrigger: { trigger: text, start: "top 86%", toggleActions: "play none none reverse" }
+            scrollTrigger: { trigger: text, start: "top 88%", toggleActions: "play none none reverse" }
         });
     });
 
     // ==========================================
-    // 7. SMOOTH ANCHOR SCROLLING (Accounts for Sticky Header + Sticky Project Bar)
+    // 7. SMOOTH ANCHOR SCROLLING
     // ==========================================
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
@@ -290,7 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!target) return;
             e.preventDefault();
             
-            const headerHeight = document.querySelector('.klear-header')?.offsetHeight || 68;
+            const headerHeight = document.querySelector('.klear-header')?.offsetHeight || 60;
             const sprintBar = document.querySelector('.sprint-top-bar');
             const isProjectLink = id.startsWith('#proj-');
             const extraOffset = (isProjectLink && sprintBar) ? sprintBar.offsetHeight : 0;

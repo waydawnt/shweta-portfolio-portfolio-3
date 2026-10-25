@@ -46,7 +46,7 @@
 
 <main>
 
-<!-- ============ 3. UNIFIED LANDING PAGE (Image Loads First -> Grid -> Hello I'm Shweta + Cohesion Rotator) ============ -->
+<!-- ============ 3. UNIFIED LANDING PAGE (Desktop Side-by-Side / Mobile Stacked Stage) ============ -->
 <section class="razor-hero interactive-container" id="hero">
     
     <!-- Constant Spacing Vertical Columns (Hero Only - Klear Style) -->
@@ -62,25 +62,7 @@
         <div class="k-line k-line-left"></div>
     </div>
 
-    <!-- 2.5D Visual Scene (Locked to your exact coordinates) -->
-    <div class="hero-parallax">
-        <!-- Layer 1: Background Moodboard -->
-        <div class="p-layer-wrapper layer-bg-wrap">
-            <img src="assets/Blue-and-White Strategy Moodboard.webp" class="p-layer" data-mouse-depth="0.02" alt="Moodboard">
-        </div>
-        
-        <!-- Layer 2: Character -->
-        <div class="p-layer-wrapper layer-woman-wrap">
-            <img src="assets/Blue Halftone Woman Writing.webp" class="p-layer" data-mouse-depth="0.055" alt="Designer">
-        </div>
-        
-        <!-- Layer 3: Foreground Desk -->
-        <div class="p-layer-wrapper layer-desk-wrap">
-            <img src="assets/Blue Halftone Office Desk Scene.webp" class="p-layer" data-mouse-depth="0.11" alt="Desk">
-        </div>
-    </div>
-
-    <!-- Left Column Hero Text -->
+    <!-- Left/Top Hero Text -->
     <div class="hero-inner">
         <div class="hero-content interactive-text">
             
@@ -120,7 +102,25 @@
         </div>
     </div>
 
-    <!-- Figma Style Scroll Widget -->
+    <!-- 2.5D Visual Scene (Desktop: Full-bleed right | Mobile/Tablet: Dedicated bottom stage so it never overlaps text) -->
+    <div class="hero-parallax">
+        <!-- Layer 1: Background Moodboard -->
+        <div class="p-layer-wrapper layer-bg-wrap">
+            <img src="assets/Blue-and-White Strategy Moodboard.webp" class="p-layer" data-mouse-depth="0.02" alt="Moodboard">
+        </div>
+        
+        <!-- Layer 2: Character -->
+        <div class="p-layer-wrapper layer-woman-wrap">
+            <img src="assets/Blue Halftone Woman Writing.webp" class="p-layer" data-mouse-depth="0.055" alt="Designer">
+        </div>
+        
+        <!-- Layer 3: Foreground Desk -->
+        <div class="p-layer-wrapper layer-desk-wrap">
+            <img src="assets/Blue Halftone Office Desk Scene.webp" class="p-layer" data-mouse-depth="0.11" alt="Desk">
+        </div>
+    </div>
+
+    <!-- Figma Style Scroll Widget (Desktop Only) -->
     <div class="hero-scroll-widget hero-text-fade">
         <div class="mouse-icon"><div class="mouse-wheel"></div></div>
         <span class="scroll-text">Move mouse to interact<br>Scroll to explore</span>
@@ -180,11 +180,11 @@
     <div class="klear-draw-line scroll-draw-line"></div>
 </section>
 
-<!-- ============ 5. MOVING COMPANIES STRIP (All 8 Logos from Old Portfolio + Current) ============ -->
+<!-- ============ 5. MOVING COMPANIES STRIP (All 8 Logos) ============ -->
 <section class="wire-companies">
     <div class="companies-marquee">
         <div class="companies-track">
-            <!-- Set 1 (All 8 Company Logo Images) -->
+            <!-- Set 1 -->
             <div class="company-logo"><img src="assets/logo-ibm.webp" alt="IBM"></div>
             <span class="logo-divider">✦</span>
             <div class="company-logo"><img src="assets/logo-harvard.webp" alt="Harvard T.H. Chan"></div>
@@ -202,7 +202,7 @@
             <div class="company-logo"><img src="assets/logo-fragomen.webp" alt="Fragomen"></div>
             <span class="logo-divider">✦</span>
 
-            <!-- Set 2 (Duplicated for seamless loop) -->
+            <!-- Set 2 -->
             <div class="company-logo"><img src="assets/logo-ibm.webp" alt="IBM"></div>
             <span class="logo-divider">✦</span>
             <div class="company-logo"><img src="assets/logo-harvard.webp" alt="Harvard T.H. Chan"></div>
@@ -227,8 +227,8 @@
 <!-- ============ 6. PROJECTS (Exact Razorpay Sprint '26 OS Window + Auto-Scroll Blue Highlight) ============ -->
 <section class="razor-projects-section" id="work">
     
-    <!-- Sticky Top Bar: Automatically highlights with Blue Fill as you scroll manually! -->
-    <div class="sprint-top-bar">
+    <!-- Sticky Top Bar: Swipeable on mobile, automatically highlights with Blue Fill on scroll -->
+    <div class="sprint-top-bar" id="sprint-top-bar">
         <div class="sprint-brand-cell">✦ SELECTED WORK / 06</div>
         <a href="#proj-1" class="sprint-tab active" data-target="proj-1">01. PLAY AT WHAT COST</a>
         <a href="#proj-2" class="sprint-tab" data-target="proj-2">02. PROXIMATE</a>
@@ -269,7 +269,6 @@
 
                         <div class="mac-stage">
                             <img src="assets/go-kart.webp" alt="Play at What Cost" class="mac-move-img">
-                            <!-- Razorpay-style floating interactive badges -->
                             <div class="mac-floating-card">
                                 <span class="fc-label">Safety Compliance</span>
                                 <strong>Instinctive Nudges</strong>
@@ -622,10 +621,10 @@
     <div class="klear-draw-line scroll-draw-line"></div>
 </section>
 
-<!-- ============ 11. PHILOSOPHY QUOTE (From Old Video Screenshot 8) ============ -->
+<!-- ============ 11. PHILOSOPHY QUOTE ============ -->
 <section class="philosophy-quote">
     <blockquote class="reveal-text">
-        "I craft solutions by deeply understanding the people, systems, and contexts involved. Their journeys — spanning products, services, and experiences — uncover insights that shape unified and impactful outcomes."
+        "I craft solutions by deeply understanding the people, systems, and contexts involved. Their journeys - spanning products, services, and experiences - uncover insights that shape unified and impactful outcomes."
     </blockquote>
 </section>
 
