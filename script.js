@@ -44,16 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ==========================================
+// ==========================================
     // 2. MASTER OPENING SEQUENCE
     // ==========================================
     const preloader = document.getElementById('preloader');
     const preloaderName = document.getElementById('preloader-name');
     const cohesionItems = document.querySelectorAll('.cohesion-item');
 
-    gsap.set(".k-line-top", { width: "0%" });
-    gsap.set(".k-line-right", { height: "0%" });
-    gsap.set(".k-line-left", { height: "0%" });
+    gsap.set(".k-col", { scaleY: 0 });
     gsap.set(".klear-nav-item", { y: -15, opacity: 0 });
     gsap.set(".hero-title-slide", { y: "115%", opacity: 0 });
     gsap.set(".hero-text-fade", { y: 20, opacity: 0 });
@@ -90,13 +88,16 @@ document.addEventListener("DOMContentLoaded", () => {
         "-=0.35"
     )
 
-    // STEP 3: Grid lines draw one by one
+    // STEP 3: Top Header Line + 8 Constant-Spaced Grid Columns draw in (Top -> Right -> Left)
     .to(".header-draw-line, .hero-bottom-line", {
         scaleX: 1, duration: 0.7, ease: "power3.inOut"
     }, "-=0.4")
-    .to(".k-line-top", { width: "100%", duration: 0.5, ease: "power2.out" }, "-=0.5")
-    .to(".k-line-right", { height: "100%", duration: 0.5, ease: "power2.out" }, "-=0.35")
-    .to(".k-line-left", { height: "100%", duration: 0.5, ease: "power2.out" }, "-=0.35")
+    .to(".k-col", {
+        scaleY: 1,
+        duration: 0.65,
+        stagger: { each: 0.05, from: "end" }, // Draws columns from Right to Left!
+        ease: "power2.out"
+    }, "-=0.5")
     .to(".klear-nav-item", {
         y: 0, opacity: 1, duration: 0.5, stagger: 0.06, ease: "power2.out"
     }, "-=0.5")
@@ -112,13 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
         y: "0%", opacity: 1, duration: 0.7, ease: "power4.out",
         onComplete: startCohesionCycle
     }, "-=0.45");
-
-    // Top Blue Progress Line
-    const progressBar = document.getElementById('scroll-progress');
-    window.addEventListener('scroll', () => {
-        const h = document.documentElement.scrollHeight - window.innerHeight;
-        progressBar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
-    }, { passive: true });
 
     // ==========================================
     // 3. COHESION CYCLING TEXT
