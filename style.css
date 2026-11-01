@@ -5,7 +5,7 @@
 :root {
     --pure-cream: #FBF9F5;
     --warm-sand: #EFECE6;
-    --charcoal: #12161F;
+    --charcoal: #12161f;
     --muted-grey: #6E7685;
     --preloader-bg: #16181D;
 
@@ -164,11 +164,8 @@ main, header, footer { position: relative; z-index: 2; }
     align-items: center;
     overflow: hidden; 
     background-color: var(--pure-cream);
-    background-image: 
-        linear-gradient(rgba(18, 22, 31, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(18, 22, 31, 0.045) 1px, transparent 1px);
-    background-size: 36px 36px;
 }
+
 .razor-hero .hero-bottom-line {
     position: absolute;
     bottom: 0; left: 0; right: 0;
@@ -442,17 +439,19 @@ main, header, footer { position: relative; z-index: 2; }
     color: var(--charcoal);
 }
 
-/* #2: High-Visibility Inline Badges */
 .hi-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.18rem 0.85rem;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.22rem 0.9rem;
     border-radius: 50px;
     font-size: 0.88em;
     font-weight: 600;
-    vertical-align: baseline;
-    margin: 0 0.15rem;
+    line-height: 1.2;              /* ← override inherited 1.75 */
+    vertical-align: middle;        /* ← centres badge in line box */
+    margin: 0.3rem 0.45rem;        /* ← proper horizontal + vertical breathing room */
+    white-space: nowrap;           /* ← stops text inside wrapping awkwardly */
 }
 .badge-cobalt { background: var(--electric-blue); color: #FFFFFF; }
 .badge-dark { background: var(--charcoal); color: #FFFFFF; }
