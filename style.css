@@ -131,7 +131,7 @@ main, header, footer { position: relative; z-index: 2; }
 /* State 3: High-Contrast Cobalt + White Halo when hovering White Pills inside Blue Sections */
 .custom-cursor.cursor-accent {
     background: var(--electric-blue);
-    box-shadow: 0 0 0 1.5px #FFFFFF;
+    box-shadow: 0 0 0 2px #FFFFFF;
 }
 .custom-cursor.cursor-accent.hovered {
     background: rgba(15, 67, 146, 0.16);
@@ -342,7 +342,7 @@ main, header, footer { position: relative; z-index: 2; }
 .cohesion-rotator-mask {
     position: relative;
     width: 100%;
-    font-size: clamp(0.9rem, 1.02vw, 0.98rem);
+    font-size: clamp(0.92rem, 1.02vw, 1rem);
     height: 1.55em;
     overflow: hidden;
 }
@@ -532,7 +532,9 @@ main, header, footer { position: relative; z-index: 2; }
     align-items: center;
     justify-content: center;
     gap: 0.35rem;
+    min-height: 2rem;
     padding: 0.16rem 0.78rem;
+    border: 1.5px solid transparent;
     border-radius: 50px;
     font-size: 0.88em;
     font-weight: 600;
@@ -541,11 +543,11 @@ main, header, footer { position: relative; z-index: 2; }
     margin: 0.18rem 0.25rem;
     white-space: nowrap;
 }
-.badge-cobalt { background: var(--electric-blue); color: #FFFFFF; }
+.badge-cobalt { background: var(--electric-blue); color: #FFFFFF; border-color: var(--electric-blue); }
 /* #7: Light background on NID pill so the black 🎓 cap icon is 100% visible */
-.badge-nid { background: var(--pure-cream); color: var(--charcoal); border: 1.5px solid var(--charcoal); }
-.badge-sky { background: var(--sky-blue); color: var(--charcoal); border: 1px solid rgba(15, 67, 146, 0.2); }
-.badge-sand { background: var(--pure-cream); color: var(--electric-blue); border: 1.5px solid var(--electric-blue); }
+.badge-nid { background: var(--pure-cream); color: var(--charcoal); border-color: var(--charcoal); }
+.badge-sky { background: var(--sky-blue); color: var(--charcoal); border-color: rgba(15, 67, 146, 0.35); }
+.badge-sand { background: var(--pure-cream); color: var(--electric-blue); border-color: var(--electric-blue); }
 
 /* =========================================
    7. MOVING COMPANIES STRIP (All 12 Company Logos)
@@ -614,7 +616,7 @@ main, header, footer { position: relative; z-index: 2; }
 .p-card-visual {
     position: relative;
     width: 100%;
-    height: 240px;
+    aspect-ratio: 16 / 10;
     background-color: var(--soft-blue);
     background-image: 
         linear-gradient(rgba(15, 67, 146, 0.05) 1px, transparent 1px),
@@ -625,7 +627,7 @@ main, header, footer { position: relative; z-index: 2; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    padding: 0;
     border: 1px solid rgba(15, 67, 146, 0.12);
 }
 .p-card-visual.is-logo-stage {
@@ -640,12 +642,128 @@ main, header, footer { position: relative; z-index: 2; }
     transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .p-card-img.logo-fit {
-    max-width: 62%;
-    max-height: 58%;
+    max-width: 46%;
+    max-height: 50%;
     border-radius: 0;
 }
 .project-card:hover .p-card-img {
     transform: scale(1.06) translateY(-2px);
+}
+
+/* Full-bleed project covers (fill the whole visual) */
+.p-card-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 0;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-card:hover .p-card-fill:not(.p-slide) { transform: scale(1.04); }
+
+/* Two-image projects: hover arrows to browse (crossfade + slide) */
+.p-slides {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-card:hover .p-slides { transform: scale(1.04); }
+.p-slide {
+    opacity: 0;
+    transform: translateX(4%) scale(1.04);
+    transition: opacity 0.9s ease, transform 1.3s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+.p-slide.is-prev { transform: translateX(-4%) scale(1.04); }
+
+.p-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 4;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #FFFFFF;
+    color: var(--electric-blue);
+    box-shadow: 0 6px 18px rgba(10, 46, 102, 0.28);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.25s ease, color 0.25s ease;
+    user-select: none;
+}
+.p-nav-prev { left: 12px; transform: translateX(-8px); }
+.p-nav-next { right: 12px; transform: translateX(8px); }
+.p-card-visual:hover .p-nav { opacity: 1; transform: translateX(0); }
+.p-nav:hover { background: var(--electric-blue); color: #FFFFFF; }
+.p-card-visual:hover .p-nav.is-disabled { opacity: 0.35; pointer-events: none; }
+@media (hover: none) {
+    .p-nav { opacity: 1; transform: none; }
+    .p-nav.is-disabled { opacity: 0.35; }
+}
+.p-slide.is-active { opacity: 1; transform: translateX(0) scale(1); }
+
+.p-dots {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.5rem 0.6rem;
+    border-radius: 50px;
+    background: rgba(18, 22, 31, 0.78);
+    backdrop-filter: blur(6px);
+}
+.p-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.5);
+    transition: width 0.35s ease, background-color 0.35s ease;
+}
+.p-dot.is-active { width: 18px; background: #FFFFFF; }
+
+/* Coming Soon: frosted white veil + label over the cover on hover */
+.p-soon-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+.p-soon-overlay span {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--electric-blue);
+    transform: translateY(8px);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-card.is-coming-soon .p-card-visual:hover .p-soon-overlay { opacity: 1; }
+.project-card.is-coming-soon .p-card-visual:hover .p-soon-overlay span { transform: translateY(0); }
+@media (hover: none) {
+    .p-soon-overlay { opacity: 1; }
+    .p-soon-overlay span { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .p-slide, .p-slides, .p-card-fill { transition: opacity 0.4s ease; }
+    .p-slide, .p-slide.is-prev { transform: none; }
 }
 
 /* Project Category Pill */
@@ -659,6 +777,7 @@ main, header, footer { position: relative; z-index: 2; }
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.03em;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28);
 }
 .pill-ongoing { background: var(--terracotta); color: #FFFFFF; }
 .pill-casestudy { background: var(--electric-blue); color: #FFFFFF; }
@@ -673,6 +792,7 @@ main, header, footer { position: relative; z-index: 2; }
     padding: 0.36rem 0.88rem;
     border-radius: 50px;
     background: rgba(18, 22, 31, 0.88);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
     backdrop-filter: blur(6px);
     color: #FFFFFF;
     font-size: 0.72rem;
@@ -686,6 +806,24 @@ main, header, footer { position: relative; z-index: 2; }
     color: #FFFFFF;
     transform: translateY(0);
     opacity: 1;
+}
+
+/* Coming Soon state (non-clickable card, no hover fill) */
+.project-card.is-coming-soon { cursor: default; }
+.project-card.is-coming-soon:hover {
+    background-color: var(--pure-cream);
+    border-color: rgba(15, 67, 146, 0.32);
+    color: inherit;
+    transform: none;
+    box-shadow: none;
+}
+.project-card.is-coming-soon:hover .p-card-img { transform: none; }
+.project-card.is-coming-soon:hover .p-card-tags { border-color: var(--border-color); }
+.project-card.is-coming-soon:hover .p-card-tags span { background: var(--warm-sand); color: var(--charcoal); }
+.p-outcome-badge.badge-soon,
+.project-card.is-coming-soon:hover .p-outcome-badge.badge-soon {
+    background: var(--terracotta);
+    color: #FFFFFF;
 }
 
 .p-card-body {
@@ -783,7 +921,7 @@ main, header, footer { position: relative; z-index: 2; }
 }
 .add-pill.pill-paper { background: var(--electric-blue); color: #FFFFFF; }
 .add-title { font-size: 0.98rem; font-weight: 600; }
-.add-desc { font-size: 0.88rem; color: var(--muted-grey); }
+.add-desc { font-size: 0.88rem; font-weight: 500; color: #3A4150; }
 
 /* =========================================
    9. EXPERIENCE, EXPOSURE, EDUCATION, SKILLS
@@ -808,7 +946,7 @@ main, header, footer { position: relative; z-index: 2; }
 .exp-timeline { display: flex; flex-direction: column; border-top: 1px solid rgba(255, 255, 255, 0.22); }
 .exp-row {
     display: grid;
-    grid-template-columns: 1.2fr 1.5fr 0.6fr;
+    grid-template-columns: 1.2fr 1.5fr 0.85fr;
     align-items: center;
     gap: 2rem;
     padding: 1.75rem 1rem;
@@ -821,7 +959,7 @@ main, header, footer { position: relative; z-index: 2; }
 }
 .exp-role { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; }
 .exp-company { font-size: 0.98rem; opacity: 0.88; font-weight: 400; }
-.exp-date { font-weight: 600; color: var(--sky-blue); font-size: 0.9rem; text-align: right; }
+.exp-date { font-weight: 600; color: var(--sky-blue); font-size: 0.9rem; text-align: right; white-space: nowrap; }
 
 /* Industry Exposure */
 .wire-exposure {

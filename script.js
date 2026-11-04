@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. CUSTOM CURSOR (3-State Dynamic Contrast)
     // ==========================================
     const cursor = document.querySelector('.custom-cursor');
-    const hoverElements = document.querySelectorAll('a, button, .project-card, .add-row, .skill-tag, .exp-row, .c-scrollbar');
+    const hoverElements = document.querySelectorAll('a, button, .p-nav, .add-row, .skill-tag, .exp-row, .c-scrollbar');
     let lastMouseX = 0;
     let lastMouseY = 0;
 
@@ -29,12 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 1. Check if cursor is over a white/light-filled element inside a blue section/card
         const isOverLightInnerElement = Boolean(
-            elUnderMouse.closest('.email-pill, .btn-cream, .p-card-visual, .p-card-tags span, .c-scrollbar')
+            elUnderMouse.closest('.email-pill, .btn-cream, a.project-card .p-card-visual, a.project-card .p-card-tags span, .c-scrollbar')
         );
 
         // 2. Check if cursor is over a blue/dark section or an element that fills with cobalt blue on hover
         const isOverBlueOrDark = Boolean(
-            elUnderMouse.closest('.wire-experience, .wire-footer, .project-card, .btn-neutral, .skill-tag, #preloader')
+            elUnderMouse.closest('.wire-experience, .wire-footer, a.project-card, .btn-neutral, .skill-tag, #preloader')
         );
 
         if (isOverLightInnerElement) {
@@ -351,6 +351,48 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
             window.scrollTo({ top: targetPosition, behavior: 'smooth' });
         });
+    });
+
+
+    // ==========================================
+    // 9. PROJECT CARD IMAGE BROWSER (hover arrows on two-image projects)
+    // ==========================================
+    document.querySelectorAll('.p-slides').forEach((wrap) => {
+        const visual = wrap.parentElement;
+        const slides = Array.from(wrap.querySelectorAll('.p-slide'));
+        const dots = Array.from(visual.querySelectorAll('.p-dot'));
+        const prevBtn = visual.querySelector('.p-nav-prev');
+        const nextBtn = visual.querySelector('.p-nav-next');
+        if (slides.length < 2) return;
+
+        let current = 0;
+
+        function show(next) {
+            if (next < 0 || next >= slides.length || next === current) return;
+            const goingForward = next > current;
+            // Outgoing slide exits in the direction of travel; incoming keeps its resting side
+            slides[current].classList.remove('is-active');
+            slides[current].classList.toggle('is-prev', goingForward);
+            slides[next].classList.add('is-active');
+            dots.forEach((d, i) => d.classList.toggle('is-active', i === next));
+            current = next;
+            if (prevBtn) prevBtn.classList.toggle('is-disabled', current === 0);
+            if (nextBtn) nextBtn.classList.toggle('is-disabled', current === slides.length - 1);
+        }
+
+        function bind(el, handler) {
+            if (!el) return;
+            el.addEventListener('click', (e) => {
+                // Cards are links: never navigate when browsing images
+                e.preventDefault();
+                e.stopPropagation();
+                handler();
+            });
+        }
+
+        bind(prevBtn, () => show(current - 1));
+        bind(nextBtn, () => show(current + 1));
+        dots.forEach((dot, i) => bind(dot, () => show(i)));
     });
 
     window.addEventListener("load", () => {
