@@ -2,15 +2,65 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.registerPlugin(ScrollTrigger);
 
     // ==========================================
-    // 1. CUSTOM CURSOR (Desktop)
+    // 0. INJECT & INITIALIZE CUSTOM FLOATING SCROLLBAR
+    // ==========================================
+    let customScrollbar = document.querySelector('.c-scrollbar');
+    if (!customScrollbar) {
+        customScrollbar = document.createElement('div');
+        customScrollbar.className = 'c-scrollbar';
+        customScrollbar.setAttribute('aria-hidden', 'true');
+        customScrollbar.innerHTML = '<div class="c-scrollbar-thumb"></div>';
+        document.body.appendChild(customScrollbar);
+    }
+    const scrollbarThumb = customScrollbar.querySelector('.c-scrollbar-thumb');
+
+    // ==========================================
+    // 1. CUSTOM CURSOR (3-State Dynamic Contrast)
     // ==========================================
     const cursor = document.querySelector('.custom-cursor');
-    const hoverElements = document.querySelectorAll('a, button, .project-card');
+    const hoverElements = document.querySelectorAll('a, button, .project-card, .add-row, .skill-tag, .exp-row, .c-scrollbar');
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    function updateCursorContrast(clientX, clientY) {
+        if (!cursor) return;
+        const elUnderMouse = document.elementFromPoint(clientX, clientY);
+        if (!elUnderMouse) return;
+
+        // 1. Check if cursor is over a white/light-filled element inside a blue section/card
+        const isOverLightInnerElement = Boolean(
+            elUnderMouse.closest('.email-pill, .btn-cream, .p-card-visual, .p-card-tags span, .c-scrollbar')
+        );
+
+        // 2. Check if cursor is over a blue/dark section or an element that fills with cobalt blue on hover
+        const isOverBlueOrDark = Boolean(
+            elUnderMouse.closest('.wire-experience, .wire-footer, .project-card, .btn-neutral, .skill-tag, #preloader')
+        );
+
+        if (isOverLightInnerElement) {
+            cursor.classList.remove('cursor-light');
+            cursor.classList.add('cursor-accent');
+        } else if (isOverBlueOrDark) {
+            cursor.classList.remove('cursor-accent');
+            cursor.classList.add('cursor-light');
+        } else {
+            cursor.classList.remove('cursor-light', 'cursor-accent');
+        }
+    }
 
     if (window.innerWidth > 1024 && cursor) {
         window.addEventListener('mousemove', (e) => {
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
             gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1, ease: "power2.out" });
+            updateCursorContrast(e.clientX, e.clientY);
         });
+
+        window.addEventListener('scroll', () => {
+            if (lastMouseX || lastMouseY) {
+                updateCursorContrast(lastMouseX, lastMouseY);
+            }
+        }, { passive: true });
 
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
@@ -19,7 +69,93 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 2. MASTER OPENING SEQUENCE
+    // 2. CUSTOM SCROLLBAR SYNC, DRAG & CONTRAST LOGIC
+    // ==========================================
+    function updateCustomScrollbar() {
+        if (!customScrollbar || !scrollbarThumb || window.innerWidth <= 1024) return;
+
+        const docHeight = document.documentElement.scrollHeight;
+        const winHeight = window.innerHeight;
+        const maxScroll = Math.max(1, docHeight - winHeight);
+        const trackRect = customScrollbar.getBoundingClientRect();
+        const trackHeight = trackRect.height;
+
+        const thumbHeight = Math.max(48, Math.min(trackHeight, (winHeight / docHeight) * trackHeight));
+        const maxThumbTop = Math.max(0, trackHeight - thumbHeight);
+        const scrollProgress = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+        const thumbTop = scrollProgress * maxThumbTop;
+
+        scrollbarThumb.style.height = `${thumbHeight}px`;
+        scrollbarThumb.style.transform = `translate3d(0, ${thumbTop}px, 0)`;
+
+        // Switch scrollbar to white when the thumb passes over dark blue sections (.wire-experience / .wire-footer)
+        const thumbCenterY = trackRect.top + thumbTop + thumbHeight / 2;
+        const expSec = document.querySelector('.wire-experience');
+        const footSec = document.querySelector('.wire-footer');
+        let onDarkSection = false;
+
+        [expSec, footSec].forEach(sec => {
+            if (sec) {
+                const r = sec.getBoundingClientRect();
+                if (thumbCenterY >= r.top && thumbCenterY <= r.bottom) {
+                    onDarkSection = true;
+                }
+            }
+        });
+
+        customScrollbar.classList.toggle('on-dark', onDarkSection);
+    }
+
+    // Drag-to-scroll & Click-on-track support
+    let isDraggingScrollbar = false;
+    let dragStartY = 0;
+    let dragStartScrollY = 0;
+
+    if (scrollbarThumb && customScrollbar) {
+        scrollbarThumb.addEventListener('mousedown', (e) => {
+            isDraggingScrollbar = true;
+            dragStartY = e.clientY;
+            dragStartScrollY = window.scrollY;
+            customScrollbar.classList.add('is-dragging');
+            document.documentElement.classList.add('is-dragging-scroll');
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDraggingScrollbar) return;
+            const docHeight = document.documentElement.scrollHeight;
+            const winHeight = window.innerHeight;
+            const maxScroll = Math.max(1, docHeight - winHeight);
+            const trackHeight = customScrollbar.getBoundingClientRect().height;
+            const thumbHeight = scrollbarThumb.offsetHeight;
+            const maxThumbTop = Math.max(1, trackHeight - thumbHeight);
+
+            const deltaY = e.clientY - dragStartY;
+            const scrollDelta = (deltaY / maxThumbTop) * maxScroll;
+            window.scrollTo(0, dragStartScrollY + scrollDelta);
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (!isDraggingScrollbar) return;
+            isDraggingScrollbar = false;
+            customScrollbar.classList.remove('is-dragging');
+            document.documentElement.classList.remove('is-dragging-scroll');
+        });
+
+        // Click anywhere on the track to jump smoothly
+        customScrollbar.addEventListener('mousedown', (e) => {
+            if (e.target === scrollbarThumb) return;
+            const trackRect = customScrollbar.getBoundingClientRect();
+            const thumbHeight = scrollbarThumb.offsetHeight;
+            const clickRatio = Math.min(1, Math.max(0, (e.clientY - trackRect.top - thumbHeight / 2) / (trackRect.height - thumbHeight)));
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            window.scrollTo({ top: clickRatio * maxScroll, behavior: 'smooth' });
+        });
+    }
+
+    // ==========================================
+    // 3. MASTER OPENING SEQUENCE
     // ==========================================
     const preloader = document.getElementById('preloader');
     const preloaderName = document.getElementById('preloader-name');
@@ -40,7 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
         yPercent: 100, duration: 0.85, ease: "power4.inOut",
         onComplete: () => {
             document.body.classList.remove('is-loading');
-            preloader.style.display = 'none';
+            if (preloader) preloader.style.display = 'none';
+            ScrollTrigger.refresh();
+            updateCustomScrollbar();
         }
     })
 
@@ -81,15 +219,20 @@ document.addEventListener("DOMContentLoaded", () => {
         onComplete: startCohesionCycle
     }, "-=0.4");
 
-    // Top Progress Bar
+    // Top Progress Bar & Custom Scrollbar Sync
     const progressBar = document.getElementById('scroll-progress');
     window.addEventListener('scroll', () => {
         const h = document.documentElement.scrollHeight - window.innerHeight;
-        progressBar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+        if (progressBar) {
+            progressBar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+        }
+        updateCustomScrollbar();
     }, { passive: true });
 
+    window.addEventListener('resize', updateCustomScrollbar, { passive: true });
+
     // ==========================================
-    // 3. COHESION CYCLING TEXT
+    // 4. COHESION CYCLING TEXT
     // ==========================================
     function startCohesionCycle() {
         if (!cohesionItems.length) return;
@@ -117,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 4. 2.5D ILLUSTRATION PARALLAX (Hero Text Stays Aligned per Page 1 #7/#9)
+    // 5. 2.5D ILLUSTRATION PARALLAX (Hero Text Stays Aligned)
     // ==========================================
     const interactiveContainers = document.querySelectorAll('.interactive-container');
     interactiveContainers.forEach(container => {
@@ -160,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 5. SCROLL REVEALS & LEFT-TO-RIGHT LINE DIFFERENTIATORS
+    // 6. SCROLL REVEALS & LEFT-TO-RIGHT LINE DIFFERENTIATORS
     // ==========================================
     gsap.utils.toArray(".scroll-draw-line").forEach(line => {
         gsap.to(line, {
@@ -177,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================
-    // 6. FOOTER EMAIL CLICK FEEDBACK (Copies email + opens mail client)
+    // 7. FOOTER EMAIL CLICK FEEDBACK (Copies email + opens mail client)
     // ==========================================
     const emailCta = document.getElementById('email-cta');
     const emailBadge = document.getElementById('email-badge');
@@ -188,13 +331,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             emailBadge.textContent = 'Copied! ✓';
             setTimeout(() => {
-                emailBadge.textContent = 'Write ↗';
+                emailBadge.textContent = 'Write';
             }, 2500);
         });
     }
 
     // ==========================================
-    // 7. SMOOTH ANCHOR SCROLLING
+    // 8. SMOOTH ANCHOR SCROLLING
     // ==========================================
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener('click', e => {
@@ -204,9 +347,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!target) return;
             e.preventDefault();
             
-            const headerHeight = document.querySelector('.klear-header')?.offsetHeight || 64;
+            const headerHeight = document.querySelector('.klear-header')?.offsetHeight || 68;
             const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight;
             window.scrollTo({ top: targetPosition, behavior: 'smooth' });
         });
     });
+
+    window.addEventListener("load", () => {
+        ScrollTrigger.refresh();
+        updateCustomScrollbar();
+    });
+
+    updateCustomScrollbar();
 });

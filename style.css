@@ -1,5 +1,5 @@
 /* =========================================
-   OCEAN'S EMBRACE & NITI COLOR PALETTE (Page 5)
+   OCEAN'S EMBRACE & NITI COLOR PALETTE
    Toned-down Rich Cobalt Blue, Glacial Sky, Warm Sand & Terracotta
    ========================================= */
 :root {
@@ -9,7 +9,7 @@
     --muted-grey: #6E7685;
     --preloader-bg: #16181D;
 
-    /* Toned-down Ocean's Embrace Cobalt (Not flashy neon) */
+    /* Toned-down Ocean's Embrace Cobalt */
     --electric-blue: #0F4392;
     --deep-cobalt: #0A2E66;
     --sky-blue: #CBE6F2;
@@ -18,19 +18,36 @@
 
     --border-color: rgba(18, 22, 31, 0.14);
     
-    /* Alignment Constants (Page 1 #7 & #9) */
+    /* Alignment & Spacing Constants (#10 Constant Heading-to-Content Gap) */
     --container-max: 1480px;
     --container-pad: 4rem;
-    --section-v-pad: 6.5rem;
+    --section-v-pad: 5.25rem;
+    --heading-to-content-gap: 2.25rem;
 
-    /* Montserrat Font (Page 1 #2: Regular 400 & SemiBold 600) */
+    /* Montserrat Font */
     --font-head: 'Montserrat', sans-serif;
     --font-body: 'Montserrat', sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; cursor: none; }
+/* Hide native right-side browser scrollbar across all browsers */
+html {
+    scroll-behavior: smooth;
+    cursor: none;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE / Edge */
+}
+html.is-dragging-scroll {
+    scroll-behavior: auto !important;
+    user-select: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+    width: 0 !important;
+    height: 0 !important;
+}
 
 body {
     margin: 0; padding: 0;
@@ -72,7 +89,7 @@ a { color: inherit; text-decoration: none; cursor: none; }
 main, header, footer { position: relative; z-index: 2; }
 
 /* =========================================
-   2. ANIMATED HORIZONTAL LINES
+   2. ANIMATED HORIZONTAL LINES (#1: End-to-End)
    ========================================= */
 .klear-draw-line {
     width: 100%;
@@ -88,12 +105,13 @@ main, header, footer { position: relative; z-index: 2; }
 }
 
 /* =========================================
-   3. CUSTOM CURSOR & TOP PROGRESS BAR
+   3. CUSTOM CURSOR, TOP PROGRESS BAR & CUSTOM FLOATING SCROLLBAR
    ========================================= */
 .custom-cursor {
     position: fixed; top: 0; left: 0; width: 10px; height: 10px;
     background: var(--electric-blue); border-radius: 50%; pointer-events: none; z-index: 10000;
-    transform: translate(-50%, -50%); transition: width 0.2s ease, height 0.2s ease, background 0.2s ease;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .custom-cursor.hovered {
     width: 40px; height: 40px;
@@ -101,14 +119,78 @@ main, header, footer { position: relative; z-index: 2; }
     border: 1.5px solid var(--electric-blue);
 }
 
+/* State 2: White Cursor when over Blue/Dark backgrounds or Blue-hovered pills */
+.custom-cursor.cursor-light {
+    background: #FFFFFF;
+}
+.custom-cursor.cursor-light.hovered {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1.5px solid #FFFFFF;
+}
+
+/* State 3: High-Contrast Cobalt + White Halo when hovering White Pills inside Blue Sections */
+.custom-cursor.cursor-accent {
+    background: var(--electric-blue);
+    box-shadow: 0 0 0 1.5px #FFFFFF;
+}
+.custom-cursor.cursor-accent.hovered {
+    background: rgba(15, 67, 146, 0.16);
+    border: 2px solid var(--electric-blue);
+    box-shadow: 0 0 0 2px #FFFFFF;
+}
+
 .scroll-progress {
     position: fixed; top: 0; left: 0; height: 4px; width: 0%;
     background: var(--electric-blue); z-index: 9998;
 }
 
+/* Custom Floating Pill Scrollbar */
+.c-scrollbar {
+    position: fixed;
+    top: 78px;
+    bottom: 18px;
+    right: 8px;
+    width: 6px;
+    border-radius: 50px;
+    background: rgba(18, 22, 31, 0.08);
+    backdrop-filter: blur(6px);
+    z-index: 9997;
+    transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.25s ease;
+}
+.c-scrollbar:hover,
+.c-scrollbar.is-dragging {
+    width: 10px;
+    background: rgba(18, 22, 31, 0.15);
+}
+.c-scrollbar-thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 44px;
+    border-radius: 50px;
+    background: var(--electric-blue);
+    box-shadow: 0 0 0 1px rgba(251, 249, 245, 0.65);
+    will-change: transform, height;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+/* Dynamic White Scrollbar when thumb is over Experience or Footer sections */
+.c-scrollbar.on-dark {
+    background: rgba(255, 255, 255, 0.18);
+}
+.c-scrollbar.on-dark .c-scrollbar-thumb {
+    background: #FFFFFF;
+    box-shadow: 0 0 0 1px rgba(10, 46, 102, 0.5);
+}
+/* Terracotta accent when actively dragging or hovering the scrollbar */
+.c-scrollbar:hover .c-scrollbar-thumb,
+.c-scrollbar.is-dragging .c-scrollbar-thumb {
+    background: var(--terracotta);
+    box-shadow: 0 0 0 1.5px #FFFFFF;
+}
+
 /* =========================================
-   4. HEADER (Page 1 #3, #4, #5, #6, #7)
-   Dead-center vertical alignment, right-aligned links
+   4. HEADER (#1: End-to-End Header Line)
    ========================================= */
 .klear-header {
     position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
@@ -119,15 +201,16 @@ main, header, footer { position: relative; z-index: 2; }
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: 4px var(--container-pad) 0 var(--container-pad);
-    height: 70px;
+    padding: 0 var(--container-pad);
+    height: 68px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 .klear-header .header-draw-line {
-    max-width: calc(var(--container-max) - (var(--container-pad) * 2));
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
 }
 .nav-brand {
     font-size: 0.92rem;
@@ -153,7 +236,7 @@ main, header, footer { position: relative; z-index: 2; }
 .nav-links a:hover { color: var(--electric-blue); }
 
 /* =========================================
-   5. HERO LANDING PAGE (Page 1 #8-#14)
+   5. HERO LANDING PAGE (No Grid, Updated Hierarchy #2 & #3)
    ========================================= */
 .razor-hero { 
     position: relative;
@@ -169,8 +252,9 @@ main, header, footer { position: relative; z-index: 2; }
 .razor-hero .hero-bottom-line {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    max-width: calc(var(--container-max) - (var(--container-pad) * 2));
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     z-index: 15;
 }
 
@@ -184,7 +268,7 @@ main, header, footer { position: relative; z-index: 2; }
 .layer-desk-wrap { bottom: -15%; left: 10%; width: 100%; height: 60vh; z-index: 4; }
 .layer-desk-wrap .p-layer { object-position: bottom center; }
 
-/* Hero Left Content (Brought up & flush with Name alignment constant) */
+/* Hero Left Content */
 .hero-inner {
     position: relative;
     z-index: 10;
@@ -192,7 +276,7 @@ main, header, footer { position: relative; z-index: 2; }
     max-width: var(--container-max);
     margin: 0 auto;
     padding: 0 var(--container-pad);
-    margin-top: -3vh;
+    margin-top: -2.5vh;
     pointer-events: none;
 }
 .hero-content {
@@ -202,10 +286,10 @@ main, header, footer { position: relative; z-index: 2; }
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.7rem;
+    gap: 0.65rem;
 }
 .hero-eyebrow {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -216,7 +300,7 @@ main, header, footer { position: relative; z-index: 2; }
     gap: 0.4rem;
 }
 
-/* #8 & #9: No asterisk, closer line spacing between Hello! and I'm Shweta */
+/* #1 in Hierarchy: Hello! I'm Shweta. */
 .razor-title {
     font-family: var(--font-head); 
     font-size: clamp(2.8rem, 4.8vw, 4.8rem); 
@@ -232,34 +316,35 @@ main, header, footer { position: relative; z-index: 2; }
 .hero-title-slide { display: block; will-change: transform, opacity; }
 .text-blue { color: var(--electric-blue); }
 
-/* #10: Strategic in Intent · Human in Focus · Systemic in Vision */
+/* #2 in Hierarchy: Strategic in Intent · Human in Focus · Systemic in Vision */
 .hero-pillars-line {
-    margin: 0.35rem 0 0 0;
-    font-size: 0.92rem;
+    margin: 0.45rem 0 0.1rem 0;
+    font-size: clamp(1.08rem, 1.45vw, 1.35rem);
     font-weight: 600;
+    line-height: 1.35;
     color: var(--electric-blue);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
 }
-.pillar-sep { margin: 0 0.35rem; opacity: 0.5; }
+.pillar-sep { margin: 0 0.35rem; opacity: 0.55; }
 
-/* Cohesion Cycling Text */
+/* #3 in Hierarchy: Cohesion Cycling Text (Smaller than Strategic in Intent) */
 .cohesion-block {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    margin-top: 0.2rem;
+    gap: 0.2rem;
+    margin-top: 0.15rem;
     width: 100%;
 }
 .cohesion-sublabel {
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     font-weight: 400;
     color: var(--muted-grey);
 }
 .cohesion-rotator-mask {
     position: relative;
     width: 100%;
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
-    height: 1.5em;
+    font-size: clamp(0.98rem, 1.2vw, 1.15rem);
+    height: 1.55em;
     overflow: hidden;
 }
 .cohesion-item {
@@ -268,8 +353,8 @@ main, header, footer { position: relative; z-index: 2; }
     font-family: var(--font-head);
     font-size: 1em;
     font-weight: 600;
-    line-height: 1.35;
-    letter-spacing: -0.02em;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
     color: var(--charcoal);
     white-space: nowrap;
     opacity: 0;
@@ -277,16 +362,16 @@ main, header, footer { position: relative; z-index: 2; }
     will-change: transform, opacity;
 }
 
-/* #12 & #14: Work & Resume Buttons with extra spacing above */
+/* #4 & #5: Work & Resume Buttons in Neutral State without Arrows */
 .hero-buttons {
-    margin-top: 1.25rem;
+    margin-top: 1.15rem;
     display: flex;
     align-items: center;
-    gap: 0.9rem;
+    gap: 0.85rem;
     flex-wrap: wrap;
 }
 
-/* #11: Scroll in grey */
+/* Scroll in grey */
 .hero-scroll-widget {
     position: absolute;
     bottom: 32px;
@@ -321,30 +406,22 @@ main, header, footer { position: relative; z-index: 2; }
 @keyframes scrollWheel { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
 
 /* =========================================
-   BUTTONS & SECTION HEADINGS
+   BUTTONS & SECTION HEADINGS (#4 Neutral State & #10 Constant Heading Spacing)
    ========================================= */
-.btn-blue {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.72rem 1.75rem; font-size: 0.88rem; font-weight: 600;
-    background: var(--electric-blue); color: var(--pure-cream);
-    border: 1.5px solid var(--electric-blue);
+.btn-neutral {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.85rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: var(--pure-cream);
+    color: var(--charcoal);
+    border: 1.5px solid var(--charcoal);
     border-radius: 50px;
     transition: all 0.25s ease;
 }
-.btn-blue:hover {
-    background: var(--deep-cobalt);
-    border-color: var(--deep-cobalt);
-    transform: translateY(-2px);
-}
-
-.btn-outline {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.72rem 1.75rem; font-size: 0.88rem; font-weight: 600;
-    background: var(--pure-cream); color: var(--charcoal);
-    border: 1.5px solid var(--charcoal); border-radius: 50px;
-    transition: all 0.25s ease;
-}
-.btn-outline:hover {
+.btn-neutral:hover {
     background: var(--electric-blue);
     border-color: var(--electric-blue);
     color: var(--pure-cream);
@@ -353,17 +430,23 @@ main, header, footer { position: relative; z-index: 2; }
 
 .btn-cream {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.75rem 1.65rem; font-size: 0.88rem; font-weight: 600;
-    background: var(--pure-cream); color: var(--electric-blue);
+    padding: 0.72rem 1.65rem; font-size: 0.86rem; font-weight: 600;
+    background: transparent; color: var(--pure-cream);
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
     border-radius: 50px;
     transition: all 0.25s ease;
 }
 .btn-cream:hover {
-    background: var(--sky-blue);
-    color: var(--charcoal);
+    background: var(--pure-cream);
+    color: var(--electric-blue);
+    border-color: var(--pure-cream);
     transform: translateY(-2px);
 }
 
+/* #10: Constant Heading-to-Matter Spacing Across All Sections */
+.section-header-block {
+    margin-bottom: var(--heading-to-content-gap);
+}
 .section-index {
     font-size: 0.78rem;
     font-weight: 600;
@@ -371,7 +454,7 @@ main, header, footer { position: relative; z-index: 2; }
     text-transform: uppercase;
     color: var(--electric-blue);
     display: block;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
 }
 .section-main-title {
     font-size: clamp(2rem, 3.2vw, 2.75rem);
@@ -382,10 +465,10 @@ main, header, footer { position: relative; z-index: 2; }
 }
 
 /* =========================================
-   6. ABOUT SECTION (Page 2 #1, #2, #3)
+   6. ABOUT SECTION (Balanced Columns so Gap Never Increases on 13"/14"/16" Screens)
    ========================================= */
 .wire-about {
-    padding: var(--section-v-pad) 0;
+    padding: 4.75rem 0;
     background: var(--warm-sand);
     position: relative;
 }
@@ -393,25 +476,31 @@ main, header, footer { position: relative; z-index: 2; }
 
 .about-editorial-grid {
     display: grid;
-    grid-template-columns: 1fr 1.35fr;
-    gap: 4.5rem;
-    align-items: start;
+    grid-template-columns: 1.05fr 1.35fr;
+    gap: 4rem;
+    align-items: center;
+}
+.about-left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 .about-lead-statement {
-    font-size: clamp(1.65rem, 2.5vw, 2.25rem);
+    font-size: clamp(1.6rem, 2.35vw, 2.15rem);
     font-weight: 600;
     line-height: 1.28;
     letter-spacing: -0.025em;
-    margin: 0 0 2rem 0;
+    margin: 0 0 1.5rem 0;
     color: var(--charcoal);
 }
 
-/* #3: Pill-styled Internship Badge */
+/* Pill-styled Internship Badge */
 .internship-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.85rem;
-    padding: 0.6rem 1.25rem;
+    padding: 0.55rem 1.2rem;
     background: var(--pure-cream);
     border: 1.5px solid rgba(15, 67, 146, 0.25);
     border-radius: 50px;
@@ -422,19 +511,19 @@ main, header, footer { position: relative; z-index: 2; }
     border-radius: 50%; background: var(--terracotta);
     box-shadow: 0 0 0 4px rgba(217, 93, 36, 0.2);
 }
-.intern-text { font-size: 0.88rem; font-weight: 400; color: var(--charcoal); }
+.intern-text { font-size: 0.86rem; font-weight: 400; color: var(--charcoal); }
 .intern-text strong { font-weight: 600; color: var(--electric-blue); }
 .intern-pill-logo {
-    height: 28px; width: auto; object-fit: contain;
+    height: 26px; width: auto; object-fit: contain;
     padding-left: 0.75rem;
     border-left: 1px solid var(--border-color);
 }
 
-.about-right-col { display: flex; flex-direction: column; gap: 1.5rem; }
+.about-right-col { display: flex; flex-direction: column; gap: 1.25rem; }
 .about-paragraph {
-    font-size: clamp(1.08rem, 1.45vw, 1.3rem);
+    font-size: clamp(1.02rem, 1.22vw, 1.16rem);
     font-weight: 400;
-    line-height: 1.75;
+    line-height: 1.95;
     margin: 0;
     color: var(--charcoal);
 }
@@ -443,49 +532,53 @@ main, header, footer { position: relative; z-index: 2; }
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    padding: 0.22rem 0.9rem;
+    gap: 0.35rem;
+    padding: 0.16rem 0.78rem;
     border-radius: 50px;
     font-size: 0.88em;
     font-weight: 600;
-    line-height: 1.2;              /* ← override inherited 1.75 */
-    vertical-align: middle;        /* ← centres badge in line box */
-    margin: 0.3rem 0.45rem;        /* ← proper horizontal + vertical breathing room */
-    white-space: nowrap;           /* ← stops text inside wrapping awkwardly */
+    line-height: 1.25;
+    vertical-align: middle;
+    margin: 0.18rem 0.25rem;
+    white-space: nowrap;
 }
 .badge-cobalt { background: var(--electric-blue); color: #FFFFFF; }
-.badge-dark { background: var(--charcoal); color: #FFFFFF; }
+/* #7: Light background on NID pill so the black 🎓 cap icon is 100% visible */
+.badge-nid { background: var(--pure-cream); color: var(--charcoal); border: 1.5px solid var(--charcoal); }
 .badge-sky { background: var(--sky-blue); color: var(--charcoal); border: 1px solid rgba(15, 67, 146, 0.2); }
 .badge-sand { background: var(--pure-cream); color: var(--electric-blue); border: 1.5px solid var(--electric-blue); }
 
 /* =========================================
-   7. MOVING COMPANIES STRIP
+   7. MOVING COMPANIES STRIP (All 12 Company Logos)
    ========================================= */
-.wire-companies { padding: 2.5rem 0 0 0; overflow: hidden; background: var(--pure-cream); }
-.companies-marquee { width: 100%; overflow: hidden; display: flex; padding-bottom: 2.5rem; }
-.companies-track { display: flex; align-items: center; gap: 4.5rem; width: max-content; animation: companyScroll 32s linear infinite; }
+.wire-companies { padding: 2.25rem 0 0 0; overflow: hidden; background: var(--pure-cream); }
+.companies-marquee { width: 100%; overflow: hidden; display: flex; padding-bottom: 2.25rem; }
+.companies-track { display: flex; align-items: center; gap: 3.75rem; width: max-content; animation: companyScroll 38s linear infinite; }
 .companies-track:hover { animation-play-state: paused; }
 @keyframes companyScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-.logo-divider { color: var(--electric-blue); opacity: 0.4; font-size: 1rem; }
+.logo-divider { color: var(--electric-blue); opacity: 0.4; font-size: 0.95rem; }
 .company-logo { display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
 .company-logo img {
-    height: 36px; width: auto; object-fit: contain;
+    height: 34px; width: auto; object-fit: contain;
     filter: grayscale(100%) opacity(0.75); transition: all 0.3s ease;
 }
 .company-logo:hover img { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
 
-.company-logo img[alt="IBM"] { height: 36px; }
-.company-logo img[alt="Harvard T.H. Chan"] { height: 32px; }
-.company-logo img[alt="LearningMate"] { height: 34px; }
-.company-logo img[alt="ideaForge"] { height: 66px; }
-.company-logo img[alt="Microsoft"] { height: 32px; }
-.company-logo img[alt="AMN Healthcare"] { height: 34px; }
-.company-logo img[alt="Caption Health"] { height: 32px; }
-.company-logo img[alt="Fragomen"] { height: 30px; }
+.company-logo img[alt="IBM"] { height: 34px; }
+.company-logo img[alt="Harvard T.H. Chan"] { height: 30px; }
+.company-logo img[alt="LearningMate"] { height: 32px; }
+.company-logo img[alt="ideaForge"] { height: 60px; }
+.company-logo img[alt="Microsoft"] { height: 30px; }
+.company-logo img[alt="AMN Healthcare"] { height: 32px; }
+.company-logo img[alt="Caption Health"] { height: 30px; }
+.company-logo img[alt="Fragomen"] { height: 28px; }
+.company-logo img[alt="Neudesic"] { height: 32px; }
+.company-logo img[alt="Tata Trusts"] { height: 34px; }
+.company-logo img[alt="Woodside Energy"] { height: 34px; }
+.company-logo img[alt="Philips Healthcare"] { height: 32px; }
 
 /* =========================================
-   8. PROJECTS SECTION (Pages 2, 3, 4)
-   Matches Page 3 Bottom Wireframe: Inset Light Visual Box + Cobalt Blue Hover Card
+   8. PROJECTS SECTION (#9, #10, #11, #14)
    ========================================= */
 .projects-section {
     padding: var(--section-v-pad) 0;
@@ -494,40 +587,23 @@ main, header, footer { position: relative; z-index: 2; }
 }
 .projects-section .klear-draw-line { position: absolute; bottom: 0; left: 0; }
 
-.section-header-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 3rem;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-.section-sub-note {
-    margin: 0;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--muted-grey);
-}
-
 .projects-grid-2col {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2.25rem;
 }
 
-/* Entire Card is Clickable (Matches Page 3 Bottom-Left & Bottom-Right Wireframes) */
 .project-card {
     display: flex;
     flex-direction: column;
     padding: 1.25rem;
     background: var(--pure-cream);
-    border: 1.5px solid rgba(15, 67, 146, 0.35);
+    border: 1.5px solid rgba(15, 67, 146, 0.32);
     border-radius: 20px;
     overflow: hidden;
     transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* Hover State: Outer Card Fills with Cobalt Blue while Inner Image Stage Stays Crisp & Bright */
 .project-card:hover {
     background-color: var(--electric-blue);
     border-color: var(--electric-blue);
@@ -539,7 +615,7 @@ main, header, footer { position: relative; z-index: 2; }
 .p-card-visual {
     position: relative;
     width: 100%;
-    height: 245px;
+    height: 240px;
     background-color: var(--soft-blue);
     background-image: 
         linear-gradient(rgba(15, 67, 146, 0.05) 1px, transparent 1px),
@@ -573,7 +649,7 @@ main, header, footer { position: relative; z-index: 2; }
     transform: scale(1.06) translateY(-2px);
 }
 
-/* Project Category Pill (Ongoing Internship / Case Study / Academic Project) */
+/* Project Category Pill */
 .p-type-pill {
     position: absolute;
     top: 12px;
@@ -589,7 +665,7 @@ main, header, footer { position: relative; z-index: 2; }
 .pill-casestudy { background: var(--electric-blue); color: #FFFFFF; }
 .pill-academic { background: var(--charcoal); color: #FFFFFF; }
 
-/* Outcome Metric Label on Hover */
+/* Outcome Metric Label (#14) */
 .p-outcome-badge {
     position: absolute;
     bottom: 12px;
@@ -614,33 +690,15 @@ main, header, footer { position: relative; z-index: 2; }
 }
 
 .p-card-body {
-    padding: 1.4rem 0.5rem 0.4rem 0.5rem;
+    padding: 1.35rem 0.5rem 0.35rem 0.5rem;
     display: flex;
     flex-direction: column;
     flex: 1;
     gap: 0.65rem;
 }
-.p-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.p-card-num {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--electric-blue);
-    transition: color 0.3s ease;
-}
-.p-card-arrow {
-    font-size: 1.2rem;
-    font-weight: 600;
-    transition: transform 0.3s ease;
-}
-.project-card:hover .p-card-num { color: var(--sky-blue); }
-.project-card:hover .p-card-arrow { transform: translate(3px, -3px); }
 
 .p-card-title {
-    font-size: 1.28rem;
+    font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: -0.02em;
@@ -680,9 +738,9 @@ main, header, footer { position: relative; z-index: 2; }
     color: var(--electric-blue);
 }
 
-/* Additional Works Archive Block (Page 4 bottom list) */
+/* Additional Works Archive Block (#16, #17, #18, #19) */
 .additional-works-block {
-    margin-top: 4rem;
+    margin-top: 3.5rem;
     background: var(--warm-sand);
     border: 1.5px solid var(--border-color);
     border-radius: 18px;
@@ -695,16 +753,13 @@ main, header, footer { position: relative; z-index: 2; }
     margin-bottom: 1.25rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
-    flex-wrap: wrap;
-    gap: 1rem;
 }
 .additional-header h3 { margin: 0; font-size: 1.25rem; font-weight: 600; }
-.additional-header span { font-size: 0.85rem; color: var(--muted-grey); font-weight: 500; }
 
 .additional-list { display: flex; flex-direction: column; }
 .add-row {
     display: grid;
-    grid-template-columns: 160px 1.1fr 1.6fr 30px;
+    grid-template-columns: 165px 1.25fr 1.6fr;
     align-items: center;
     gap: 1.5rem;
     padding: 1.1rem 1rem;
@@ -728,12 +783,11 @@ main, header, footer { position: relative; z-index: 2; }
     width: max-content;
 }
 .add-pill.pill-paper { background: var(--electric-blue); color: #FFFFFF; }
-.add-title { font-size: 1rem; font-weight: 600; }
-.add-desc { font-size: 0.9rem; color: var(--muted-grey); }
-.add-arrow { font-weight: 600; color: var(--electric-blue); text-align: right; }
+.add-title { font-size: 0.98rem; font-weight: 600; }
+.add-desc { font-size: 0.88rem; color: var(--muted-grey); }
 
 /* =========================================
-   9. EXPERIENCE, EXPOSURE, EDUCATION, SKILLS (Page 5 Order & Color Breaks)
+   9. EXPERIENCE, EXPOSURE, EDUCATION, SKILLS
    ========================================= */
 .section-cobalt-break {
     padding: var(--section-v-pad) 0;
@@ -747,7 +801,7 @@ main, header, footer { position: relative; z-index: 2; }
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--heading-to-content-gap);
     gap: 2rem;
     flex-wrap: wrap;
 }
@@ -758,7 +812,7 @@ main, header, footer { position: relative; z-index: 2; }
     grid-template-columns: 1.2fr 1.5fr 0.6fr;
     align-items: center;
     gap: 2rem;
-    padding: 1.85rem 1rem;
+    padding: 1.75rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.22);
     transition: background 0.25s ease, padding-left 0.25s ease;
 }
@@ -766,9 +820,9 @@ main, header, footer { position: relative; z-index: 2; }
     background: rgba(255, 255, 255, 0.08);
     padding-left: 1.5rem;
 }
-.exp-role { font-size: 1.2rem; font-weight: 600; letter-spacing: -0.01em; }
-.exp-company { font-size: 1rem; opacity: 0.88; font-weight: 400; }
-.exp-date { font-weight: 600; color: var(--sky-blue); font-size: 0.92rem; text-align: right; }
+.exp-role { font-size: 1.15rem; font-weight: 600; letter-spacing: -0.01em; }
+.exp-company { font-size: 0.98rem; opacity: 0.88; font-weight: 400; }
+.exp-date { font-weight: 600; color: var(--sky-blue); font-size: 0.9rem; text-align: right; }
 
 /* Industry Exposure */
 .wire-exposure {
@@ -789,14 +843,14 @@ main, header, footer { position: relative; z-index: 2; }
     display: grid;
     grid-template-columns: 50px 1fr;
     align-items: baseline;
-    padding: 1.85rem 0;
+    padding: 1.75rem 0;
     border-bottom: 1px solid var(--border-color);
 }
 .exp-num { font-weight: 600; color: var(--electric-blue); font-size: 0.9rem; }
-.exposure-row p { margin: 0; font-size: 1.12rem; line-height: 1.6; color: var(--charcoal); }
+.exposure-row p { margin: 0; font-size: 1.08rem; line-height: 1.6; color: var(--charcoal); }
 .exposure-row strong { color: var(--electric-blue); font-weight: 600; }
 
-/* Education (Warm Sand Section Break) */
+/* Education */
 .section-sand-break {
     padding: var(--section-v-pad) 0;
     background: var(--warm-sand);
@@ -808,7 +862,7 @@ main, header, footer { position: relative; z-index: 2; }
 .edu-row:hover { background: var(--pure-cream); }
 .edu-row .exp-date { color: var(--electric-blue); }
 
-/* Skills (With Product Strategy Added) */
+/* Skills (#4: All skills in neutral state) */
 .wire-skills {
     padding: var(--section-v-pad) 0;
     background: var(--pure-cream);
@@ -821,18 +875,14 @@ main, header, footer { position: relative; z-index: 2; }
     align-items: center;
 }
 .skill-tag {
-    padding: 0.75rem 1.45rem;
+    padding: 0.72rem 1.45rem;
     border-radius: 50px;
     border: 1.5px solid var(--border-color);
     background: var(--pure-cream);
-    font-size: 0.95rem;
+    color: var(--charcoal);
+    font-size: 0.92rem;
     font-weight: 600;
     transition: all 0.25s ease;
-}
-.skill-tag.skill-featured {
-    background: var(--electric-blue);
-    color: #FFFFFF;
-    border-color: var(--electric-blue);
 }
 .skill-tag:hover {
     background: var(--electric-blue);
@@ -842,12 +892,12 @@ main, header, footer { position: relative; z-index: 2; }
 }
 
 /* =========================================
-   10. FOOTER (Page 5 #6 + River / SPRINT'26 Watermark)
+   10. FOOTER
    ========================================= */
 .wire-footer {
     background: var(--deep-cobalt);
     color: var(--pure-cream);
-    padding-top: 6rem;
+    padding-top: 5.5rem;
     overflow: hidden;
     position: relative;
 }
@@ -855,7 +905,7 @@ main, header, footer { position: relative; z-index: 2; }
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-bottom: 4rem;
+    padding-bottom: 3.75rem;
 }
 .footer-title {
     font-size: clamp(2.1rem, 4vw, 3.6rem);
@@ -866,13 +916,12 @@ main, header, footer { position: relative; z-index: 2; }
     line-height: 1.15;
 }
 .footer-subtitle {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
     color: var(--sky-blue);
     margin: 0 0 2.25rem 0;
     font-weight: 400;
 }
 
-/* Interactive Email Pill with Hover & Click States */
 .footer-email-row {
     display: flex;
     align-items: center;
@@ -932,7 +981,6 @@ main, header, footer { position: relative; z-index: 2; }
 .socials a:hover { color: var(--sky-blue); }
 .credits p { margin: 0; opacity: 0.75; }
 
-/* Oversized River / SPRINT'26 Style Bottom Watermark */
 .footer-giant-watermark {
     width: 100%;
     text-align: center;
@@ -955,10 +1003,10 @@ main, header, footer { position: relative; z-index: 2; }
    11. RESPONSIVE (TABLET & MOBILE)
    ========================================= */
 @media (max-width: 1024px) {
-    :root { --container-pad: 2rem; --section-v-pad: 4.5rem; }
+    :root { --container-pad: 2rem; --section-v-pad: 4.25rem; --heading-to-content-gap: 1.75rem; }
     html { cursor: auto; }
     a { cursor: pointer; }
-    .custom-cursor, .hero-scroll-widget { display: none !important; }
+    .custom-cursor, .hero-scroll-widget, .c-scrollbar { display: none !important; }
 
     .razor-hero {
         height: auto;
@@ -995,12 +1043,11 @@ main, header, footer { position: relative; z-index: 2; }
         grid-template-columns: 1fr;
         gap: 0.4rem;
     }
-    .add-arrow { display: none; }
 }
 
 @media (max-width: 768px) {
-    :root { --container-pad: 1.25rem; --section-v-pad: 3.75rem; }
-    .klear-nav-inner { height: 60px; padding-top: 2px; }
+    :root { --container-pad: 1.25rem; --section-v-pad: 3.5rem; }
+    .klear-nav-inner { height: 60px; }
     .nav-brand { font-size: 0.85rem; }
     .nav-links { gap: 1.15rem; }
     .nav-links a { font-size: 0.76rem; }
@@ -1008,14 +1055,15 @@ main, header, footer { position: relative; z-index: 2; }
     .razor-hero { padding-top: 70px; }
     .hero-inner { padding: 1rem 1.25rem 0 1.25rem; }
     .razor-title { font-size: clamp(2.35rem, 10vw, 3.2rem); }
-    .hero-pillars-line { font-size: 0.8rem; }
-    .cohesion-rotator-mask { font-size: clamp(1.12rem, 4.8vw, 1.4rem); }
+    .hero-pillars-line { font-size: 0.95rem; }
+    .cohesion-rotator-mask { font-size: 0.98rem; }
 
     .hero-parallax { height: 42svh; min-height: 290px; max-height: 380px; }
     .layer-bg-wrap { top: 0%; right: -6%; width: 98%; height: 86%; }
     .layer-woman-wrap { bottom: -14%; right: 2%; width: 72%; height: 82%; }
     .layer-desk-wrap { bottom: -14%; left: -4%; width: 108%; height: 62%; }
 
+    .hi-badge { white-space: normal; }
     .internship-pill {
         border-radius: 16px;
         flex-wrap: wrap;
